@@ -1,0 +1,39 @@
+The Inland project
+
+Inland is the land surface package for the Brazilian Earth System Model.
+Inland development is supported by Rede Clima and INCT-MC, Ministry of Science and Technology, Brazil
+
+Coordination: Marcos Heil Costa (UFV) and Gilvan Sampaio (INPE)
+
+Programmers:
+Alessandro Rodrigues da Fonseca 
+Carlos Augusto Guimaraes Junior 
+Fabricio Zimmerer Murta 
+Jose Fernando Pesquero
+Marcos Barbosa Sanches
+Thiago Veloso dos Santos
+Etienne Tourigny
+Marilia Harumi Shimizu
+
+Several authors have contributed with additional code, and will be included in this list as their code is merged into the main release.
+
+Inland is based on the IBIS code, available at the University of Wisconsin SAGE
+http://www.sage.wisc.edu/download/IBIS/ibis.html
+
+Authors of the IBIS code:
+Jonathan A. Foley
+I. Colin Prentice
+Navin Ramankutty
+Samuel Levis
+David Pollard
+Stephen Sitch
+Alex Haxeltine
+Christopher Kucharik
+Christine Delire
+Veronica A. Fisher
+Michael T. Coe
+John D. Lenters
+Christine Young-Molling
+John M. Norman
+S. Tom Gower
+Art Mirin

@@ -1,0 +1,76 @@
+Santarem Km67
+inland/src/inland_comforc.F90
+26280       - nbforc 
+
+inland/data/offline/single_point/params/vegetation0.997       - beta2 (fine root distributions (Imbuzeiro 2010))
+
+inland/data/offline/single_point/params/canopy
+65          - vmax (maximum capacity of the Rubisco enzyme [µ mol m-2 s-1])
+9           - coefm (coefficient related to the stomatal conductance)
+2.109 e5    - chs (heat capacity of stems [J m-2 ºC-1])
+
+inland/data/offline/single_point/conf/inland-single_point.infile
+-2.80         ! snorth     northern latitude for subsetting in/output
+-2.90         ! ssouth     southern latitude for subsetting in/output
+-55.00        ! swest      western longitude for subsetting in/output
+-54.90        ! seast      eastern longitude for subsetting in/output
+
+=================================================================================
+Santarem Km83
+inland/src/inland_comforc.F90
+26280       - nbforc
+
+inland/data/offline/single_point/params/vegetation0.997       - beta2 (fine root distributions (Imbuzeiro 2010))
+
+inland/data/offline/single_point/params/canopy
+120          - vmax (maximum capacity of the Rubisco enzyme [µ mol m-2 s-1])
+11           - coefm (coefficient related to the stomatal conductance)
+0.325 e5    - chs (heat capacity of stems [J m-2 ºC-1])
+
+inland/data/offline/single_point/conf/inland-single_point.infile
+-2.96         ! snorth     northern latitude for subsetting in/output
+-3.06         ! ssouth     southern latitude for subsetting in/output
+-55.02        ! swest      western longitude for subsetting in/output
+-54.92        ! seast      eastern longitude for subsetting in/output
+
+
+=================================================================================
+Manaus Km34
+inland/src/inland_comforc.F90
+35040       - nbforc 
+
+inland/data/offline/single_point/params/vegetation0.985       - beta2 (fine root distributions (Imbuzeiro 2010))
+
+inland/data/offline/single_point/params/canopy
+70          - vmax (maximum capacity of the Rubisco enzyme [µ mol m-2 s-1])
+9           - coefm (coefficient related to the stomatal conductance)
+0.263 e5    - chs (heat capacity of stems [J m-2 ºC-1])
+
+inland/data/offline/single_point/conf/inland-single_point.infile
+-2.55         ! snorth     northern latitude for subsetting in/output
+-2.65         ! ssouth     southern latitude for subsetting in/output
+-60.25        ! swest      western longitude for subsetting in/output
+-60.15        ! seast      eastern longitude for subsetting in/output
+
+
+
+=================================================================================
+Reserva Jaru
+inland/src/inland_comforc.F90
+26280       - nbforc 
+
+inland/data/offline/single_point/params/vegetation0.997       - beta2 (fine root distributions (Imbuzeiro 2010))
+
+inland/data/offline/single_point/params/canopy
+120          - vmax (maximum capacity of the Rubisco enzyme [µ mol m-2 s-1])
+10           - coefm (coefficient related to the stomatal conductance)
+0.527 e5    - chs (heat capacity of stems [J m-2 ºC-1])
+
+inland/data/offline/single_point/conf/inland-single_point.infile
+-10.02        ! snorth     northern latitude for subsetting in/output
+-10.13        ! ssouth     southern latitude for subsetting in/output
+-61.98        ! swest      western longitude for subsetting in/output
+-60.88        ! seast      eastern longitude for subsetting in/output
+
+
+

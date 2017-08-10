@@ -1,0 +1,66 @@
+! this is inland grid configuration file (namelist)
+! change any parameters here, or comment/remove to use default values
+!
+&INLAND_GRID
+!
+! temporal parameters
+irestart   = 0        , ! irestart - 0: not a restart run  1: restart run (default 0)
+iyrrestart = 9999     , ! iyrrestart - year to restart model (default 9999)
+iyear0     = 1991     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
+nrun       = 2        , ! nrun - number of years in this simulation (change for restart) (default 2)
+iyrdaily   = 1991     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
+iyrmon     = 9999     , ! iyrmon - year to start reading montly data (default 9999)
+dtime      = 3600     , ! dtime - time step in seconds (default 3600)
+!
+! simulation parameters
+rddaydims  = 1        , ! rddaydims - 0: Read daily data in 4d (lat,lon,lev,time); 1: Read daily data in 3d (lat,lon,time)
+soilcspin  = 0        , ! soilcspin - 0: no soil spinup, 1: acceleration procedure used (default 0)
+isimveg    = 1        , ! isimveg - 0: static veg, 1: dynamic veg, 2: dynamic veg-cold start (default 0)
+isimfire   = 0        , ! isimfire - 0: fixed fire (0.5% prob.), 1: dynamic fire, 2: CTEM fire method, 3: no fire (default 0, ignored if isimveg=0)
+isimco2    = 0        , ! isimco2 - 0: fixed co2,  1: ramped co2 (default 0)
+co2init    = 0.000350 , ! co2init - initial co2 concentration in mol/mol (real) (default 0.000350)
+o2init     = 0.209000 , ! o2init - initial o2 concentration in mol/mol (real) (default 0.209000)
+isimland   = 0        ! 0: fixed land use,  1: dynamic land use
+iyrluc     = 9999     , ! year to start reading land transition data
+nluc       = 100      , ! number of years to read land transition data
+isinfilt   = 0        , ! isinfilt - Infiltration Function - 0: according to Darcy (1856); 1: according to Green-Ampt (1911) (default 0)
+isimrwu    = 0        , ! isimrwu - Root water uptake module - 0: according to Foley et al., 1996; 1 according to Li et al. (2006) (default 0)
+!
+! output parameters
+iyearout   = 1        , ! iyearout - 0: no yearly output, 1: yearly output (default 1)
+imonthout  = 1        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
+idailyout  = 1        , ! idailyout - 0: no daily output, 1: daily output (default 0)
+idiag      = 0        , ! idiag - 0: no diagnostic output, 1-10 # of files to output (default 0)
+!
+! crops simulation paramters
+imetyear   = 9999     , ! year to start using hourly met data
+dmetyear   = 1        , ! day to start using hourly met data (17 geovane)
+imetend    = 9999     , ! year to end reading in hourly met data
+dmetend    = 119      , ! day to end reading in hourly met data (39 geovane)
+irrigate   = 0        , ! 0: no irrigation 1: irrigation strategy used
+isimagro   = 1        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
+icroptype  = 13       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc 
+iwheattype = 1        , ! 1: spring wheat 2: winter wheat - only used if icroptype = wheat
+cropsfile  = "crops_monfreda_05d.nc" , ! cropsfile - read crop data to produce crop veg map (use mlpt>1)
+irotation  = 0        , ! 0: none 1: winter wheat/fallow 2: 2 corn/soy 3: corn/soy/spring wheat 4: soy/winter wheat/corn
+iholdsoiln = 1        , ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N  
+ffact      = 1.0      , ! numeric multiplying factor applied to N fertilizer after 2000 (for all crops)
+isoilay    = 9        , ! soil layer for which nitrate leaching/drainage is output  
+elevin     = 550      , ! site elevation        (m)
+thigh      = 6        , ! tower input elevation (m)
+!
+! simulation domain - an entry with the same name and corresponding lon/lat values must be defined in inland-grid.domains
+domain      = "uberaba2", ! domain name used to define lon/lat boundaries (default '')
+!
+! subgrid tile parameters - ignore if not using subgrid tiles
+mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)
+vegtypefile= ""       , ! file to read initial vegtype (and tileprop if mlpt>1) (default '', read default)
+hrmapfile  = ""       , ! hrmapfile - read high-res data to produce initial veg map (default '', don't read)
+!
+! Heterogeneous Parameterization
+itauw      =  0       , ! itauw - 0:reads 1 dimension tauwood0 from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+ivmax      =  0       , ! ivmax - 0:reads 1 dimension vmax_pft from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+isla       =  0       , ! isla  - 0:reads 1 dimension specla from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+ica        =  0         ! ica   - 0:reads 1 dimension carbon allocation to wood, leaf and root from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+!
+ /

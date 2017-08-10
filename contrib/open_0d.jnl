@@ -1,0 +1,83 @@
+cancel mode verify
+! Read 0D Ibis' and 0D Inland's CSV file - Ferret Script
+!
+! This script reads and creates time axies for the generated CSV file from the
+! 0D IBIS Model from Hewlley (equivalent to InLand 0D version).
+!
+! Written by Fabrício Zimmerer Murta <fabricio@familiamurta.org>
+! Based on informations from the following sources:
+! - Ferret Documentation: http://ferret.pmel.noaa.gov/Ferret/documentation
+! - Email from Steve Hankin: (archive link below)
+!   http://www.pmel.noaa.gov/maillists/tmap/ferret_users/fu_2009/msg00119.html
+! - FAQ: Creating time axis from time variables (http://ferret.pmel.noaa.gov/static/FAQ/axes_and_data/time_axis_from_variables.html)
+! And other minor sources or sites around noaa.gov website.
+
+! Clear ambient
+cancel region
+cancel variables/all
+cancel data/all
+cancel viewports
+
+! File names to open/process.
+define variable inland_data = "inland.c1.k83.lbamip.csv"
+define variable ibis_data = "ibis.c1.k83.lbamip"
+
+! Column names on files (they are not printed on first line so you need to
+! provide them)
+define variable column_names1 = "year,month,day,hour,julday,swnet_csv,lwnet_csv,neg_fvapa_times_hvap_csv,neg_fsena_csv,soihfl_csv,delcanheat_csv,n0,neg_fvapa_csv,grunof_csv,n1,gdrain_csv,gdrain_plus_grunof_csv,delsoilmoist_csv,n2,n3,n4,vegtype_csv,tsoi_csv,n5,albedo_csv,n6,fpar_csv,smoist1_csv,smoist2_csv,smoist3_csv,smoist4_csv,smoist5_csv,smoist6_csv,tsoi1_csv,tsoi2_csv,tsoi3_csv,tsoi4_csv,tsoi5_csv,tsoi6_csv,soilwet_csv,ginvap_csv,gtrans_csv,gsuvap_csv,n7,n8,canopint_csv,tgpptot_csv,tnpp_csv,neg_tneetot_csv,autoresp_csv"
+define variable column_names2 = "tco2mic_csv,n9,n10,n11,cbioltot_csv,cbiortot_csv,cbiowtot_csv,clitll_csv,clitlm_csv,clitls_csv,clitrl_csv,clitrm_csv,clitrs_csv,clitwl_csv,clitwm_csv,clitws_csv,totlivbio_csv,cbiowtot_csv,totlai"
+set window/size=3/aspect=0.5625
+
+! Get data sizes
+define variable inland_data_size = {spawn:"wc -l `inland_data` | sed 's/ *\([0-9]\+\)[^0-9].*$/\1/g'"}
+define variable ibis_data_size = {spawn:"wc -l `ibis_data` | sed 's/ *\([0-9]\+\)[^0-9].*$/\1/g'"}
+
+! Define axies and grids
+define axis/x/x=1:`inland_data_size`:1 inland_axis
+define grid/x=inland_axis inland_grid
+define axis/x/x=1:`ibis_data_size`:1 ibis_axis
+define grid/x=ibis_axis ibis_grid
+
+! Test if both files have the same grid
+if `inland_data_size ne ibis_data_size` then 
+ say "WARNING: InLand and IBIS files does not have the same amount of data."
+ say "InLand: `inland_data_size` samples."
+ say "IBIS: `ibis_data_size` samples."
+endif
+
+! Load InLand file
+columns/var="`column_names1`,`column_names2`"/skip=0/grid=inland_grid "`inland_data`"
+
+! Load IBIS file
+columns/var="`column_names1`,`column_names2`"/skip=0/grid=ibis_grid "`ibis_data`"
+
+message/continue "Loaded InLand and IBIS data files."
+
+! Derive a 'timestep' column from the year+month+day+hour columns from InLand
+define variable timestep_inland = days1900(year[d=1],month[d=1],day[d=1]) * 24 + (hour[d=1]-1)
+
+! Same from above for the IBIS data (hopefully they are the same, this is just
+! to be safe and allow comparisons on common dates from both files)
+define variable timestep_ibis = days1900(year[d=2],month[d=2],day[d=2]) * 24 + (hour[d=2]-1)
+
+! Define axies containing the times from the timestep column.
+define axis/t/t0=1-jan-1900/unit=hours timeaxis_inland = timestep_inland[L=1:`inland_data_size`]
+define axis/t/t0=1-jan-1900/unit=hours timeaxis_ibis = timestep_ibis[L=1:`ibis_data_size`]
+
+message/continue "Defined time axies for InLand and IBIS data."
+
+! Reshape column to the time axis from inland data
+!define variable inland_data = reshape(tsoi1[d=1],t[gt=timeaxis_inland])
+
+! Reshape column to the time axis from ibis data
+!define variable ibis_data = reshape(tsoi1[d=2],t[gt=timeaxis_ibis])
+
+!message/continue "Reshaped tsoi1 data columns."
+
+!plot/t=1-jan-2010:1-feb-2010 inland_data,ibis_data
+
+message/continue "Column names: `column_names1`,`column_names2`"
+
+message/continue "Load a column with:"
+message/continue "define variable inland_data = reshape(COLUMN[d=1],t[gt=timeaxis_inland])"
+message/continue "define variable ibis_data = reshape(COLUMN[d=2],t[gt=timeaxis_ibis])"

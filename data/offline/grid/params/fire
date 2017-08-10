@@ -1,0 +1,52 @@
+# INLAND parameter set: inland 1.0      Set up by M.H. Shimizu 03.12.12
+#
+#========================================================================
+# fire parameters....
+#========================================================================
+#
+# #, *, c, C, ! or / denote comments in this file. Input routine 
+# will ignore any text to the right of these symbols, anywhere they 
+# occur....  So feel free to comment freely! There are only two 
+# rules to observe when placing data and comments in this file.
+# Rule 1: data must be in the correct order, as indicated below, but
+#         lines can be separated by blanks or comments and individual
+#         fields can be separated by blanks or line-ends any way you 
+#         like.
+# Rule 2: you MAY NOT join any consecutive lines of data. In general
+#         this is not a problem so long as the existing sequence of
+#         line-ends and commented separators is retained. In principle, 
+#         you are free to remove comment lines, but if at a later date
+#         you attempt to join two consecutive lines of data, where the
+#         input routine is not expecting this, it *will* break the 
+#         program (though not irreparably).
+# Rule 3: THERE IS NO RULE 3!!!
+
+#------------------------------------------------------------------------
+# Parameters from Arora and Boer fire model
+#------------------------------------------------------------------------
+# blow     : Lower biomass threshold below which fire occurrence 
+#            probability is zero (kgC m-2)
+# bup      : Upper biomass threshold above which biomass availability
+#            is not a constraint for fire occurrence (kgC m-2)
+# betae    : Extinction wetness content above which fire occurrence
+#            probability is negligible (dimensionless)
+# Ph       : Fire occurrence probability due to human causes (fraction)
+# g0       : Spread fire rate dependence on wind for calm conditions 
+#            (dimensionless)
+# alpha    : Factor of decay for spread fire rate dependence on wind 
+#            (dimensionless)
+#            alpha =1/2500 in Arora and Boer; alpha=8.16326e-4 in CTEM code
+# umax     : Maximum fire spread rate (km h-1)
+#            umax =0.45 in Arora and Boer; umax=0.28 in global model
+# reparea  : Representative area of 1000 km²
+# exfire   : Fire extinguishing probability (fraction)
+#------------------------------------------------------------------------
+   0.2         ! blow
+   1.0         ! bup
+   0.35        ! betae
+   0.5         ! Ph
+   0.1         ! g0
+   8.16326e-04 ! alpha
+   0.45        ! umax
+   1000        ! reparea
+   0.5         ! exfire

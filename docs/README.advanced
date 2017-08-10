@@ -1,0 +1,116 @@
+Environment variables
+================
+
+A number of optional features can be enabled via the definition of environment variables.
+Most variables (unless noted otherwise) must have values of 0 (off) or 1 (on).
+
+Environment variables can be set in 2 ways:
+
+1) add a statement to $HOME/.bashrc, which will be used for all runs
+export INLAND_VAR=value
+
+2) add the statement for each inland execution
+INLAND_VAR=value ./inland_grid
+
+
+These variables control the format of output netcdf files (grid model only)
+
+INLAND_SINGLE_PRECISION : if 0 write netcdf files with double precision (default 1, write in single precision)
+INLAND_COMPRESSOUT : write netcdf files with zlib compression (requires netCDF-4 format with HDF5)
+                     valid values are 0 (no compression) or 1-9 (compression level), 2 is recommended
+                     see http://www.unidata.ucar.edu/software/netcdf/docs/netcdf/NetCDF_002d4-Format.html
+INLAND_CHUNKOUT  : define compressed variable chunking (default 0, use netcdf default)
+                   use this only if your data viewer has problems with default chunking parameters
+
+These variables are for defining the locations of input/output files, used mainly in a supercomputing environment
+
+INLAND_INDIR     : the location of input files, which contains parameter definition (default is ./data/offline/grid)
+INLAND_INFILE    : the location of the inland_grid.infile (default is $INLAND_INDIR/inland_grid.infile)
+INLAND_DATADIR   : the location of the data directory, which contains climate files (default is ./input)
+INLAND_OUTDIR    : the location of the output directory (default is ./output)
+
+These variables are for development and debugging purposes only, use at your risk!
+
+INLAND_DEBUG     : show verbose output, increasing values give more output (default 0, no verbose output)
+INLAND_RANDOMVAL : set all random values to a fixed value (valid values are between 0 and 1 ; default 0, use random values)
+INLAND_FASTEXEC  : run model in fast mode (default 0, normal execution)
+                   if 1 runs only 1 day per year, if 2 bypasses lsxmain call
+
+Subgrid Tiling
+================
+
+Subgrid Tiling is an optional feature of Inland.
+TODO : add more explanations (theoretical basics, input files, tile dimension in output files)
+
+- The following entries in conf/inland-grid.infile control subgrid tiling.
+
+! subgrid tile parameters - ignore if not using subgrid tiles
+mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)
+vegtypefile= ""       , ! file to read initial vegtype (and tileprop if mlpt>1) (default '', read default)
+hrmapfile  = ""       , ! hrmapfile - read high-res data to produce initial veg map (default '', don't read)
+
+- vegtype files must contain the following:
+  - vegtype variable with mlpt levels
+  - tilefrac variable with mlpt levels + 1 for water fraction
+
+- vegtype files with tiles can be created using the following commands (simple example)
+
+cd tiles
+rm -f tmp/vegtype-t0?.nc tmp/tilefrac-t0?.nc
+[ create vegtype levels and modify tiles, here is a simple example where forest->savanna and shrubs->desert ]
+cdo setlevel,1 ../vegtype.nc tmp/vegtype-t01.nc
+cdo setlevel,2 -setvals,1,9,11,14 ../vegtype.nc tmp/vegtype-t02.nc
+[ modify any of the tilefrac levels, here is a simple example ]
+cdo setlevel,1 -setrtoc,0,100,0.65 -chvar,vegtype,tilefrac ../vegtype.nc tmp/tilefrac-t01.nc 
+cdo setlevel,2 -setrtoc,0,100,0.25 -chvar,vegtype,tilefrac ../vegtype.nc tmp/tilefrac-t02.nc 
+cdo setlevel,3 -setrtoc,0,100,0.10 -chvar,vegtype,tilefrac ../vegtype.nc tmp/tilefrac-t03.nc 
+[ merge files ]
+cdo -O merge tmp/vegtype-t0?.nc tmp/vegtype-mlpt02.nc
+cdo -O merge tmp/tilefrac-t0?.nc tmp/tilefrac-mlpt02.nc
+cdo -O merge tmp/vegtype-mlpt02.nc tmp/tilefrac-mlpt02.nc vegtype-mlpt02.nc
+
+
+- data analysis
+
+cdo does not support 5D vars, therefore files with pft dimensions (such as inland-yearly-pft-????.nc) 
+cannot be handled directly by cdo. However, grads software has no problem with these files.
+
+The following command can split the file by tile number (assuming 2 tiles with 1 extra for average):
+for y in `seq 1981 1982` ; do for t in `seq 1 3` ; do if=inland-yearly-pft-${y}.nc ; of=inland-yearly-pft-t${t}-${y}.nc; ncks -O -d tile,$((t-1)) ${if} ${of} ; ncwa -O -a tile ${of} ${of} ; done ; done
+
+
+
+Agro Model
+================
+
+In each point, only natural vegetation or a single crop are allowed to exist.
+Currently there are 4 crops, with corresponding codes (as defined by pft# in params/vegetation)
+13: soybean / 14: maize / 15: wheat / 16: sgc 
+
+Two variables describe the crop present at each grid point: 
+  - landusetype (=2 when a crop is present)
+  - croptype, the number of the crop
+
+The agro model can run in 2 modes, as defined by the value of isimagro in inland-grid.infile.
+
+1) unique crop (isimagro = 1)
+
+   The value of icroptype defines the crop present in all points.
+
+2) defined by data read in cropsfile (isimagro = 2)
+
+   The file defined by the cropsfile variable is read to assign crops to all points.
+   The script contrib/merge_monfreda.sh can be used to prepare such a file.
+
+   This must be used in conjunction with mlpt>1 (i.e. using subgrid tiling).
+   The first subgrid tile is always natural vegetation (landusetype=1).
+   Other subgrids (and their corresponding tile fractions) are assigned from data in cropsfile.
+
+   If mlpt = 1 + #crops (currently 4) 
+     A subgrid tile is created for each crop, in order of pft#,
+     which implies that e.g. subgrid #2 is always soybean(13).
+
+   Else 
+     For each point a subgrid tile is created for all crops present in that point,
+     in decreasing order, based on tile fraction.
+

@@ -1,0 +1,218 @@
+# IBIS parameter set: ibis2.6 US Regional  Set up by C. Kucharik 10.04.02
+#
+#========================================================================
+# params.crp : crop parameters....
+#========================================================================
+#
+# #, *, c, C, ! or / denote comments in this file. Input routine 
+# will ignore any text to the right of these symbols, anywhere they 
+# occur....  So feel free to comment freely! There are only two 
+# rules to observe when placing data and comments in this file.
+# Rule 1: data must be in the correct order, as indicated below, but
+#         lines can be separated by blanks or comments and individual
+#         fields can be separated by blanks or line-ends any way you 
+#         like.
+# Rule 2: you MAY NOT join any consecutive lines of data. In general
+#         this is not a problem so long as the existing sequence of
+#         line-ends and commented separators is retained. In principle, 
+#         you are free to remove comment lines, but if at a later date
+#         you attempt to join two consecutive lines of data, where the
+#         input routine is not expecting this, it *will* break the 
+#         program (though not irreparably).
+# Rule 3: THERE IS NO RULE 3!!!
+#
+#-------------------------------------------------------------------------
+# Crop growth --> physiology properties 
+#-------------------------------------------------------------------------
+# lotemp      : low temperature threshold in tempvm equation (C)
+# hitemp      : high temperature threshold in tempvm equation (C)
+# drought     : crop sensitivity to drought  - adjustment made to drystress  
+# f1          : constant used in tempvm equations (curve shape parameter)
+# f2          : constant used in tempvm equations (curve shape parameter) 
+# baset       : base temperature(K) used for daily GDD summation 
+# mxtmp       : maximum daily GDD accumulation (C) for crops
+# tkill       : temperature (K) at which crops are damaged due to freeze
+#--------------------------------------------------------------------------
+# lotemp   hitemp   drought   f1     f2      baset   mxtmp   tkill      PFT
+#--------------------------------------------------------------------------
+  4.0      38.0     1.30      0.40   0.40   283.16   30.0    268.16  !  13
+  5.0      40.0     1.00      0.60   0.27   281.16   30.0    273.16  !  14
+  4.0      36.0     1.00      0.40   0.40   273.16   26.0    268.16  !  15
+ 20.0      39.0     1.00      0.1    0.4    285.16   30.0    268.16  !  16
+#========================================================================
+# 					test 283.16!!
+#--------------------------------------------------------------------------
+# Leaf area expansion/senescence, and C allocation 
+#--------------------------------------------------------------------------
+#
+#   laicons(npft)       ! lai decline factor constant for crops (after peak??)
+#   allconsl(npft)      ! leaf allocation decline scaling factor 
+#   allconss(npft)      ! stem allocation decline scaling factor
+#                    allconsl, allconss- control rate of alloct decline 
+#                    after grain start; lower numbr -> rapid decline in all - typical range between 2-5 
+#   laimx(npft)         ! maximum LAI allowed (EPIC logic and EPIC-phase parameters)
+#   arooti(npft)        ! initial allocation of carbon to roots
+#   arootf(npft)        ! allocation of carbon to roots at end of growing season
+#   aleaff(npft)        ! allocation of carbon to leaves at end of growth cycle
+#   astemf(npft)        ! allocation of carbon to stems at end of growth cycle
+#   declfact(npft)      ! rate of LAI decline after grain fill inititation (dimensionless factor)
+#   fleafi(npft)        ! inital fraction of aboveground alloc going to leaf before grain fill (split with stem)
+#------------------------------------------------------------------------------------------------------------
+# laicons   allconsl   allconss   laimx  arooti  arootf  aleaff  astemf  declfact  fleafi      PFT  Crop Type
+#------------------------------------------------------------------------------------------------------------
+  1.0       2.0        3.0        6.0     0.15    0.05    0.05    0.05    0.7      0.95  !  13   Soybean
+# 2.0       2.0        5.0        7.0     0.50    0.05    0.05    0.10    1.05      0.80  !  13   Soybean
+  5.0       5.0        2.0        6.0     0.40    0.05    0.00    0.00    1.05      0.95  !  14   Maize 
+  3.5       3.0        1.0        7.0     0.30    0.00    0.00    0.05    1.05    999.0   !  15   Wheat
+  5.0       5.0        2.0        4.0     0.95    0.2    0.14    0.10    0.00      0.00  !  16   Sugarcane 
+#============================================================================================================
+#				  
+#----------------------------------------------------------------------------------------------------------------
+# Climatic and Managed planting controls
+#----------------------------------------------------------------------------------------------------------------
+#
+#    ptemp(npft)         ! minimum 10 day average temperature for planting (K)
+#    pmintemp(npft)      ! minimum 10 day average min temp for planting (K) 
+#    pmmin(npft)         ! earliest month to plant (month)
+#    pdmin(npft)         ! earliest day in earliest month to plant (day)
+#    pcm(npft)           ! Planting Calendar month (month)
+#    pcd(npft)           ! Planting Calendar day   (day)                           
+#important - plant. calendar (pcm/pdm) shoul be between harvest (pmmin/pdmin+mxmat) and planting (pmmin/pdmin) 
+#------------------------------------------------------------------------------------------------------------------
+# ptemp  pmintemp  pmmin  pdmin  pcm    pcd     PFT
+#------------------------------------------------------------------------------------------------------------------
+  284.16  279.16     9    13      6      1     ! 13
+  283.16  279.16    10    15      6      1     ! 14
+  280.16  272.16    4      1      1      1     ! 15
+  283.16  279.16    11     1      11     1     ! 16
+#==================================================================================================================
+#    pcm is set to 1 month after harvest maximum.
+#----------------------------------------------------------------------------------------------------------------
+# GDD and phenology controls
+#----------------------------------------------------------------------------------------------------------------
+#
+#    hybgdd(npft)        ! maximum GDD (C) required for physiological maturity for specified hybrids
+#    gddmin(npft)        ! (is ON, only for 15/2) minimum number of annual GDD (C) needed to plant/grow a crop
+#    mxgddgf(npft)       ! (is OFF!) maximum gdd allowed past grain fill inititiation before onset of phys. maturity 
+#    mxdgfi(npft)        ! (is OFF!) maximum number of days past planting allowed before auto-shift to grain fill
+#    mxmat(npft)         ! maximum number of days allowed past planting before physiological maturity is reached
+#    lfemerg(npft)       ! fraction of annual gdd (to reach physiological mat.) needed for leaf emergence
+#    grnfill(npft)       ! fraction of annual gdd (to reach physiological mat.) needed for grain fill initiation
+#    bfact(npft)         ! coefficient in LAI curve equation  
+# 
+# NOTE:  ANYTHING WITH A 999.0 is for wheat values which are modified according to spring vs. winter (further below)
+#------------------------------------------------------------------------------------------------------------------
+# hybgdd  gddmin mxgddgf  mxdgfi  mxmat   lfemerg   grnfill  bfact     PFT
+#------------------------------------------------------------------------------------------------------------------
+  1760.0  50.0   150.0    120.0   150.0    0.01     0.625     -8.50      ! 13
+  2500.0  50.0   925.0    110.0   165.0    0.03     0.65    -4.00      ! 14
+  2000.0  50.0   999.0    170.0   999.0    0.02   999.0     -2.50      ! 15
+  5800.0  50.0   5925.0   810.0   570.0    0.12    0.75     -4.00      ! 16 
+#==================================================================================================================
+#----------------------------------------------------------------------------------------------------------------
+# Special cases for wheat growth parameters  1: spring  2: winter
+#-----------------------------------------------------------------------------------------------------------------
+#
+#     grnwht(2)            ! fraction of annual gdd (to reach phys. mat.) for wheat leaf emergence
+#     fleafiwht(2)         ! fraction of aboveground allocation going to leaf before grain fill begins
+#     mgddgf(2)            ! maximum gdd allowed past grain fill inititiation for phys. maturity
+#     mxmatwht(2)          ! maximum number of days allowed past planting for physiological maturity to be reached
+#     fnlfmxw(2)           ! leaf nitrogen maximum allowed for wheat
+#     fngrmxw(2)           ! grain nitrogen maximum allowed for wheat
+#     fnoptw(2)            ! optimum leaf nitrogen fraction for wheat
+#
+#----------------------------------------------------------------------------
+# grnwht  fleafiwht  mgddgf  mxmatwht fnlfmxw  fngrmxw  fnoptw    Wheat Hybrid
+#----------------------------------------------------------------------------
+  0.75    0.80      800.0   150.0    0.010    0.0225   0.0200   !  1  Spring
+  0.65    0.80      850.0   265.0    0.010    0.0225   0.0200   !  2  Winter (fleafiwht 0.6)
+#============================================================================
+
+#--------------------------------------------------------------------------------------------
+# miscellaneous crop parameters
+#--------------------------------------------------------------------------------------------
+#
+#    ztopmxsoy     ! height maximum (m) for soybean
+#    ztopmxwht     ! height maximum (m) for wheat
+#    ztopmxmze     ! height maximum (m) for maize
+#    ztopmxsgc     ! height maximum (m) for sugarcane
+#    nratoon       ! number of ratoon (recycle after ratoon years + 2 years for the first planting)    
+#    alphac        ! small amount of N allowed to diffuse to roots under low uptake conditions
+#    gnmin         ! minimum nitrogen fraction allowed in grain
+#    smax          ! maximum stress factor allowed for nitrogen on vmax
+#    availn        ! amount (fraction) of inorganic N pool available to plants
+#    cnmax         ! maximum c:n allowed of aboveground crop residue
+#---------------------------------------------------------------------------------------------
+  1.00   ! ztopmxsoy  (0.75 geovane)
+  1.2    ! ztopmxwht
+  2.5    ! ztopmxmze
+  3.5    ! ztopmxsgc
+  4      ! nratoon
+  0.0005 ! alphac
+  0.001  ! gnmin  
+  1.05   ! smax
+  1.0    ! availn
+ 95.0    ! cnmax
+#=============================================================================================
+#--------------------------------------------------------------------------------------------
+# Sugarcane parameters
+#--------------------------------------------------------------------------------------------
+#    rootd           !  root decaiment constant, controls de exponential decaimento of root/aerial alocation 
+#    laidcs,         ! lai decline start (based on GDD/GDDmaturity)
+#    mxtsuc          ! maximum effect of temperature on sucrose allocation (function af5)
+#    sf1,  ipf1,     ! sf1: slope of the line af1 and ipf1: intercpt point of line af1 (astem line)
+#    ecf2, ipf2,     ! ecf2: coef of the logar. functio af2 and ipf2: intercpt point of log. func af2 (astem log)
+#    sf3,  ipf3,     ! sf3: slope of the line af3 and ipf3: intercpt point of line af3 (sucrose -arepr line)
+#    ecf4, ipf4,     ! ecf4: coenfct of log. funct af4 and ipf4: interc point of log. func af4 (sucrose log)    
+#    ecf5, tf5       ! ecf5: coenfct of the logar. functio af5 and tmxf5: maxm temp in the log. func af5
+#    ecf6, ipf6      ! ecf6: coenfct of the logar. functio af6 and ipf6: intercpt point of log. func af6
+#    laidc , wf5     ! laidc: coeficient of the laidecl ; wf5 - % alloud to change in af5 (from 0 to 1.0) 
+#    ldf,tmld,       ! ldf: leaf declene factor (% of aleaf that will be reducede); tmld: temperature of aleaf*ldf
+#    ecf7            ! ecf7: coneficient of the leaf/stalk exponential decline/increase, as function of temperature
+#    firecane        ! 0-no fire, 1 - burn residue after harvest  
+#---------------------------------------------------------------------------------------------
+  0.9    ! rootd
+  50.0   ! laidcs
+  0.95   ! mxtsuc
+  0.01   ! sf1 
+ 8.0	 ! ipf1
+  0.045	 ! ecf2
+ 12.0	 ! ipf2   
+  0.006	 ! sf3
+  5.0 	 ! ipf3
+  0.012	 ! ecf4
+  6.0 	 ! ipf4
+  0.2 	 ! ecf5
+ 25.0	 ! tf5
+  0.5    ! wf5
+ 0.08	 ! ecf6
+ 15.0 	 ! ipf6
+  4.0	 ! laidc
+  1.0    ! ldf
+ 10.0    ! tmld
+  0.5	 ! ecf7
+   1	 ! firecane 	
+#============================================================================================
+#---------------------------------------------------------------------------------------------
+# Crop residue, grain (harvest index), and nitrogen parameters
+#---------------------------------------------------------------------------------------------
+#
+#    cgrain(npft)        ! fraction of grain dry matter that is carbon
+#    convfact(npft)      ! factor converting kg/m2 of C in grain to bu/acre value
+#    maxhi(npft)         ! maximum harvest index
+#    fyield(npft)        ! fract of C at grain (sucrose) pool that is actually seed (harvested - between the meristem and cut level, above ground)
+#    cfrac(npft)         ! fraction of dry matter production that is carbon
+#    fnlfmx(npft)        ! maximum amount of N allowed in leaf at end of growing season
+#    fngrmx(npft)        ! maximum amount of N allowed in grain at end of growing season
+#    sratio(npft)        ! stem:leaf N allocation ratio
+#    rratio(npft)        ! root:leaf N allocation ratio
+#    fnopt(npft)         ! minimum leaf nitrogen content that doesn't experience N stress
+#
+#---------------------------------------------------------------------------------------------
+# cgrain    convfact    maxhi   fyield  cfrac  fnlfmx  fngrmx  sratio  rratio  fnopt    PFT
+#---------------------------------------------------------------------------------------------
+  0.45      150.0       0.40    0.85    0.50   0.06    0.065   0.40    0.75    0.0200 ! 13
+  0.43      159.46      0.65    1.00    0.50   0.015   0.017   0.05    0.75    0.0285 ! 14
+  0.45      150.0       0.60    1.00    0.45   0.009   0.0225  0.40    0.75    0.0075 ! 15
+  0.421     159.46     999.0    0.80    0.50   0.015   0.017   0.05    0.75    0.0285 ! 16
+#=============================================================================================

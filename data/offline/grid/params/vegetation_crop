@@ -1,0 +1,301 @@
+# IBIS parameter set: ibis2.6      C. Kucharik 10.04.02
+#
+#========================================================================
+# params.veg : vegetation parameters....
+#========================================================================
+#
+# #, *, c, C, ! or / denote comments in this file. Input routine 
+# will ignore any text to the right of these symbols, anywhere they 
+# occur....  So feel free to comment freely! There are only two 
+# rules to observe when placing data and comments in this file.
+# Rule 1: data must be in the correct order, as indicated below, but
+#         lines can be separated by blanks or comments and individual
+#         fields can be separated by blanks or line-ends any way you 
+#         like.
+# Rule 2: you MAY NOT join any consecutive lines of data. In general
+#         this is not a problem so long as the existing sequence of
+#         line-ends and commented separators is retained. In principle, 
+#         you are free to remove comment lines, but if at a later date
+#         you attempt to join two consecutive lines of data, where the
+#         input routine is not expecting this, it *will* break the 
+#         program (though not irreparably).
+# Rule 3: THERE IS NO RULE 3!!!
+
+#------------------------------------------------------------------------
+# PFTs (top to bottom)
+#------------------------------------------------------------------------
+c  1: tropical broadleaf evergreen trees
+c  2: tropical broadleaf drought-deciduous trees
+c  3: warm-temperate broadleaf evergreen trees
+c  4: temperate conifer evergreen trees
+c  5: temperate broadleaf cold-deciduous trees
+c  6: boreal conifer evergreen trees
+c  7: boreal broadleaf cold-deciduous trees
+c  8: boreal conifer cold-deciduous trees
+c  9: evergreen shrubs
+c 10: cold-deciduous shrubs
+c 11: warm (c4) grasses
+c 12: cool (c3) grasses
+c 13: soybeans
+c 14: maize
+c 15: wheat
+c 16: sugarcane
+c
+#--------------------------------------------------------------------------
+# PFT climatic constraint definitions (left to right)
+#--------------------------------------------------------------------------
+# TminL  : absolute minimum temperature (lower limit, C) 
+# TminU  : absolute minimum temperature (upper limit, C) 
+# Twarm  : temperature of the warmest month (mean??, C) [C4 only]
+# GDD    : min growing degree days above 5 C threshold [upper canopy], or
+#          min growing degree days above 0 C threshold [lower canopy]
+
+# DTP 2001/06/07: Changed this after studying code in climate.f. 
+#      Values of 9999 indicate this constraint is not used to 
+#      determine existence of the PFT.  
+#------------------------------------------------------------------------
+# TminL    TminU    Twarm    GDD    PFT
+#------------------------------------------------------------------------
+    0.0   9999.0   9999.0   9999  !   1
+    0.0   9999.0   9999.0   9999  !   2
+  -10.0      0.0   9999.0   9999  !   3
+  -45.0      0.0   9999.0   1200  !   4
+  -45.0      0.0   9999.0   1200  !   5
+  -57.5    -45.0   9999.0    350  !   6
+  -57.5    -45.0   9999.0    350  !   7
+ 9999.0    -45.0   9999.0    350  !   8
+ 9999.0   9999.0   9999.0    100  !   9
+ 9999.0   9999.0   9999.0    100  !  10
+ 9999.0   9999.0     22.0    100  !  11
+ 9999.0   9999.0   9999.0    100  !  12
+ 9999.0   9999.0   9999.0   9999  !  13
+ 9999.0   9999.0   9999.0   9999  !  14
+ 9999.0   9999.0   9999.0   9999  !  15
+ 9999.0   9999.0   9999.0   9999  !  16
+#========================================================================
+
+  19  ! Number of allowed Vegetation Types in this parameter set   
+
+#------------------------------------------------------------------------
+# Vegetation type classifications (used in subroutine iniveg)
+#------------------------------------------------------------------------
+c  1: tropical evergreen forest / woodland
+c  2: tropical deciduous forest / woodland
+c  3: temperate evergreen broadleaf forest / woodland
+c  4: temperate evergreen conifer forest / woodland
+c  5: temperate deciduous forest / woodland
+c  6: boreal evergreen forest / woodland
+c  7: boreal deciduous forest / woodland
+c  8: mixed forest / woodland
+c  9: savanna
+c 10: grassland / steppe
+c 11: dense shrubland
+c 12: open shrubland
+c 13: tundra
+c 14: desert
+c 15: polar desert / rock / ice
+c 16: wetlands
+c 17: cropland
+c 18: pasture
+c 19: urban
+
+#------------------------------------------------------------------------
+# Variable name definitions (left to right)
+#------------------------------------------------------------------------
+# plaievgr   : initial total LAI of evergreen tree (upper canopy) PFTs
+# plaideci   : initial total LAI of deciduous tree (upper canopy) PFTs
+# plaishrub  : initial total LAI of shrub (lower canopy) PFTs
+# plaigrass  : initial total LAI of grass (lower canopy) PFTs
+# NOTE: These data are read in to array plai_init. 
+#       The original variable names could be dropped. 
+#------------------------------------------------------------------------
+# plaievgr  plaideci plaishrub plaigrass      Veg Type
+#------------------------------------------------------------------------
+      5.00      1.00      0.25      0.25       !  1
+      1.00      5.00      0.25      0.25       !  2
+      4.00      1.00      0.25      0.25       !  3
+      3.00      1.00      0.25      0.25       !  4
+      1.00      3.00      0.25      0.25       !  5
+      3.00      1.00      0.25      0.25       !  6
+      1.00      3.00      0.25      0.25       !  7
+      2.00      2.00      0.25      0.25       !  8
+      0.50      1.00      0.50      2.00       !  9
+      0.25      0.25      0.50      2.50       ! 10
+      0.10      0.10      1.00      0.50       ! 11
+      0.00      0.00      0.25      0.25       ! 12
+      0.00      0.00      1.00      1.00       ! 13
+      0.00      0.00      0.05      0.05       ! 14
+      0.00      0.00      0.05      0.05       ! 15
+      5.00      1.00      0.25      0.25       ! 16
+      0.00      0.00      0.05      0.05       ! 17
+      0.00      0.00      0.05      0.05       ! 18
+      0.00      0.00      0.05      0.05       ! 19
+#========================================================================
+
+#------------------------------------------------------------------------
+# Other miscellaneous variables needed for initializing plant LAI.
+#------------------------------------------------------------------------
+# plaiupper    : Potential LAI of upper canopy (uniform initial vegetation) 
+# plailower    : Potential LAI of lower canopy (uniform initial vegetation) 
+# xminlai      : Minimum LAI for each existing PFT
+# sapfrac_init : Initial value of sapwood fraction used for all woody PFTs
+#------------------------------------------------------------------------
+   0.5  ! plaiupper
+   0.5  ! plailower
+   0.01 ! xminlai 
+   0.1  ! sapfrac_init
+#========================================================================
+
+c ************************************************************************
+c define rooting profiles
+c ************************************************************************
+c
+c define rooting profiles based upon data published in:
+c
+c Jackson et al., 1996:  A global analysis of root distributions
+c for terrestrial biomes, Oecologia, 108, 389-411.
+c
+c and
+c
+c Jackson et al., 1997:  A global budget for fine root biomass, 
+c surface area, and nutrient contents, Proceedings of the National
+c Academy of Sciences, 94, 7362-7366.
+c
+c rooting profiles are defined by the "beta" parameter
+c
+c beta1 is assigned to the lower vegetation layer (grasses and shrubs)
+c beta2 is assigned to the upper vegetation layer (trees)
+c
+c according to Jackson et al. (1996, 1997), the values of beta
+c typically fall in the following range
+c
+c note that the 1997 paper specifically discusses the distribution
+c of *fine roots* (instead of total root biomass), which may be more
+c important for water and nutrient uptake
+c
+c --------------                 ------------   ------------
+c forest systems                 beta2 (1996)   beta2 (1997)
+c --------------                 ------------   ------------
+c tropical evergreen forest:        0.962          0.972
+c tropical deciduous forest:        0.961          0.982
+c temperate conifer forest:         0.976          0.980
+c temperate broadleaf forest:       0.966          0.967
+c all tropical/temperate forest:    0.970  
+c boreal forest:                    0.943          0.943
+c all trees:                                       0.976
+c
+c -------------------------      ------------   ------------
+c grassland / shrub systems      beta1 (1996)   beta1 (1997)
+c -------------------------      ------------   ------------
+c tropical grassland / savanna:     0.972          0.972
+c temperate grassland:              0.943          0.943
+c all grasses:                      0.952          0.952
+c schlerophyllous shrubs:           0.964          0.950
+c all shrubs:                       0.978          0.975
+c crops:                            0.961
+c desert:                           0.975          0.970
+c tundra:                           0.914
+c
+c --------------                 ------------
+c all ecosystems                 beta  (1996)
+c --------------                 ------------
+c all ecosystems:                   0.966
+c
+c for global simulations, we typically assign the following
+c values to the beta parameters
+c
+c beta1 = 0.950, which is typical for tropical/temperate grasslands
+c beta2 = 0.970, which is typical for tropical/temperate forests
+c
+c however, these values could be (and should be) further refined
+c when using the model for specific regions
+c 
+      0.975  ! beta1: for lower layer herbaceous plants 0.967
+      0.930  ! beta2: for upper layer trees   0.975
+
+# Additional parameters identified by optis calibration tool
+#   This first block is for initial values of these variables.
+#   They were all renamed from <name>_coef to <name> as they are the 
+# initial value for the variable itself. - fzm
+#   Note: in parenthesis the original name used on Optis' IBIS
+#
+# clitrl: carbon in thin root litter pool - lignin (kg.C.m^-2)
+# clitrm: carbon in thin root litter pool - metabolic (kg.C.m^-2)
+# clitrs: carbon in thin root litter pool - structural (kg.C.m^-2)
+# clitll: carbon in leaf litter pool - lignin (kg.C.m^-2)
+# clitlm: carbon in leaf litter pool - metabolic (kg.C.m^-2)
+# clitls: carbon in leaf litter pool - structural (kg.C.m^-2)
+# clitwl: carbon in woody litter pool - lignin (kg.C.m^-2)
+# clitwm: carbon in woody litter pool - metabolic (kg.C.m^-2)
+# clitws: carbon in woody litter pool - structural (kg.C.m^-2)
+#
+0.       # clitrl (clitrl_coef) ! all these must be 0 on 2D! :P
+0.       # clitrm (clitll_coef)
+0.       # clitrs (clitrs_coef)
+0.       # clitll (clitll_coef)
+0.       # clitlm (clitlm_coef)
+0.       # clitls (clitls_coef)
+0.       # clitwl (clitwl_coef)
+0.       # clitwm (clitwm_coef)
+0.       # clitws (clitws_coef)
+
+# csoislop: carbon in soil - slow protected humus (kg.C.m^-2)
+# csoislon: carbon in soil - slow nonprotected humus (kg.C.m^-2)
+# csoipas: carbon in soil - passive humus (kg.C.m^-2)
+#
+0.     # csoislop (csoislop_coef)
+0.     # csoislon (csoislon_coef)
+0.     # csoipas (csoipas_coef)
+
+
+  4  ! nlandusetype - Number of allowed Land Use Types in this parameter set   
+
+#------------------------------------------------------------------------
+# Land Use type classifications
+#------------------------------------------------------------------------
+c  1: natural
+c  2: cropland
+c  3: pasture
+c  4: urban
+
+# Land Use Type for each input vegtype
+# landuse vegtype
+1 !  1
+1 !  2
+1 !  3
+1 !  4
+1 !  5
+1 !  6
+1 !  7
+1 !  8
+1 !  9
+1 ! 10 
+1 ! 11 
+1 ! 12 
+1 ! 13 
+1 ! 14 
+1 ! 15 
+1 ! 16 
+2 ! 17 
+3 ! 18 
+4 ! 19 
+
+# rule of existence of each PFT in function of Land Use type
+# if 0 then PFT is not allowed to grow
+# lu1 lu2 lu3 lu4
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   1   1   1 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 
+  1   0   0   0 

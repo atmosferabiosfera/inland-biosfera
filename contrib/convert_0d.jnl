@@ -1,0 +1,984 @@
+cancel mode verify
+! Convert read 0d CSV file into NetCDF one - Ferret Script
+!
+!*** NOTICE: This script does not work for the ibis/inland 0D .csv file due to
+!           limitations on ferret. Unfortunately this is left for reference only
+!
+! This script saves all variables of the 0D files read by open_0d.jnl script
+! into two .nc files for the InLand and IBIS output files.
+!
+! Written by Fabrício Zimmerer Murta <fabricio@familiamurta.org>
+! Based on informations from the following sources:
+! - Ferret Documentation: http://ferret.pmel.noaa.gov/Ferret/documentation
+! And other minor sources or sites around noaa.gov website.
+!
+! Suggestion: create a directory, make symlinks to the data files there and
+! also a symlink to the contrib directory containing the .jnls there.
+! In that current directory the resulting .nc files will be generated and also
+! you can generate .gif images of the results as you wish.
+
+! Run the read script (assure the path is correct!)
+go "contrib/open_0d.jnl"
+
+define variable true = 1
+define variable false = 0
+
+! Print to NetCDF? True/False
+define variable nc_save = true
+
+! Dump .gif files? True/False
+define variable gif_save = true
+
+! The script will define:
+! File names to open/process. on inland_data and ibis_data
+
+! Column names on files (they are not printed on first line so you need to
+! provide them)
+! year,month,day,hour,julday,swnet,lwnet,neg_fvapa_times_hvap,neg_fsena,soihfl,
+! delcanheat,nan0,neg_fvapa,grunof,nan1,gdrain,gdrain_plus_grunof,delsoilmoist,
+! nan2,nan3,nan4,vegtype,tsoi,nan5,albedo,nan6,fpar,smoist1,smoist2,smoist3,
+! smoist4,smoist5,smoist6,tsoi1,tsoi2,tsoi3,tsoi4,tsoi5,tsoi6,soilwet,ginvap,
+! gtrans,gsuvap,nan7,nan8,canopint,tgpptot,tnpp,neg_tneetot,
+! autoresp,tco2mic,nan9,nan10,nan11,cbioltot,cbiortot,cbiowtot,
+! clitll,clitlm,clitls,clitrl,clitrm,clitrs,clitwl,clitwm,clitws,totlivbio,
+! cbiowtot,totlai
+
+! Set window size/aspect
+set window/size=3/aspect=0.5625
+
+define variable inland_var = reshape(swnet_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(swnet_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Net shortwave radiation"
+if `nc_save` then
+ define variable swnet = inland_var
+ set variable/title="`title`" swnet
+ save/clobber/file=inland-0d-data.nc swnet
+ define variable swnet = ibis_var
+ set variable/title="`title`" swnet
+ save/clobber/file=ibis-0d-data.nc swnet
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=swnet.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=swnet-diff.gif
+endif
+
+define variable inland_var = reshape(lwnet_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(lwnet_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Net longwave radiation"
+if `nc_save` then
+ define variable lwnet = inland_var
+ set variable/title="`title`" lwnet
+ save/append/file=inland-0d-data.nc/title="`title`" lwnet
+ define variable lwnet = ibis_var
+ set variable/title="`title`" lwnet
+ save/append/file=ibis-0d-data.nc/title="`title`" lwnet
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=lwnet.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=lwnet-diff.gif
+endif
+
+define variable inland_var = reshape(neg_fvapa_times_hvap_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(neg_fvapa_times_hvap_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Negative of downward h2o vapor flux between za and z12 times latent heat of vaporization of water (J.m^-2.s^-1)"
+if `nc_save` then
+ define variable neg_fvapa_times_hvap = inland_var
+ set variable/title="`title`" neg_fvapa_times_hvap
+ save/append/file=inland-0d-data.nc neg_fvapa_times_hvap
+ define variable neg_fvapa_times_hvap = ibis_var
+ set variable/title="`title`" neg_fvapa_times_hvap
+ save/append/file=ibis-0d-data.nc neg_fvapa_times_hvap
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=neg_fvapa_times_hvap.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=neg_fvapa_times_hvap-diff.gif
+endif
+
+define variable inland_var = reshape(neg_fsena_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(neg_fsena_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Negative of downward sensible heat flux between za and z12 at za (W.m^-2)"
+if `nc_save` then
+ define variable neg_fsena = inland_var
+ set variable/title="`title`" neg_fsena
+ save/append/file=inland-0d-data.nc neg_fsena
+ define variable neg_fsena = ibis_var
+ set variable/title="`title`" neg_fsena
+ save/append/file=ibis-0d-data.nc neg_fsena
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=neg_fsena.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=neg_fsena-diff.gif
+endif
+
+define variable inland_var = reshape(soihfl_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(soihfl_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil heat flux (W.m^-2)"
+if `nc_save` then
+ define variable soihfl = inland_var
+ set variable/title="`title`" soihfl
+ save/append/file=inland-0d-data.nc soihfl
+ define variable soihfl = ibis_var
+ set variable/title="`title`" soihfl
+ save/append/file=ibis-0d-data.nc soihfl
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=soihfl.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=soihfl-diff.gif
+endif
+
+define variable inland_var = reshape(delcanheat_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(delcanheat_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Change in canopy heat storage (J.m^-2)"
+if `nc_save` then
+ define variable delcanheat = inland_var
+ set variable/title="`title`" delcanheat
+ save/append/file=inland-0d-data.nc delcanheat
+ define variable delcanheat = ibis_var
+ set variable/title="`title`" delcanheat
+ save/append/file=ibis-0d-data.nc delcanheat
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=delcanheat.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=delcanheat-diff.gif
+endif
+
+define variable inland_var = reshape(neg_fvapa_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(neg_fvapa_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Negative of downward h2o vapor flux between za and z12 (kg.m^-2.s^-1)"
+if `nc_save` then
+ define variable neg_fvapa = inland_var
+ set variable/title="`title`" neg_fvapa
+ save/append/file=inland-0d-data.nc neg_fvapa
+ define variable neg_fvapa = ibis_var
+ set variable/title="`title`" neg_fvapa
+ save/append/file=ibis-0d-data.nc neg_fvapa
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=neg_fvapa.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=neg_fvapa-diff.gif
+endif
+
+define variable inland_var = reshape(grunof_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(grunof_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Surface runoff rate (kg(h2o).m^-2.s^-1)"
+if `nc_save` then
+ define variable grunof = inland_var
+ set variable/title="`title`" grunof
+ save/append/file=inland-0d-data.nc grunof
+ define variable grunof = ibis_var
+ set variable/title="`title`" grunof
+ save/append/file=ibis-0d-data.nc grunof
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=grunof.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=grunof-diff.gif
+endif
+
+define variable inland_var = reshape(gdrain_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(gdrain_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Drainage rate out of bottom of lowest soil layer (kg(h2o).m^-2.s^-1)"
+if `nc_save` then
+ define variable gdrain = inland_var
+ set variable/title="`title`" gdrain
+ save/append/file=inland-0d-data.nc gdrain
+ define variable gdrain = ibis_var
+ set variable/title="`title`" gdrain
+ save/append/file=ibis-0d-data.nc gdrain
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=gdrain.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=gdrain-diff.gif
+endif
+
+define variable inland_var = reshape(gdrain_plus_grunof_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(gdrain_plus_grunof_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Drainage rate out of bottom of lowest soil layer plus surface runoff rate (kg(h2o).m^-2.s^-1)"
+if `nc_save` then
+ define variable gdrain_plus_grunof = inland_var
+ set variable/title="`title`" gdrain_plus_grunof
+ save/append/file=inland-0d-data.nc gdrain_plus_grunof
+ define variable gdrain_plus_grunof = ibis_var
+ set variable/title="`title`" gdrain_plus_grunof
+ save/append/file=ibis-0d-data.nc gdrain_plus_grunof
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=gdrain_plus_grunof.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=gdrain_plus_grunof-diff.gif
+endif
+
+define variable inland_var = reshape(delsoilmoist_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(delsoilmoist_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Change in soil moisture (kg(h2o).m^-2)"
+if `nc_save` then
+ define variable delsoilmoist = inland_var
+ set variable/title="`title`" delsoilmoist
+ save/append/file=inland-0d-data.nc delsoilmoist
+ define variable delsoilmoist = ibis_var
+ set variable/title="`title`" delsoilmoist
+ save/append/file=ibis-0d-data.nc delsoilmoist
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=delsoilmoist.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=delsoilmoist-diff.gif
+endif
+
+define variable inland_var = reshape(vegtype_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(vegtype_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Predominant vegetation type."
+if `nc_save` then
+ define variable vegtype = inland_var
+ set variable/title="`title`" vegtype
+ save/append/file=inland-0d-data.nc vegtype
+ define variable vegtype = ibis_var
+ set variable/title="`title`" vegtype
+ save/append/file=ibis-0d-data.nc vegtype
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=vegtype.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=vegtype-diff.gif
+endif
+
+define variable inland_var = reshape(tsoi_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tsoi_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil temperature on upmost (1st) layer (K)"
+if `nc_save` then
+ define variable tsoi = inland_var
+ set variable/title="`title`" tsoi
+ save/append/file=inland-0d-data.nc tsoi
+ define variable tsoi = ibis_var
+ set variable/title="`title`" tsoi
+ save/append/file=ibis-0d-data.nc tsoi
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tsoi.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tsoi-diff.gif
+endif
+
+define variable inland_var = reshape(albedo_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(albedo_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Surface albedo"
+if `nc_save` then
+ define variable albedo = inland_var
+ set variable/title="`title`" albedo
+ save/append/file=inland-0d-data.nc albedo
+ define variable albedo = ibis_var
+ set variable/title="`title`" albedo
+ save/append/file=ibis-0d-data.nc albedo
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=albedo.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=albedo-diff.gif
+endif
+
+define variable inland_var = reshape(fpar_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(fpar_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Absorbed fraction of PAR"
+if `nc_save` then
+ define variable fpar = inland_var
+ set variable/title="`title`" fpar
+ save/append/file=inland-0d-data.nc fpar
+ define variable fpar = ibis_var
+ set variable/title="`title`" fpar
+ save/append/file=ibis-0d-data.nc fpar
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=fpar.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=fpar-diff.gif
+endif
+
+define variable inland_var = reshape(smoist1_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(smoist1_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil moisture in layer 1 (kg(h2o).m^-2)"
+if `nc_save` then
+ define variable smoist1 = inland_var
+ set variable/title="`title`" smoist1
+ save/append/file=inland-0d-data.nc smoist1
+ define variable smoist1 = ibis_var
+ set variable/title="`title`" smoist1
+ save/append/file=ibis-0d-data.nc smoist1
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=smoist1.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=smoist1-diff.gif
+endif
+
+define variable inland_var = reshape(smoist2_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(smoist2_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil moisture in layer 2 (kg(h2o).m^-2)"
+if `nc_save` then
+ define variable smoist2 = inland_var
+ set variable/title="`title`" smoist2
+ save/append/file=inland-0d-data.nc smoist2
+ define variable smoist2 = ibis_var
+ set variable/title="`title`" smoist2
+ save/append/file=ibis-0d-data.nc smoist2
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=smoist2.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=smoist2-diff.gif
+endif
+
+define variable inland_var = reshape(smoist3_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(smoist3_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil moisture in layer 3 (kg(h2o).m^-2)"
+if `nc_save` then
+ define variable smoist3 = inland_var
+ set variable/title="`title`" smoist3
+ save/append/file=inland-0d-data.nc smoist3
+ define variable smoist3 = ibis_var
+ set variable/title="`title`" smoist3
+ save/append/file=ibis-0d-data.nc smoist3
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=smoist3.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=smoist3-diff.gif
+endif
+
+define variable inland_var = reshape(smoist4_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(smoist4_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil moisture in layer 4 (kg(h2o).m^-2)"
+if `nc_save` then
+ define variable smoist4 = inland_var
+ set variable/title="`title`" smoist4
+ save/append/file=inland-0d-data.nc smoist4
+ define variable smoist4 = ibis_var
+ set variable/title="`title`" smoist4
+ save/append/file=ibis-0d-data.nc smoist4
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=smoist4.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=smoist4-diff.gif
+endif
+
+define variable inland_var = reshape(smoist5_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(smoist5_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil moisture in layer 5 (kg(h2o).m^-2)"
+if `nc_save` then
+ define variable smoist5 = inland_var
+ set variable/title="`title`" smoist5
+ save/append/file=inland-0d-data.nc smoist5
+ define variable smoist5 = ibis_var
+ set variable/title="`title`" smoist5
+ save/append/file=ibis-0d-data.nc smoist5
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=smoist5.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=smoist5-diff.gif
+endif
+
+define variable inland_var = reshape(smoist6_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(smoist6_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil moisture in layer 6 (kg(h2o).m^-2)"
+if `nc_save` then
+ define variable smoist6 = inland_var
+ set variable/title="`title`" smoist6
+ save/append/file=inland-0d-data.nc smoist6
+ define variable smoist6 = ibis_var
+ set variable/title="`title`" smoist6
+ save/append/file=ibis-0d-data.nc smoist6
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=smoist6.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=smoist6-diff.gif
+endif
+
+define variable inland_var = reshape(tsoi1_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tsoi1_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil temperature for layer 1"
+if `nc_save` then
+ define variable tsoi1 = inland_var
+ set variable/title="`title`" tsoi1
+ save/append/file=inland-0d-data.nc tsoi1
+ define variable tsoi1 = ibis_var
+ set variable/title="`title`" tsoi1
+ save/append/file=ibis-0d-data.nc tsoi1
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tsoi1.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tsoi1-diff.gif
+endif
+
+define variable inland_var = reshape(tsoi2_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tsoi2_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil temperature for layer 2"
+if `nc_save` then
+ define variable tsoi2 = inland_var
+ set variable/title="`title`" tsoi2
+ save/append/file=inland-0d-data.nc tsoi2
+ define variable tsoi2 = ibis_var
+ set variable/title="`title`" tsoi2
+ save/append/file=ibis-0d-data.nc tsoi2
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tsoi2.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tsoi2-diff.gif
+endif
+
+define variable inland_var = reshape(tsoi3_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tsoi3_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil temperature for layer 3"
+if `nc_save` then
+ define variable tsoi3 = inland_var
+ set variable/title="`title`" tsoi3
+ save/append/file=inland-0d-data.nc tsoi3
+ define variable tsoi3 = ibis_var
+ set variable/title="`title`" tsoi3
+ save/append/file=ibis-0d-data.nc tsoi3
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tsoi3.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tsoi3-diff.gif
+endif
+
+define variable inland_var = reshape(tsoi4_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tsoi4_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil temperature for layer 4"
+if `nc_save` then
+ define variable tsoi4 = inland_var
+ set variable/title="`title`" tsoi4
+ save/append/file=inland-0d-data.nc tsoi4
+ define variable tsoi4 = ibis_var
+ set variable/title="`title`" tsoi4
+ save/append/file=ibis-0d-data.nc tsoi4
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tsoi4.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tsoi4-diff.gif
+endif
+
+define variable inland_var = reshape(tsoi5_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tsoi5_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil temperature for layer 5"
+if `nc_save` then
+ define variable tsoi5 = inland_var
+ set variable/title="`title`" tsoi5
+ save/append/file=inland-0d-data.nc tsoi5
+ define variable tsoi5 = ibis_var
+ set variable/title="`title`" tsoi5
+ save/append/file=ibis-0d-data.nc tsoi5
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tsoi5.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tsoi5-diff.gif
+endif
+
+define variable inland_var = reshape(tsoi6_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tsoi6_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Soil temperature for layer 6"
+if `nc_save` then
+ define variable tsoi6 = inland_var
+ set variable/title="`title`" tsoi6
+ save/append/file=inland-0d-data.nc tsoi6
+ define variable tsoi6 = ibis_var
+ set variable/title="`title`" tsoi6
+ save/append/file=ibis-0d-data.nc tsoi6
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tsoi6.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tsoi6-diff.gif
+endif
+
+define variable inland_var = reshape(soilwet_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(soilwet_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total soil wetness"
+if `nc_save` then
+ define variable soilwet = inland_var
+ set variable/title="`title`" soilwet
+ save/append/file=inland-0d-data.nc soilwet
+ define variable soilwet = ibis_var
+ set variable/title="`title`" soilwet
+ save/append/file=ibis-0d-data.nc soilwet
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=soilwet.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=soilwet-diff.gif
+endif
+
+define variable inland_var = reshape(ginvap_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(ginvap_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total evaporation rate from all intercepted H2O (kg(h2o).m^-2.s^-1)"
+if `nc_save` then
+ define variable ginvap = inland_var
+ set variable/title="`title`" ginvap
+ save/append/file=inland-0d-data.nc ginvap
+ define variable ginvap = ibis_var
+ set variable/title="`title`" ginvap
+ save/append/file=ibis-0d-data.nc ginvap
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=ginvap.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=ginvap-diff.gif
+endif
+
+define variable inland_var = reshape(gtrans_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(gtrans_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total transpiration rate from all vegetation canopies (kg(h2o).m^-2.s^-1)"
+if `nc_save` then
+ define variable gtrans = inland_var
+ set variable/title="`title`" gtrans
+ save/append/file=inland-0d-data.nc gtrans
+ define variable gtrans = ibis_var
+ set variable/title="`title`" gtrans
+ save/append/file=ibis-0d-data.nc gtrans
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=gtrans.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=gtrans-diff.gif
+endif
+
+define variable inland_var = reshape(gsuvap_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(gsuvap_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total evaporation rate from surface snow/soil (kg(h2o).m^-2.s^-1)"
+if `nc_save` then
+ define variable gsuvap = inland_var
+ set variable/title="`title`" gsuvap
+ save/append/file=inland-0d-data.nc gsuvap
+ define variable gsuvap = ibis_var
+ set variable/title="`title`" gsuvap
+ save/append/file=ibis-0d-data.nc gsuvap
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=gsuvap.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=gsuvap-diff.gif
+endif
+
+define variable inland_var = reshape(canopint_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(canopint_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total canopy water storage (missing unit on ibis code)"
+if `nc_save` then
+ define variable canopint = inland_var
+ set variable/title="`title`" canopint
+ save/append/file=inland-0d-data.nc canopint
+ define variable canopint = ibis_var
+ set variable/title="`title`" canopint
+ save/append/file=ibis-0d-data.nc canopint
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=canopint.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=canopint-diff.gif
+endif
+
+define variable inland_var = reshape(tgpptot_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tgpptot_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Instantaneous GPP (kg(CO2).m^-2.s^-1)"
+if `nc_save` then
+ define variable tgpptot = inland_var
+ set variable/title="`title`" tgpptot
+ save/append/file=inland-0d-data.nc tgpptot
+ define variable tgpptot = ibis_var
+ set variable/title="`title`" tgpptot
+ save/append/file=ibis-0d-data.nc tgpptot
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tgpptot.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tgpptot-diff.gif
+endif
+
+define variable inland_var = reshape(tnpp_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tnpp_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Instantaneous NPP (kg(co2).m^-2.s^-1)"
+if `nc_save` then
+ define variable tnpptot = inland_var
+ set variable/title="`title`" tnpptot
+ save/append/file=inland-0d-data.nc tnpptot
+ define variable tnpptot = ibis_var
+ set variable/title="`title`" tnpptot
+ save/append/file=ibis-0d-data.nc tnpptot
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tnpptot.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tnpptot-diff.gif
+endif
+
+! NOTE: the NEE calculated in IBIS is in fact NEP. And NEE is -NEP.
+define variable inland_var = reshape(neg_tneetot_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(neg_tneetot_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Instantaneous NEE (kg(co2).m^-2.s^-1)"
+if `nc_save` then
+ define variable tneetot = inland_var
+ set variable/title="`title`" tneetot
+ save/append/file=inland-0d-data.nc tneetot
+ define variable tneetot = ibis_var
+ set variable/title="`title`" tneetot
+ save/append/file=ibis-0d-data.nc tneetot
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tneetot.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tneetot-diff.gif
+endif
+
+define variable inland_var = reshape(autoresp_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(autoresp_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Autotrophic respiration (kg(co2).m^-2.s^-1)"
+if `nc_save` then
+ define variable autoresp = inland_var
+ set variable/title="`title`" autoresp
+ save/append/file=inland-0d-data.nc autoresp
+ define variable autoresp = ibis_var
+ set variable/title="`title`" autoresp
+ save/append/file=ibis-0d-data.nc autoresp
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=autoresp.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=autoresp-diff.gif
+endif
+
+define variable inland_var = reshape(tco2mic_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(tco2mic_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Instantaneous microbial CO2 flux from soil (kg(co2).m^-2.s^-1)"
+if `nc_save` then
+ define variable tco2mic = inland_var
+ set variable/title="`title`" tco2mic
+ save/append/file=inland-0d-data.nc tco2mic
+ define variable tco2mic = ibis_var
+ set variable/title="`title`" tco2mic
+ save/append/file=ibis-0d-data.nc tco2mic
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=tco2mic.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=tco2mic-diff.gif
+endif
+
+define variable inland_var = reshape(cbioltot_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(cbioltot_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total carbon in leaf biomass pool (kg(c).m^-2)"
+if `nc_save` then
+ define variable cbioltot = inland_var
+ set variable/title="`title`" cbioltot
+ save/append/file=inland-0d-data.nc cbioltot
+ define variable cbioltot = ibis_var
+ set variable/title="`title`" cbioltot
+ save/append/file=ibis-0d-data.nc cbioltot
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=cbioltot.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=cbioltot-diff.gif
+endif
+
+define variable inland_var = reshape(cbiortot_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(cbiortot_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total carbon in root biomass pool (kg(c).m^-2)"
+if `nc_save` then
+ define variable cbiortot = inland_var
+ set variable/title="`title`" cbiortot
+ save/append/file=inland-0d-data.nc cbiortot
+ define variable cbiortot = ibis_var
+ set variable/title="`title`" cbiortot
+ save/append/file=ibis-0d-data.nc cbiortot
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=cbiortot.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=cbiortot-diff.gif
+endif
+
+define variable inland_var = reshape(cbiowtot_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(cbiowtot_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total carbon in wood biomass pool (kg(c).m^-2)"
+if `nc_save` then
+ define variable cbiowtot = inland_var
+ set variable/title="`title`" cbiowtot
+ save/append/file=inland-0d-data.nc cbiowtot
+ define variable cbiowtot = ibis_var
+ set variable/title="`title`" cbiowtot
+ save/append/file=ibis-0d-data.nc cbiowtot
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=cbiowtot.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=cbiowtot-diff.gif
+endif
+
+define variable inland_var = reshape(clitll_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitll_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in leaf litter pool - lignin (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitll = inland_var
+ set variable/title="`title`" clitll
+ save/append/file=inland-0d-data.nc clitll
+ define variable clitll = ibis_var
+ set variable/title="`title`" clitll
+ save/append/file=ibis-0d-data.nc clitll
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitll.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitll-diff.gif
+endif
+
+define variable inland_var = reshape(clitlm_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitlm_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in leaf litter pool - metabolic (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitlm = inland_var
+ set variable/title="`title`" clitlm
+ save/append/file=inland-0d-data.nc clitlm
+ define variable clitlm = ibis_var
+ set variable/title="`title`" clitlm
+ save/append/file=ibis-0d-data.nc clitlm
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitlm.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitlm-diff.gif
+endif
+
+define variable inland_var = reshape(clitls_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitls_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in leaf litter pool - structural (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitls = inland_var
+ set variable/title="`title`" clitls
+ save/append/file=inland-0d-data.nc clitls
+ define variable clitls = ibis_var
+ set variable/title="`title`" clitls
+ save/append/file=ibis-0d-data.nc clitls
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitls.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitls-diff.gif
+endif
+
+define variable inland_var = reshape(clitrl_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitrl_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in fine root litter pool - lignin (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitrl = inland_var
+ set variable/title="`title`" clitrl
+ save/append/file=inland-0d-data.nc clitrl
+ define variable clitrl = ibis_var
+ set variable/title="`title`" clitrl
+ save/append/file=ibis-0d-data.nc clitrl
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitrl.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitrl-diff.gif
+endif
+
+define variable inland_var = reshape(clitrm_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitrm_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in fine root litter pool - metabolic (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitrm = inland_var
+ set variable/title="`title`" clitrm
+ save/append/file=inland-0d-data.nc clitrm
+ define variable clitrm = ibis_var
+ set variable/title="`title`" clitrm
+ save/append/file=ibis-0d-data.nc clitrm
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitrm.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitrm-diff.gif
+endif
+
+define variable inland_var = reshape(clitrs_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitrs_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in fine root litter pool - structural (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitrs = inland_var
+ set variable/title="`title`" clitrs
+ save/append/file=inland-0d-data.nc clitrs
+ define variable clitrs = ibis_var
+ set variable/title="`title`" clitrs
+ save/append/file=ibis-0d-data.nc clitrs
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitrs.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitrs-diff.gif
+endif
+
+define variable inland_var = reshape(clitwl_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitwl_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in wood litter pool - lignin (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitwl = inland_var
+ set variable/title="`title`" clitwl
+ save/append/file=inland-0d-data.nc clitwl
+ define variable clitwl = ibis_var
+ set variable/title="`title`" clitwl
+ save/append/file=ibis-0d-data.nc clitwl
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitwl.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitwl-diff.gif
+endif
+
+define variable inland_var = reshape(clitwm_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitwm_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in wood litter pool - metabolic (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitwm = inland_var
+ set variable/title="`title`" clitwm
+ save/append/file=inland-0d-data.nc clitwm
+ define variable clitwm = ibis_var
+ set variable/title="`title`" clitwm
+ save/append/file=ibis-0d-data.nc clitwm
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitwm.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitwm-diff.gif
+endif
+
+define variable inland_var = reshape(clitws_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(clitws_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Carbon in wood litter pool - structural (kg(c).m^-2)"
+if `nc_save` then
+ define variable clitws = inland_var
+ set variable/title="`title`" clitws
+ save/append/file=inland-0d-data.nc clitws
+ define variable clitws = ibis_var
+ set variable/title="`title`" clitws
+ save/append/file=ibis-0d-data.nc clitws
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=clitws.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=clitws-diff.gif
+endif
+
+define variable inland_var = reshape(totlivbio_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(totlivbio_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total living biomass (kg(c).m^-2)"
+if `nc_save` then
+ define variable totlivbio = inland_var
+ set variable/title="`title`" totlivbio
+ save/append/file=inland-0d-data.nc totlivbio
+ define variable totlivbio = ibis_var
+ set variable/title="`title`" totlivbio
+ save/append/file=ibis-0d-data.nc totlivbio
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=totlivbio.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=totlivbio-diff.gif
+endif
+
+define variable inland_var = reshape(cbiowtot_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(cbiowtot_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total carbon in wood biomass pool (kg(c).m^-2)"
+if `nc_save` then
+ define variable cbiowtot = inland_var
+ set variable/title="`title`" cbiowtot
+ save/append/file=inland-0d-data.nc cbiowtot
+ define variable cbiowtot = ibis_var
+ set variable/title="`title`" cbiowtot
+ save/append/file=ibis-0d-data.nc cbiowtot
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=cbiowtot.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=cbiowtot-diff.gif
+endif
+
+define variable inland_var = reshape(totlai_csv[d=1],t[gt=timeaxis_inland])
+define variable ibis_var = reshape(totlai_csv[d=2],t[gt=timeaxis_ibis])
+define variable title = "Total ecosystem LAI"
+if `nc_save` then
+ define variable totlai = inland_var
+ set variable/title="`title`" totlai
+ save/append/file=inland-0d-data.nc totlai
+ define variable totlai = ibis_var
+ set variable/title="`title`" totlai
+ save/append/file=ibis-0d-data.nc totlai
+endif
+if `gif_save` then
+ plot inland_var,ibis_var
+ frame/format=gif/trans/file=totlai.gif
+ plot inland_var-ibis_var
+ frame/format=gif/trans/file=totlai-diff.gif
+endif
