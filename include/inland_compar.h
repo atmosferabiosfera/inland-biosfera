@@ -27,7 +27,7 @@
 
 /* General definitions */
 #define NUMBANDS 2 /* nband */
-#define NUMSOILLAYERS 6 /* nsoilay */
+#define NUMSOILLAYERS 11 /* nsoilay */
 #define NUMSNOWLAYERS 3 /* nsnolay */
 #ifndef SINGLE_POINT_MODEL
 #define NUMPFT 16 /* npft */

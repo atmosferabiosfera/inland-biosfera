@@ -6,10 +6,10 @@
 ! temporal parameters
 irestart   = 0        , ! irestart - 0: not a restart run  1: restart run (default 0)
 iyrrestart = 1900     , ! iyrrestart - year to restart model (default 9999)
-iyear0     = 1581     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
-nrun       = 428      , ! nrun - number of years in this simulation (change for restart) (default 2)
+iyear0     = 2005     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
+nrun       = 2      , ! nrun - number of years in this simulation (change for restart) (default 2)
 iyrdaily   = 9999     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
-iyrmon     = 1948     , ! iyrmon - year to start reading montly data (default 9999)
+iyrmon     = 9999     , ! iyrmon - year to start reading montly data (default 9999)
 dtime      = 3600     , ! dtime - time step in seconds (default 3600)
 !
 ! simulation parameters
@@ -38,7 +38,7 @@ dmetyear   = 1        , ! day to start using hourly met data (17 geovane)
 imetend    = 9999     , ! year to end reading in hourly met data
 dmetend    = 119      , ! day to end reading in hourly met data (39 geovane)
 irrigate   = 0        , ! 0: no irrigation 1: irrigation strategy used
-isimagro   = 0        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
+isimagro   = 1        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
 icroptype  = 13       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc 
 iwheattype = 0        , ! 1: spring wheat 2: winter wheat - only used if icroptype = wheat
 cropsfile  = "crops_livia_2010.nc" , ! cropsfile - read crop data to produce crop veg map (use mlpt>1)
@@ -50,7 +50,7 @@ elevin     = 550      , ! site elevation        (m)
 thigh      = 6        , ! tower input elevation (m)
 !
 ! simulation domain - an entry with the same name and corresponding lon/lat values must be defined in inland-grid.domains
-domain      = "amaznew", ! domain name used to define lon/lat boundaries (default '')
+domain      = "br", ! domain name used to define lon/lat boundaries (default '')
 !
 ! subgrid tile parameters - ignore if not using subgrid tiles
 mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)
@@ -59,7 +59,7 @@ hrmapfile  = ""       , ! hrmapfile - read high-res data to produce initial veg 
 !
 ! Heterogeneous Parameterization
 itauw      =  0       , ! itauw - 0:reads 1 dimension tauwood0 from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
-ivmax      =  1       , ! ivmax - 0:reads 1 dimension vmax_pft from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+ivmax      =  0       , ! ivmax - 0:reads 1 dimension vmax_pft from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
 isla       =  0       , ! isla  - 0:reads 1 dimension specla from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
 ica        =  0         ! ica   - 0:reads 1 dimension carbon allocation to wood, leaf and root from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
 !
