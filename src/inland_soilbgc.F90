@@ -521,7 +521,7 @@ subroutine soilbgc (spin,kpti,kptj)
 ! depending on C in soil...will need to be tied to an amount of water
 ! flowing through the profile based upon precipitation eventually
 ! ----------------------------------------------------------------------
-         h20    = 0.30e-03
+!         h20    = 0.30e-03
 
 ! h20 is a constant relating to the flow of water through the top 1 m of the
 ! profile 

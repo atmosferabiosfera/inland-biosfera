@@ -45,7 +45,6 @@ subroutine solarf(ib, loopi)
 !
 ! do nothing if all points in current strip have coszen le 0
       if (nsol(loopi).eq.0) return
-
       nsolz = nsol(loopi)
 
 ! (f) calculate fluxes absorbed by upper leaves and stems,

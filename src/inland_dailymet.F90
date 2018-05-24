@@ -110,9 +110,8 @@
 !
       real precipfac,  &
            dif,        &
-           humidfrac,  &
-           sphumid
-!
+           humidfrac
+	   
 #define WGEN_COMSAT
 #include "inland_comsat.h"
 !
@@ -123,14 +122,14 @@
 !
 !        call const (tcthis, npoi,  100.0)
         tcthis(:)=100.0
-        call const (twthis, npoi, -100.0)
+        twthis = -100.0
 !
-        call const (gdd0this, npoi, 0.0)
-        call const (gdd5this, npoi, 0.0)
-        call const (gdd0cthis, npoi, 0.0)
-        call const (gdd8this, npoi, 0.0)
-        call const (gdd10this, npoi, 0.0)
-        call const (gdd12this, npoi, 0.0)
+        gdd0this = 0.0
+        gdd5this = 0.0
+        gdd0cthis = 0.0
+        gdd8this = 0.0
+        gdd10this = 0.0
+        gdd12this = 0.0
 !
 ! initialize variables to zero at beginning of year
 ! for crop types that do not grow over two calendar years

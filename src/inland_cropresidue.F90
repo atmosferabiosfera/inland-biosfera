@@ -118,7 +118,12 @@ subroutine cropresidue(jday)
                   if(j.eq.16)then
                      cropyld(i,j)=(cbiog(i,j)+cbios(i,j))*fyield(j)*(1./0.3)*10.0*(1./cgrain(j))*1.07 
                   else           
-                     cropyld(i,j) = cbiog(i,j) * convfact(j) / cgrain(j)
+!                     
+! The valeu for grainmoisture is equal 0.0 to keep the equation for dry grain. 
+! If user wants to use grainmoisture needs to change the value in crop parameter.
+!
+!                    cropyld(i,j) = cbiog(i,j) * 10.0 / cgrain(j)
+                     cropyld(i,j) = (cbiog(i,j) * convfact(j) / cgrain(j))*(1+(grainmoisture(j)/(1-grainmoisture(j)))) ! yield in kg moist grain per m2
                   endif
 !
                   dmyield(i,j) = cbiog(i,j)* 10.0 /cgrain(j)  

@@ -22,7 +22,7 @@ subroutine restartib (iyearp, imonthp)
       use inland_comnitr
       use inland_comcrop
       use inland_com1d, only:straml, strahl, richl, richu, stramu, strahu, &
-                        raing, rainl, rainu, pfluxu, pfluxs, pfluxl
+                        raing, rainl, rainu, pfluxu, pfluxs, pfluxl, za
 
       implicit none
 ! ------------------------------Arguments--------------------------------
@@ -547,6 +547,9 @@ subroutine restartib (iyearp, imonthp)
 
 ! crops
     if(isimagro .gt. 0) then
+      call readvar(filen,'ud',ud,istart,icount,mlpt,istat)
+      call readvar(filen,'za',za,istart,icount,mlpt,istat)
+      call readvar(filen,'consdays',consdays,istart,icount,mlpt,istat)
       call readvar(filen,'gddpl15',gddpl15,istart,icount,mlpt,istat)
       call readvar(filen,'gddsgcp1',gddsgcp(:,1),istart,icount,mlpt,istat)
       call readvar(filen,'gddsgcp2',gddsgcp(:,2),istart,icount,mlpt,istat)

@@ -180,8 +180,8 @@ c 0.050    ! alpha4 - C4 original value
 # chifuz : upper canopy leaf orientation
 # chiflz : lower canopy leaf orientation
 #-----------------------------------------
-       0.0           ! chifuz 
-      -0.5           ! chiflz  - for the moment, it is specified in initial.f           
+#       0.0           ! chifuz 
+#      -0.5           ! chiflz  - for the moment, it is specified in initial.f           
 #=========================================
 
 #-----------------------------------------------------------------------

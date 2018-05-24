@@ -97,7 +97,8 @@ am__inland_grid_SOURCES_DIST = inland_main_offline.F90 \
 	inland_irrigation.F90 inland_leaching.F90 inland_constint.F90 \
 	inland_diurnalmet.F90 inland_dailymet.F90 inland_methourly.F90 \
 	inland_arr3arr2.F90 inland_logicf.F90 inland_logict.F90 \
-	inland_rdhrvegmap.F90 inland_whrvegmap.F90 inland_check.F90
+	inland_rdhrvegmap.F90 inland_whrvegmap.F90 \
+	inland_single_agro.F90 inland_build_file.F90 inland_check.F90
 @SINGLE_POINT_FALSE@am_inland_grid_OBJECTS =  \
 @SINGLE_POINT_FALSE@	inland_main_offline.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_arr2vec.$(OBJEXT) \
@@ -239,6 +240,8 @@ am__inland_grid_SOURCES_DIST = inland_main_offline.F90 \
 @SINGLE_POINT_FALSE@	inland_logict.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_rdhrvegmap.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_whrvegmap.$(OBJEXT) \
+@SINGLE_POINT_FALSE@	inland_single_agro.$(OBJEXT) \
+@SINGLE_POINT_FALSE@	inland_build_file.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_check.$(OBJEXT)
 inland_grid_OBJECTS = $(am_inland_grid_OBJECTS)
 inland_grid_LDADD = $(LDADD)
@@ -283,7 +286,8 @@ am__inland_single_point_SOURCES_DIST = inland_main_offline.F90 \
 	inland_cropoutput.F90 inland_cropresidue.F90 \
 	inland_cropupdate.F90 inland_initialcrop.F90 \
 	inland_irrigation.F90 inland_leaching.F90 inland_constint.F90 \
-	inland_dailymet.F90 inland_single.F90 inland_check.F90
+	inland_dailymet.F90 inland_single.F90 inland_build_file.F90 \
+    inland_check.F90
 @SINGLE_POINT_TRUE@am_inland_single_point_OBJECTS =  \
 @SINGLE_POINT_TRUE@	inland_main_offline.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_arr2vec.$(OBJEXT) \
@@ -403,6 +407,7 @@ am__inland_single_point_SOURCES_DIST = inland_main_offline.F90 \
 @SINGLE_POINT_TRUE@	inland_constint.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_dailymet.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_single.$(OBJEXT) \
+@SINGLE_POINT_TRUE@	inland_build_file.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_check.$(OBJEXT)
 inland_single_point_OBJECTS = $(am_inland_single_point_OBJECTS)
 inland_single_point_LDADD = $(LDADD)
@@ -563,7 +568,7 @@ top_srcdir = @top_srcdir@
 @SINGLE_POINT_TRUE@	inland_initialcrop.F90 \
 @SINGLE_POINT_TRUE@	inland_irrigation.F90 inland_leaching.F90 \
 @SINGLE_POINT_TRUE@	inland_constint.F90 inland_dailymet.F90 \
-@SINGLE_POINT_TRUE@	inland_single.F90 inland_check.F90
+@SINGLE_POINT_TRUE@	inland_single.F90 inland_build_file.F90 inland_check.F90
 @SINGLE_POINT_FALSE@inland_grid_SOURCES = inland_main_offline.F90 \
 @SINGLE_POINT_FALSE@	inland_arr2vec.F90 inland_canini.F90 \
 @SINGLE_POINT_FALSE@	inland_canopy.F90 inland_cascad2.F90 \
@@ -638,7 +643,9 @@ top_srcdir = @top_srcdir@
 @SINGLE_POINT_FALSE@	inland_dailymet.F90 inland_methourly.F90 \
 @SINGLE_POINT_FALSE@	inland_arr3arr2.F90 inland_logicf.F90 \
 @SINGLE_POINT_FALSE@	inland_logict.F90 inland_rdhrvegmap.F90 \
-@SINGLE_POINT_FALSE@	inland_whrvegmap.F90 inland_check.F90
+@SINGLE_POINT_FALSE@	inland_whrvegmap.F90 \
+@SINGLE_POINT_FALSE@	inland_single_agro.F90 \
+@SINGLE_POINT_FALSE@	inland_build_file.F90 inland_check.F90
 CLEANFILES = *.mod *.oo
 all: all-am
 
@@ -960,7 +967,7 @@ inland_check.o: inland_check.F90 inland_control.o inland_comcrop.F90
 inland_daily.o: inland_daily.F90 ../include/inland_comsat.h inland_parameters.o inland_combcs.o inland_comatm.o inland_comsum.o inland_comveg.o inland_comsatp.o inland_control.o inland_subgrid.o
 inland_diurnal.o: inland_diurnal.F90 ../include/inland_comsat.h inland_parameters.o inland_comatm.o inland_comwork.o inland_comsatp.o inland_comnitr.o  inland_subgrid.o
 inland_drystress.o: inland_drystress.F90 inland_parameters.o inland_comveg.o inland_comsoi.o 
-inland_existence.o: inland_existence.F90 inland_parameters.o inland_compft.o inland_comveg.o 
+inland_existence.o: inland_existence.F90 inland_parameters.o inland_compft.o inland_comveg.o inland_comnitr.o
 inland_firectem.o: inland_firectem.F90 inland_comveg.o inland_comsoi.o inland_comfire.o inland_comatm.o inland_comwork.o inland_random.o
 inland_fstrat.o: inland_fstrat.F90 inland_parameters.o 
 inland_fwetcal.o: inland_fwetcal.F90 inland_com1d.o inland_parameters.o inland_comveg.o 
@@ -1039,6 +1046,7 @@ inland_initsw.o:  inland_delta_sw.F90 inland_parameters.o inland_comatm.o inland
 @SINGLE_POINT_TRUE@inland_readforc.o: inland_readforc.F90 inland_parameters.o inland_control.o inland_combcs.o inland_comsoi.o inland_comveg.o inland_comforc.o inland_parameters.o
 @SINGLE_POINT_TRUE@inland_readit.o: inland_readit.F90 inland_parameters.o inland_combcs.o inland_comsoi.o inland_comveg.o inland_comwork.o inland_subgrid.o inland_control.o
 @SINGLE_POINT_TRUE@inland_single.o: inland_single.F90 inland_comatm.o inland_comsoi.o inland_com1d.o inland_comveg.o inland_control.o inland_parameters.o inland_comhyd.o inland_comsum.o inland_comforc.o
+@SINGLE_POINT_TRUE@inland_build_file.o: inland_build_file.F90 inland_comatm.o inland_com1d.o inland_comcrop.o inland_comveg.o inland_control.o inland_comsoi.o inland_comhyd.o
 
 @SINGLE_POINT_FALSE@inland_canini.o: inland_canini.F90 inland_com1d.o inland_parameters.o inland_comveg.o inland_comsoi.o inland_comatm.o inland_comsno.o 
 @SINGLE_POINT_FALSE@inland_dailymon.o: inland_dailymon.F90 ../include/inland_comsat.h inland_parameters.o inland_combcs.o inland_comatm.o inland_comsum.o inland_comveg.o inland_comsatp.o inland_control.o inland_combcs.o inland_subgrid.o
@@ -1078,6 +1086,8 @@ inland_initsw.o:  inland_delta_sw.F90 inland_parameters.o inland_comatm.o inland
 @SINGLE_POINT_FALSE@inland_methourly.o: inland_methourly.F90 inland_comwork.o inland_comhyd.o inland_comsum.o inland_comhour.o inland_comnitr.o ../include/inland_comsat.h
 @SINGLE_POINT_FALSE@inland_arr3arr2.o: inland_arr3arr2.F90 inland_parameters.o
 @SINGLE_POINT_FALSE@inland_logicf.o: inland_logicf.F90
+@SINGLE_POINT_FALSE@inland_single_agro.o: inland_single_agro.F90 inland_comatm.o inland_com1d.o inland_comcrop.o inland_comveg.o inland_control.o inland_comsoi.o inland_comhyd.o
+@SINGLE_POINT_FALSE@inland_build_file.o: inland_build_file.F90 inland_comatm.o inland_com1d.o inland_comcrop.o inland_comveg.o inland_control.o inland_comsoi.o inland_comhyd.o
 
 #	@echo Compiling $< into $@ \
 #	$(F90) -c $(F90FLAGS) $(CPPFLAGS) $< -o $@

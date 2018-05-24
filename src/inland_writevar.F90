@@ -160,7 +160,7 @@ subroutine writevar(filen,idies,varname,values,istart,icount,times,ierror)
       integer idies, idvar, ndims, ierr, idtime, idtw, iddate
       integer i, k, k2, ilpt, nlpt, ixdim, nxdim
 
-      real*8  nodata
+      real*8  nodata, tfrac
       real*4  nodata2
       integer xtype, nodataint
       character*80 chtmp
@@ -277,18 +277,21 @@ if ( trim(varname) .eq. "zbot") print *,"dims:",nxdim
                   ! need to loop over every point to calculate average
                   do i=1,npoi1
                      k=subgrid_get_index(i,ilpt)
+                     tfrac = tilefrac(k)
+                     ! add waterfrac to tilefrac for first tile - because we don't deal with water portion (yet)
+                     if (ilpt .eq. 1) tfrac = tfrac + waterfrac(i)
                      if ( k .eq. 0 ) then
                         write (*,*) 'ERROR in writevar(), got subgrid index',k,'with i=',i,' ilpt=',ilpt
                      else
                         k2 = (ixdim-1)*mlpt*npoi1 + k
                         ! TODO check for nodata, must test more
-                        if ( ( values(k2) .ne. nodata ) .and. ( tilefrac(k) .gt. 0.0 ) ) then
+                        if ( ( values(k2) .ne. nodata ) .and. ( tfrac .gt. 0.0 ) ) then
                            ! special case for tilefrac and burnarea - write total instead of average
                            ! some points the total is 0.9999* but no big deal
                            if ( varname .eq. "tilefrac" .or. varname .eq. "burnarea" ) then
                               buffer1(i) = buffer1(i) + values(k2)
                            else
-                              buffer1(i) = buffer1(i) + values(k2) * tilefrac(k)
+                              buffer1(i) = buffer1(i) + values(k2) * tfrac
                            end if
                         end if
                      end if

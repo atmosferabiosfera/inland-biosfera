@@ -45,7 +45,6 @@ subroutine diurnal (time, jday, test, dimforc)
               frac,     & ! fraction of energy in each waveband
               dtair, rwork, pa, tdew, emb, ea, ec ! Hewlley did not say what
                                                   ! these are for. - fzm
-
 #define WGEN_COMSAT
 #include "inland_comsat.h"
 
@@ -231,6 +230,7 @@ subroutine diurnal (time, jday, test, dimforc)
       use inland_comnitr
       use inland_combcs
       use inland_comveg
+      use inland_control, only:imonth
  
       implicit none
  
@@ -295,7 +295,7 @@ subroutine diurnal (time, jday, test, dimforc)
       sw = 1370. * (1.000110 + 0.034221 * cos(orbit) + 0.001280 * sin(orbit) + &
            0.000719 * cos(2.0 * orbit) + 0.000077 * sin(2.0 * orbit)) 
  
-9001  continue ! called by a 'goto'
+!9001  continue ! called by a 'goto'
 
 ! do for all gridcells
       do 100 i = 1, npoi
@@ -435,7 +435,7 @@ subroutine diurnal (time, jday, test, dimforc)
  
 ! calculate the hourly relative humidity 
          rh(i) = 100.0 * qa(i) / qsat(esat(ta(i)), psurf(i))
- 
+
 ! ---------------------------------------------------------------------- 
 ! * * * ir flux calculations * * *
 ! ---------------------------------------------------------------------- 
@@ -494,6 +494,8 @@ subroutine diurnal (time, jday, test, dimforc)
            ua(i) = max (dble(0.2), min (dble(10.0), ua(i)))
         endif
 
+9001  continue ! called by a 'goto'
+
 ! ---------------------------------------------------------------------- 
 ! * * * snow and rain calculations * * *
 ! ---------------------------------------------------------------------- 
@@ -508,17 +510,18 @@ subroutine diurnal (time, jday, test, dimforc)
 ! change the rain length when the amount of rainfall/timestep is
 ! too high (at the first time step)
 ! FIXME ET - should this be done for every grid point? this doesn't make sense 
+
          if (time.lt.dtime) then
             plen = int( plens / dtime )
             plenmin = 1 +  int ((4.0 * 3600. - 1.) / dtime)
             plenmax = max (int (24.0 * 3600. / dtime), plenmin)
             checkP = 0
-  
+
             do 85 while (((precip(i)/plen) .gt. 15).and.(plen.lt.plenmax))
                plen = plen + 1
                checkP = 1
 85          continue
- 
+
             if (checkP.eq.1) then
 !              print *, 'WARNING: plen changed', i,
 !     $             int(precip(i)), int(plens/dtime), plen
