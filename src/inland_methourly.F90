@@ -1,6 +1,6 @@
 #include "inland_config.h"
 ! ---------------------------------------------------------------------
-      subroutine methourly (iyear,jday,imonth,timed,seed, seed2,seed3,seed4)
+      subroutine methourly (iyear,jday,timed,seed, seed2,seed3,seed4)
 ! ---------------------------------------------------------------------
 !
 ! initializes surface meteorology from hourly data  
@@ -126,9 +126,8 @@
               var3sum = 0.0
               nhours  =  0
 
-              var3max = 200.0
-	      var3min = 400.0
-
+              call const (var3max, npoi, 200.0)
+	      call const (var3min, npoi, 400.0)
          endif              
 !
               nhours  = nhours + 1
@@ -143,17 +142,16 @@
                     ((var3(n) + 273.16) + 0.0065 *   &
                     elevm)) ** rwork
 
-          psurf = psurfi        ! surface pressure
+          call const (psurf, npoi, psurfi)         ! surface pressure
 
 !       call const (psurf, npoi, var6(n)*100)    ! reading surface pressure in hPa
 
-          precip = var1(n)*dtime/3600. ! precipitation (mm)  
-	  ta = var3(n)+273.16  ! air temperature
-
+          call const (precip, npoi, var1(n)* dtime / 3600.) ! precipitation (mm)  
+	  call const (ta, npoi, var3(n)+ 273.16 )  ! air temperature
  
           var3sum = var3sum + var3(n)  + 273.16	   ! daily air temperature
 
-          cloud = var2(n)        ! insolation
+          call const (cloud, npoi, var2(n))        ! insolation
 !
           if (var4(n) .lt. 1.) then
               write(*,*) 'rh too low! ', var4(n)
@@ -167,19 +165,19 @@
                   psurfi)
 
 !
-          qd = shum             ! specific humidity 
-          ua = var5(n)          ! wind velocity
+          call const (qd, npoi, shum)             ! specific humidity 
+          call const (ua, npoi, var5(n))           ! wind velocity
 !
 
           if (timed .eq. (24.*3600.) - dtime) then
 
-              tmin = var3min         ! minimum temp
-              tmax = var3max         ! maximum temp
+              call const (tmin, npoi, var3min)         ! minimum temp
+              call const (tmax, npoi, var3max)         ! maximum temp
 
               var3sum = var3sum / float(nhours)
 
               tdave = var3sum
-              td = tdave
+              call const (td, npoi, tdave)
 
               call dailymet(imonth, jday)
           endif

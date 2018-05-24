@@ -221,7 +221,7 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
          do  j = scpft, ecpft
             if (iday.eq.pcd(j).and.imonth.eq.pcm(j)) then
                if (exist(i,13).eq.1.and.j.eq.13) then
-                  gddsoy(i,iyear-iyear0+5) = gddfzsoy(i) 
+                  gddsoy(i,iyear) = gddfzsoy(i) 
                   consdays(i)=0
                   iniday(i)=9999
                   maxcons(i)=0
@@ -231,11 +231,11 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzsgc(i)=0.0
 	       
                else if (exist(i,13).eq.0.and.j.eq.13) then
-	          gddsoy(i,iyear-iyear0+5)=0.0
+	          gddsoy(i,iyear)=0.0
 	       endif
 !
 	       if (exist(i,14).eq.1.and.j.eq.14) then
-                  gddcorn(i,iyear-iyear0+5) = gddfzcorn(i) 
+                  gddcorn(i,iyear) = gddfzcorn(i) 
                   consdays(i)=0
                   iniday(i)=9999
                   maxcons(i)=0
@@ -245,11 +245,11 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzsgc(i)=0.0
 	
                else if (exist(i,14).eq.0.and.j.eq.14) then
-                  gddcorn(i,iyear-iyear0+5)=0.0
+                  gddcorn(i,iyear)=0.0
                endif
 !
 	       if (exist(i,16).eq.1.and.j.eq.16) then
-                  gddsgc(i,iyear-iyear0+5)  = gddfzsgc(i)
+                  gddsgc(i,iyear)  = gddfzsgc(i)
                   consdays(i)=0
                   iniday(i)=9999
                   maxcons(i)=0
@@ -259,7 +259,7 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzsgc(i)=0.0
 ! 
                else if (exist(i,16).eq.0.and.j.eq.16) then
-                  gddsgc(i,iyear-iyear0+5)=0.0
+                  gddsgc(i,iyear)=0.0
                endif
 !
                if (croplive(i,j) .eq. 0 ) then
@@ -759,7 +759,7 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! 
 ! simply a function of the daily average temperature and topographic
 ! height -- nothing fancy here
-            psurf(i) = 101325.0 * ((td(i) - 0.0065 * xintopo(i))/td(i))**rwork
+            psurf(i) = 101325.0 * (td(i) / (td(i) + 0.0065 * xintopo(i)))**rwork
 
 ! ---------------------------------------------------------------------- 
 ! (7) estimate today's relative humidity
@@ -784,14 +784,20 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                xinqmon(i,imonth) = min (dble(100.), xinqmon(i,imonth))
             end if
 
+! Convert specific humidity to relative humidity
             if (iyear.eq.iyrmon) then
                  if(imonth.eq.1) then
                     xinqmon(i,it1w) = xinq(i,it1w)
+                    xinqmon(i,it2w) = (xinqmon(i,it2w) / qsat(esat(td(i)), psurf(i))) * 100
                  endif
+            else
+                 xinqmon(i,it1w) = (xinqmon(i,it1w) / qsat(esat(td(i)), psurf(i))) * 100
+                 xinqmon(i,it2w) = (xinqmon(i,it2w) / qsat(esat(td(i)), psurf(i))) * 100
             endif
             
             if (iyear.eq.iyrlast + nrun) then
                 if(imonth.eq.12) then
+                   xinqmon(i,it1w) = (xinqmon(i,it1w) / qsat(esat(td(i)), psurf(i))) * 100
                    xinqmon(i,it2w) =  xinq(i,it2w)
                 endif
             endif   
@@ -937,6 +943,8 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! the fraction to specific humidity
 ! Then we can multiply the NCEP daily anomaly by the CRU05 monthly anomaly
             !humidfrac = xinq(i,imonth) / 100.
+            !sphumid = humidfrac * qsat(esat(td(i)),psurf(i))
+            !qd(i) = sphumid * xinqd(i)
             qd(i) = xinqd(i) /100.
             qd(i) = qd(i) * qsat(esat(td(i)),psurf(i))
 
@@ -1067,69 +1075,70 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! Journal of Climatology, 20: 929-932.  Changes in North American Spring 
 !       
 !
-        if (tmin(i) .ge. 273.16) then
-          consdays(i) = consdays(i) + 1
-          maxcons(i)  = max(maxcons(i), consdays(i))
-          if (maxcons(i) .eq. consdays(i)) then
+!        if (tmin(i) .ge. 273.16) then
+!          consdays(i) = consdays(i) + 1
+!          maxcons(i)  = max(maxcons(i), consdays(i))
+!          if (maxcons(i) .eq. consdays(i)) then
 !
-            iniday(i) = cdays(i)+1 - maxcons(i)
-          endif
+!            iniday(i) = cdays(i)+1 - maxcons(i)
+!          endif
 !
-          daygddc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14)))) 
-          daygdds(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13)))) 
-          daygddsgc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16)))) 
-
+!          daygddc(i,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14)))) 
+!          daygdds(i,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13)))) 
+!          daygddw(i,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(15)))) 
+!        daygddsgc(i,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16)))) 
 !
-         else
-            consdays(i) = 0
-         endif
+!         else
+!            consdays(i) = 0
+!         endif
 !
-         if (cdays(i).eq.365) then
+!         if (cdays(i).eq.365) then
 !Growing-degree day 
-            if (iniday(i) .eq. 9999) then
-               iniday(i) = cdays (i)
-               maxcons(i) = 1
-            elseif (iniday(i) .eq. 0) then
-	       iniday(i)=1
-            endif      
-               endday(i) = iniday(i) + maxcons(i)-1
+!            if (iniday(i) .eq. 9999) then
+!               iniday(i) = cdays (i)
+!               maxcons(i) = 1
+!            elseif (iniday(i) .eq. 0) then
+!	       iniday(i)=1
+!            endif      
+!               endday(i) = iniday(i) + maxcons(i)-1
 
-         do 125 k = iniday(i), endday(i)
-
-             gddfzcorn(i) =  gddfzcorn(i) + daygddc(1,cdays(i))
-             gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,cdays(i))
-             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,cdays(i))
-             gsdays(i) = gsdays(i) + 1
-
-
- 125      continue
-
-              elseif (cdays(i).eq.366) then
-
-             if (iniday(i).eq.0) then
-                 iniday(i) = 1
-             endif     
-
-             endday(i) = iniday(i) + maxcons(i)-1
-
-             gddfzcorn(i) = 0.
-             gddfzsoy(i)  = 0.
-             gddfzsgc(i) =  0.
-             gsdays(i) =    0.
+!         do 125 k = iniday(i), endday(i)
+!
+!             gddfzcorn(i) =  gddfzcorn(i) + daygddc(i,cdays(i))
+!             gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(i,cdays(i))
+!             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(i,cdays(i))
+!             gsdays(i) = gsdays(i) + 1
 
 
+! 125      continue
 
-         do  k = iniday(i), endday(i)
+!              elseif (cdays(i).eq.366) then
 
-             gddfzcorn(i) =  gddfzcorn(i) + daygddc(1,cdays(i))
-             gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,cdays(i))
-             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,cdays(i))
-             gsdays(i) = gsdays(i) + 1
+!             if (iniday(i).eq.0) then
+!                 iniday(i) = 1
+!             endif     
+
+!             endday(i) = iniday(i) + maxcons(i)-1
+
+!             gddfzcorn(i) = 0.
+!             gddfzsoy(i)  = 0.
+!             gddfzsgc(i) =  0.
+!             gsdays(i) =    0.
+
+
+
+ !         do  k = iniday(i), endday(i)
+
+!             gddfzcorn(i) =  gddfzcorn(i) + daygddc(i,cdays(i))
+!             gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(i,cdays(i))
+!             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(i,cdays(i))
+!             gsdays(i) = gsdays(i) + 1
 !
 !
-          enddo
+!          enddo
 !
-        endif
+!        endif
+!
 ! accumulate growing degree days for planted crops past planting
 !
         do 150 j = scpft, ecpft 

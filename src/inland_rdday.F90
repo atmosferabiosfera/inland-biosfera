@@ -130,8 +130,8 @@ subroutine rdday(jday, istyr, iwest, jnorth)
       call readvar(filen,aname,xinwindd,istart,icount,0,istat)
       if (istat.lt.0) goto 9999
 
-! read daily srelative humidity
-      aname = 'rh'
+! read daily specific humidity
+      aname = 'sphum'
       filen = trim(directory)//trim(aname)//trim(suffix)
       call readvar(filen,aname,xinqd,istart,icount,0,istat)
       if (istat.lt.0) goto 9999

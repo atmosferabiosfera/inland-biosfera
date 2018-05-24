@@ -305,11 +305,12 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       allocate(xintauwood(lbeg:lend,npft), xinawood(lbeg:lend,npft), xinaroot(lbeg:lend,npft), &
                  xinvmax(lbeg:lend,npft), xinspecla(lbeg:lend,npft),xinaleaf(lbeg:lend,npft), &
                  vmax_pft(lbeg:lend,npft), tauwood0(lbeg:lend,npft), awood(lbeg:lend,npft),    &
-                 aroot(lbeg:lend,npft),aleaf(lbeg:lend,npft),specla(lbeg:lend,npft))       
+                 aroot(lbeg:lend,npft),astem(lbeg:lend,npft),aleaf(lbeg:lend,npft),specla(lbeg:lend,npft))       
       tauwood0(:,:) = 0.
       vmax_pft(:,:) = 0.     
       awood(:,:) = 0. 
       aroot(:,:) = 0. 
+      astem(:,:) = 0. 
       aleaf(:,:) = 0. 
       specla(:,:) = 0.     
 
@@ -540,13 +541,6 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
                   end if
                end if
 
-               if ( icroptype .eq. 13 .or. icroptype .eq. 14 .or. icroptype .eq. 16 ) then
-                  if ( iwheattype .eq. 1 .or. iwheattype .eq. 2 ) then
-                     write(*,*) 'ERROR! iwheattype must be equal to 0'
-                     goto 9999
-                  end if
-               end if
-
                write (*,*) 'INFO: running in agro mode, all points have croptype:',icroptype
 
                xinveg(:) = 17 ! cropland vegtype
@@ -645,7 +639,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
          ! sanity checks on iwheattype
          if ( iwheattype .gt. 0 .and. icroptype .ne. 15 ) then
             !write(*,*) 'NOTICE: iwheattype set to 0 because icroptype != 15'
-            iwheattype = 1
+            iwheattype = 0
          end if
          if ( iwheattype .eq. 0 .and. icroptype .eq. 15 ) then
             write(*,*) 'NOTICE: iwheattype set to 1 because icroptype == 15'

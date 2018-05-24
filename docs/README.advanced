@@ -42,7 +42,6 @@ Subgrid Tiling
 Subgrid Tiling is an optional feature of Inland.
 TODO : add more explanations (theoretical basics, input files, tile dimension in output files)
 
-
 - The following entries in conf/inland-grid.infile control subgrid tiling.
 
 ! subgrid tile parameters - ignore if not using subgrid tiles
@@ -50,36 +49,25 @@ mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (de
 vegtypefile= ""       , ! file to read initial vegtype (and tileprop if mlpt>1) (default '', read default)
 hrmapfile  = ""       , ! hrmapfile - read high-res data to produce initial veg map (default '', don't read)
 
-
 - vegtype files must contain the following:
-  - vegtype variable with mlpt levels + 1 for water (vegtype 30)
+  - vegtype variable with mlpt levels
   - tilefrac variable with mlpt levels + 1 for water fraction
 
+- vegtype files with tiles can be created using the following commands (simple example)
 
-- vegtype files with tiles can be created using contrib/inland-maketiles.sh contributed script
-
-# see inland-maketiles.sh for more information and examples
-
-# these commands create files with a second tile where forest(1) and cerrado(9) are replaced by pasture(18) in varying proportions (10, 25 and 50%) 
-inland-maketiles.sh vegtype.nc vegtype-deforest-10p.nc 2 0.90 0.10 0.0 "" "setvals,1,18,9,18" ""
-inland-maketiles.sh vegtype.nc vegtype-deforest-25p.nc 2 0.75 0.25 0.0 "" "setvals,1,18,9,18" ""
-inland-maketiles.sh vegtype.nc vegtype-deforest-50p.nc 2 0.50 0.50 0.0 "" "setvals,1,18,9,18" ""
-
-# a simple example with 2 identical tiles and second tile has 0 tilefrac values (used as a template)
-inland-maketiles.sh vegtype.nc vegtype-mlpt02-equal.nc 2 1 0 0 "" "" ""
-# another simple example with 2 different tiles and 10% waterfrac
-inland-maketiles.sh vegtype.nc vegtype-mlpt02-diff.nc 2 0.75 0.25 0 "" "setvals,1,9,9,11,11,14" ""
-
-
-- how to combine hrmap output with a global vegtype file?
-
-# first make a "fastexec" run with hrmapfile set in infile
-make && INLAND_FASTEXEC=2 ./inland-grid 
-# then combine the output tile file with template vegtype-mlpt02-equal.nc
-cd output
-cdo -O selname,vegtype,tilefrac inland-tiles-1980.nc tmp1.nc
-cdo -O mergegrid ../input/tiles/vegtype-mlpt02-equal.nc tmp1.nc ../input/tiles/vegtype-mlpt02-hrmap.nc
-# finally can remove hrmapfile in infile, and vegtypefile="tiles/vegtype-mlpt02-hrmap.nc"
+cd tiles
+rm -f tmp/vegtype-t0?.nc tmp/tilefrac-t0?.nc
+[ create vegtype levels and modify tiles, here is a simple example where forest->savanna and shrubs->desert ]
+cdo setlevel,1 ../vegtype.nc tmp/vegtype-t01.nc
+cdo setlevel,2 -setvals,1,9,11,14 ../vegtype.nc tmp/vegtype-t02.nc
+[ modify any of the tilefrac levels, here is a simple example ]
+cdo setlevel,1 -setrtoc,0,100,0.65 -chvar,vegtype,tilefrac ../vegtype.nc tmp/tilefrac-t01.nc 
+cdo setlevel,2 -setrtoc,0,100,0.25 -chvar,vegtype,tilefrac ../vegtype.nc tmp/tilefrac-t02.nc 
+cdo setlevel,3 -setrtoc,0,100,0.10 -chvar,vegtype,tilefrac ../vegtype.nc tmp/tilefrac-t03.nc 
+[ merge files ]
+cdo -O merge tmp/vegtype-t0?.nc tmp/vegtype-mlpt02.nc
+cdo -O merge tmp/tilefrac-t0?.nc tmp/tilefrac-mlpt02.nc
+cdo -O merge tmp/vegtype-mlpt02.nc tmp/tilefrac-mlpt02.nc vegtype-mlpt02.nc
 
 
 - data analysis

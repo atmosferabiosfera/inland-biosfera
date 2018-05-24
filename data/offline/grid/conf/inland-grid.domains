@@ -16,7 +16,6 @@ sp2,      -23.75  -24.74  -46.75   -43.75    ! SP
 amazlegal,   5.25    -17.75   -74.0   -44.1  ! legal Amazon 
 nebraska,   41.74    41.25   -97.75   -97.25  ! The Mead, Nebraska. Kucharik(2007)'s site 
 teste,     -18.75    -22.0    -53.75  -46.75
-pampa,     -27.05 -33.95 -57.95 -49.05
 stop,       0.0      0.0     0.0     0.0
 ! put nothing below the "stop" line
 ! here every line must be in the format

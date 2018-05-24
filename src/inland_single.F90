@@ -4,7 +4,7 @@
 #error "This subroutine should ONLY be compiled for 0D INLAND model option."
 #endif
 
-subroutine single(linenum, test, soilmoistl)
+subroutine single(linenum, test)
 
       use inland_comatm, only: fira, solai, asuri, solad, asurd
       use inland_com1d, only: firb, fsena, fvapa, abupi, abupd

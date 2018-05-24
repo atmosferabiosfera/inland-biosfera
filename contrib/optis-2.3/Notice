@@ -1,0 +1,20 @@
+/******************************************************************************
+ * Copyright Notice:                                                          *
+ * Source code for random number generator (files rand.h & rand.c) has        *
+ * been taken from : sga.c (C) David E. Goldberg 1986.                        *
+ *                                                                            *
+ * The NSGA-II source code present in this directory,                         *
+ * was developed by : (C) Dr. Kalyanmoy Deb 2005.                             *
+ *                                                                            *
+ * About the Algorithm                                                        *
+ * NSGA-II: Non-dominated Sorting Genetic Algorithm - II                      *
+ * Please refer to the following paper for details about the algorithm:       *
+ * Authors: Dr. Kalyanmoy Deb, Sameer Agrawal, Amrit Pratap, T Meyarivan      *
+ * Paper Title: A Fast and Elitist multi-objective Genetic Algorithm: NSGA-II *
+ * Journal: IEEE Transactions on Evolutionary Computation (IEEE-TEC)          *
+ * Year: 2002                                                                 *
+ * Volume: 6                                                                  *
+ * Number: 2                                                                  *
+ * Pages: 182-197                                                             *
+ *                                                                            *
+ *****************************************************************************/

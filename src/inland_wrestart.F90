@@ -22,7 +22,6 @@ subroutine wrestart (nday, imonthp)
       use inland_combcs, only: xinwet
       use inland_comcrop
       use inland_comnitr
-      use inland_com1d, only:za
 
       implicit none
 !-----------------------------------------------------------------------
@@ -218,7 +217,7 @@ subroutine wrestart (nday, imonthp)
 !  hdate = harvest date (real value)
 !  harvidx = end of year harvest index for crop
 !  croplaimx = maximum attained lai by crop during growing season
-!  cropyld = crop yield in t/ha
+!  cropyld = crop yield in bu/ac
 !  dmyield = yield dry matter in Mg/ha
 !  dmleaf = leaf dry matter in Mg/ha
 !  dmstem = stem dry matter in Mg/ha
@@ -586,7 +585,7 @@ subroutine wrestart (nday, imonthp)
                         '(days/month)',ndims+1,dimnames,istat)
             call inivar(idies,'croplaimx','maximum attained lai by crop during growing season', &
                         '(days/month)',ndims+1,dimnames,istat)
-            call inivar(idies,'cropyld','crop yield in t/ha', &
+            call inivar(idies,'cropyld','crop yield in bu/ac', &
                         '(days/month)',ndims+1,dimnames,istat)
             call inivar(idies,'dmyield','yield dry matter in Mg/ha', &
                         '(days/month)',ndims+1,dimnames,istat)
@@ -1021,12 +1020,6 @@ subroutine wrestart (nday, imonthp)
 ! crops
          if(isimagro .gt. 0)then
 
-            call inivar(idies,'ud','daily average wind speed (m/sec)', &
-                        '(days/month)',ndims,dimnames,istat)
-            call inivar(idies,'za','height above the surface of atmospheric forcing (m)', &
-                        '(days/month)',ndims,dimnames,istat)
-            call inivar(idies,'consdays','counter keeping track of number of days between freezing events', &
-                        '(days/month)',ndims,dimnames,istat)
             call inivar(idies,'gddpl15','accumulated growing degree days for 1 and half year for sugarcane', &
                         '(days/month)',ndims,dimnames,istat)
             call inivar(idies,'gddsgcp1','factor to get the hybrid planted for sugarcane plating, 1 and half year', &
@@ -1450,9 +1443,6 @@ subroutine wrestart (nday, imonthp)
 
 !crops
    if(isimagro .gt. 0)then
-     call writevar(filen,idies,'ud',ud,istart,icount,ftime,istat)
-     call writevar(filen,idies,'za',za,istart,icount,ftime,istat)
-     call writevar(filen,idies,'consdays',consdays,istart,icount,ftime,istat)
      call writevar(filen,idies,'gddpl15',gddpl15,istart,icount,ftime,istat)
      call writevar(filen,idies,'gddsgcp1',gddsgcp(:,1),istart,icount,ftime,istat)
      call writevar(filen,idies,'gddsgcp2',gddsgcp(:,2),istart,icount,ftime,istat)

@@ -30,7 +30,6 @@ subroutine canopy(kpti, kptj)
       use inland_parameters
       use inland_comveg
       use inland_comatm
-      use inland_comcrop, only:isimagro
 
       implicit none
 !-----------------------------------------------------------------------
@@ -74,7 +73,6 @@ subroutine canopy(kpti, kptj)
                       wi, tuold, tsold, tlold, tgold, tiold, qgfac0)
 100   continue
 
-     if(isimagro .eq. 0)then
       cdmaxa = 300./(2.*dtime)
       cdmaxb = 1e20
       do i = kpti, kptj
@@ -98,6 +96,5 @@ subroutine canopy(kpti, kptj)
       call tscreen  (qs2(kpti), dble(2.), za(kpti), z1(kpti), z12(kpti), z2(kpti), &
                      z3(kpti),z34(kpti),z4(kpti), dispu(kpti),displ(kpti), qa(kpti), &
                      q12(kpti),q34(kpti), npt)
-    endif !endif of isimagro
       return
 end subroutine canopy

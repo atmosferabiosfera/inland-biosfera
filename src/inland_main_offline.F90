@@ -120,7 +120,6 @@ program main !main_offline!
               timel,       & ! local time of day since midnight (in seconds)
               nc             ! 0D specific loop indice
 
-      real*8  soilmoistl
 ! Hewlley's variables as of june, 2007
 ! FIXME: this is no place for this kind of variables.
 !       -fzm
@@ -257,7 +256,7 @@ program main !main_offline!
 ! simulation parameters
       soilcspin  = 0        ! 0: no soil spinup, 1: acceleration procedure used (default 0)
       isimveg    = 0        ! 0: static veg, 1: dynamic veg, 2: dynamic veg-cold start (default 0)
-      isimfire   = 1        ! 0: no fire disturbance (0%/yr), 1: natural const (0.5%/yr), 2: CTEM, 3: IBIS (default 1, ignored if isimveg=0)
+      isimfire   = 0        !  0: fixed fire (0.5% prob.), 1: dynamic fire, 2: CTEM fire method, 3: no fire (default 0, ignored if isimveg=0)
       isimco2    = 0        ! 0: fixed co2,  1: ramped co2 (default 0)
       co2init    = 0.000350 ! initial co2 concentration in mol/mol (real) (default 0.000350)
       o2init     = 0.209000 ! initial o2 concentration in mol/mol (real) (default 0.209000)
@@ -517,7 +516,13 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       call readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 #ifndef SINGLE_POINT_MODEL
       if(npoi .eq. 1) then
-         call build_file
+         open (40, status='unknown', file='output/out_hourly_tower.csv')
+         open (41, status='unknown', file='output/out_daily_tower.csv')
+         open (225, status='unknown', file='output/soil.csv')
+         open (42, status='unknown', file='output/crops_out.csv')
+         open (23, status='unknown', file='output/physiology.csv')
+         open (226, status='unknown', file='output/mdaily.csv')
+         open (230, status='unknown', file='output/water.csv')
       endif
 #endif /* SINGLE_POINT_MODEL */
       
@@ -557,8 +562,27 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 ! FIXME: 'test' variable. No clue what it is for, this is a badly written code.
       test = dimforc
       
-      call build_file      
-
+! Initialize the output file from outside the time loops -fzm
+! Write half-hourly output
+! Imbuzeiro: Added the variable names in the output file
+      open(40,file='output/single_point-output.csv',status='unknown')
+      write(40,9199) 'time','Swnet','Lwnet','Qle','Qh','Qg','DelCanHeat',   &
+                     'DelSurfHeat','Evap','Qs','Qrec','Qsb','Qt',           &
+                     'DelSoilMoist','DelSurfStor','DelIntercept',           &
+                     'WaterTableD','VegT','BaresoilT','AvgSurfT','Albedo',  &
+                     'SurfStor','fPAR','SoilMoist1','SoilMoist2',           &
+                     'SoilMoist3','SoilMoist4','SoilMoist5','SoilMoist6',   &
+                     'SoilTemp1','SoilTemp2','SoilTemp3','SoilTemp4',       &
+                     'SoilTemp5','SoilTemp6','SoilWet','Ecanop','Tveg',     &
+                     'Esoil','Ewater','RootMoist','CanopInt','GPP',         &
+                     'NPP','NEE','AutoResp','HeteroResp','ANPP','BgResp',   &
+                     'LitterFall','CarbPools1','CarbPools2','CarbPools3',   &
+                     'CarbPools4','CarbPools5','CarbPools6','CarbPools7',   &
+                     'CarbPools8','CarbPools9','CarbPools10','CarbPools11', &
+                     'CarbPools12','CarbPools13','TotLivBiom','AbvGrndWood',&
+                     'LAI','Tair','Qair','Wind','Rainf','Psurf','Swdown',   &
+                     'Lwdown','CO2air'
+9199  format (74(a,x))
 #endif /* SINGLE_POINT_MODEL */
 
 ! map coupled model variables based on variables read from data files
@@ -758,7 +782,6 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
                if (cdays(i).lt.366) then
                   cdays(i) = cdays(i) + 1
                endif
-
             enddo
         else !if irestart
 !#### TODO optimization this if!!!!
@@ -888,7 +911,6 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
                plens   = dtime * plen
                startp  = dtime * min(niter-plen, int(ran2(seed,seed2,seed3,seed4)*(niter-plen+1)))
                endp    = startp + plens
-
 #endif /* SINGLE_POINT_MODEL */
 
       if(isimagro .gt. 0) then
@@ -933,7 +955,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
        if ((iyear.eq.imetyear.and.jday.ge.dmetyear).or.          &
             (iyear.gt.imetyear.and.iyear.lt.imetend ).or.        &
             (iyear.eq.imetend.and.jday.le.dmetend))then
-                call methourly (iyear,jday,imonth,timed,seed, seed2,seed3,seed4)
+                call methourly (iyear,jday,timed,seed, seed2,seed3,seed4)
                 call diurnalmet(timed, jday, plens, startp, endp,  &
                      irrigate, ilens, starti, endi)
        else
@@ -999,12 +1021,78 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 250                  continue
                   end if
 
-#ifndef SINGLE_POINT_MODEL
 !this part is for calculating the crop 0D
-    if(npoi .eq. 1 .and. isimagro .gt. 0)then
-         call single_agro
+    if(npoi .eq. 1)then
+        if(isimagro .gt. 0) then
+
+           rn = solad(1,1) * (1 - asurd(1,1)) + solad(1,2) * (1 - asurd(1,2)) + &
+                solai(1,1) * (1 - asuri(1,1)) + solai(1,2) * (1 - asuri(1,2)) + & 
+                fira(1) - firb(1)
+
+           swin = solad(1,1) + solad(1,2) + solai(1,1) + solai(1,2)
+    
+           swout= solad(1,1) * asurd(1,1) + solad(1,2) * asurd(1,2)  + solai(1,1) * &
+                  asuri(1,1) + solai(1,2) * asuri(1,2)
+
+           pari = (solad(1,1) + solai(1,1)) * 4.59        
+           apar = (topparl(1) + topparu(1)) * 4.59
+	              
+           paro = (solad(1,1) * asurd(1,1) + solai(1,1) * asuri(1,1))* 4.59 
+
+!           if((iyear.eq.2009.and.jday.gt.300).or.(iyear.eq.2010.and.jday.le.120)) then
+           if(imetyear .ne. 9999) then
+
+                write(40,9200) iyear, jday, istep-1, swin, swout, pari, paro,  &
+                               apar, rn,-fsena(1),-fvapa(1)*hvap,-soihfl(1),   & 
+                               -tneetot(1)*1e6,plai(1,16)  
+         
+                if(istep-1.ge.8.and.istep-1.le.18) then  !diurnal
+             
+                     write(229,*)iyear,jday,istep-1,-fsena(1),- fvapa(1)*hvap, &
+                                 -tneetot(1)*1e6,ta(1)-273.16,tl(1)-273.16
+
+	             use(4,istep-1)=-tneetot(1)*1e6
+             
+                elseif(istep-1.eq.19) then
+	
+                     write(27,173)jday,iyear,plai(1,13)*grnfraccrop(1,13),                    &
+                                  use(4,8),use(4,9),use(4,10),use(4,11),use(4,12),            &
+                                  use(4,13),use(4,14),use(4,15),use(4,16),use(4,17),use(4,18) 
+
+                     173   format (1x,i3,1x,i4,1x,f4.2,11(1x,f6.2))	
+
+                endif
+           endif
+
+9200   format (3(i4,'  '),10(f9.3,'  '),f3.1)  
+
+
+             flx(1)= flx(1) + swin   *(dtime/10**6) 
+             flx(2)= flx(2) + swout  *(dtime/10**6)
+             flx(3)= flx(3) + pari   
+             flx(4)= flx(4) + paro   
+             flx(5)= flx(5) + apar   
+             flx(6)= flx(6) + rn   *(dtime/10**6)
+
+             flx(7)= flx(7) - fsena(1)  *(dtime/10**6)     
+
+             flx(8)= flx(8) - fvapa(1)*hvap *(dtime/10**6)
+
+             flx(9) = flx(9) - soihfl(1)*(dtime/10**6)
+		
+             flx(10) = flx(10) -tneetot(1)*1e6 
+
+             flx(11) = flx(11)+ solsoi(1)   *(dtime/10**6)
+
+             flx(12) = flx(12)+ gsuvap(1) * dtime
+             flx(13) = flx(13)+ gtrans(1) * dtime
+
+             flx(14) = flx(14)+ tsoi(1,1) !-273.18
+
+             flx(15) = flx(15)+ ((tsoi(1,4)+tsoi(1,5))/2.)!-273.18 
+
+        endif! check for crop existence
     endif
-#endif
 
 #ifdef SINGLE_POINT_MODEL
 ! FIXME ET: this should not be inside the main loop, but in a function or subroutine...
@@ -1157,7 +1245,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 ! write HR dataset if requested
             if ( trim(hrmapfile) .ne. '' ) then
 #ifdef HRMAP
-               if ( env_fastexec .eq. 0 ) call whrvegmap(nday)
+               call whrvegmap(nday)
 #else
                write(*,*) 'ERROR! hrmapfile defined in infile, but model not configured with --enable-highres_map option'
 #endif

@@ -93,7 +93,7 @@ subroutine rdmon(istyr, iwest, jnorth)
          call arr2vec(cdummy((ntime-1)*nlonsub*nlatsub + 1),obscld(1,ntime))
       end do
 
-      aname = 'rh'
+      aname = 'sphum'
       filen = trim(directory)//trim(aname)//trim(suffix)
       call readvar(filen,aname,cdummy,istart,icount,-1,istat)
       if (istat.lt.0) goto 9999

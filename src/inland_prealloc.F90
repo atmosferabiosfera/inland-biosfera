@@ -4,7 +4,7 @@
 !   This subroutine Allocates variables as they are needed by rd_param
 ! and readit subroutines.
 subroutine inland_prealloc
-      use inland_parameters, only: npft,nband,nsoilay,ndat,plona,plata,nlonsub, &
+      use inland_parameters, only: npoi,lbeg,lend,npft,nband,nsoilay,ndat,plona,plata,nlonsub, &
                                  nlatsub
       use inland_compft, only: vmax_pft,tauleaf,tauroot,tauwood0,TminL,TminU, &
                                Twarm,GDD,lotemp,hitemp,drought,f1,f2, tauwood0p,vmax_pftp
@@ -43,7 +43,9 @@ subroutine inland_prealloc
                allconss(npft),laimx(npft),arooti(npft),arootf(npft),aleaff(npft), &
                astemf(npft),declfact(npft),fleafi(npft),hybgdd(npft),gddmin(npft),&                     
                lfemerg(npft),grnfill(npft),mxgddgf(npft),mxdgfi(npft),mxmat(npft),&
-               bfact(npft),arepr(npft),astem(npft),astemi(npft),aleafi(npft),fleaf(npft))
+               !bfact(npft),arepr(npft),astem(npft),astemi(npft),aleafi(npft),fleaf(npft))
+               bfact(npft),arepr(npft),astemi(npft),aleafi(npft),fleaf(npft))
+!      allocate(astem(lbeg:lend,npft))
 
       baset(:) = 0.
       mxtmp(:) = 0.
@@ -67,7 +69,8 @@ subroutine inland_prealloc
       mxmat(:) = 0.	 
       bfact(:) = 0.
       arepr(:) = 0.
-      astem(:) = 0.
+      !astem(:) = 0.
+      !astem(:,:) = 0.
       astemi(:) = 0.   
       aleafi(:) = 0.   
       fleaf(:) = 0.
@@ -93,7 +96,7 @@ subroutine inland_prealloc
       fnoptw(2) = 0.
 
       allocate (cgrain(npft),convfact(npft),maxhi(npft),fyield(npft),cfrac(npft),&
-                fnlfmx(npft),fngrmx(npft),sratio(npft),rratio(npft),fnopt(npft),grainmoisture(npft))
+                fnlfmx(npft),fngrmx(npft),sratio(npft),rratio(npft),fnopt(npft))
 
       cgrain(:) = 0.
       convfact(:) = 0.
@@ -105,7 +108,6 @@ subroutine inland_prealloc
       sratio(:) = 0.
       rratio(:) = 0.
       fnopt(:) = 0.
-      grainmoisture(:) = 0.
 	     
 ! From compft
 

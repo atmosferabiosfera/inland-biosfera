@@ -91,11 +91,9 @@ subroutine sumnow(kpti, kptj)
       zweight5 = exp(-1. / (5.0 * workday)) 
 !
   endif
-
-!Commented by Pousa, it doesn' necessary
-! factors for instantaneous NEE 
-!      rwork = 1./(ndaypy * 86400.0 * 12.e-3 )     
-!      xminlai =  0.010
+! factors for instantaneous NEE
+      rwork = 1./(ndaypy * 86400.0 * 12.e-3 )     
+      xminlai =  0.010
 
 ! begin global grid
       do 100 i = kpti, kptj

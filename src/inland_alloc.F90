@@ -409,7 +409,6 @@ subroutine alloc(irestart)
       maxcons(:) = 0.
       iniday(:) = 0
       endday(:) = 0
-      gsdays(:) = 0
 
       allocate (aerial(npft), huileaf(npft), huigrain(npft))
 
@@ -1072,11 +1071,7 @@ subroutine alloc(irestart)
       tmax(:) = 0.
       tmin(:) = 0.
       qd(:) = 0.
-      if(irestart .eq. 1 .or. isimagro .eq.1)then
-         ud(:) = 0.
-      elseif(isimagro .eq. 0)then
-         ud(:) = 0.
-      endif
+      ud(:) = 0.
 
 ! comatm's weather generator specific variables
 !---------------------------------------------------

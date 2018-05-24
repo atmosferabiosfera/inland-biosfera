@@ -182,7 +182,7 @@ module inland_comcrop
 !            cumlvs(npoi,npft),     ! total number of leaves emerged
 !            idpp(npoi,npft),       ! number of days past planting
 !            dpgf(npoi,npft),       ! number of days past grain fill
-!            cropyld(npoi,npft),    ! crop yield in t/ha
+!            cropyld(npoi,npft),    ! crop yield in bu/ac
 !            dmleaf(npoi,npft),     ! leaf dry matter in Mg/ha
 !            dmstem(npoi,npft),     ! stem dry matter in Mg/ha
 !            dmresidue(npoi,npft),  ! aboveground leaf and stem residue dry matter in Mg/ha
@@ -218,14 +218,17 @@ module inland_comcrop
       real*8, dimension(:,:,:), allocatable :: cropout
 !                               cropout(npoi,npft,60), ! crop output var 
 !
-      real*8, dimension(:), allocatable :: arepr, astem, astemi, aleafi, cfrac,       &
+      !real*8, dimension(:), allocatable :: arepr, astem, astemi, aleafi, cfrac,       &
+      real*8, dimension(:), allocatable :: arepr, astemi, aleafi, cfrac,       &
                                            baset, mxtmp, tkill, hybgdd, gddmin,       &
                                            lfemerg, grnfill, laicons, allconsl,       &
                                            allconss, laimx, arooti, arootf, aleaff,   &
                                            astemf, declfact, mxgddgf, mxdgfi, mxmat,  &
                                            fleafi, fleaf, cgrain, convfact, maxhi,    &
                                            fyield, fnlfmx, fngrmx, sratio, rratio,    &
-                                           fnopt, bfact, grainmoisture
+                                           fnopt, bfact
+!gabriel abrahao: adicionada uma dimensao ao astem
+      real*8, dimension(:,:), allocatable :: astem
 !
 !            arepr(npft),           ! fraction allocation to reproductive organs (grain/fruit) in crops
 !            astem(npft),           ! fraction allocation to stem in crops (non leaf/ non grain)
@@ -263,7 +266,6 @@ module inland_comcrop
 !            rratio(npft),          ! leaf:root N allocation ratio
 !            fnopt(npft),           ! minimum leaf nitrogen content that doesn't experience N stress
 !            bfact(npft)            ! coefficient in LAI curve
-!            grainmoisture(npft)    ! grain moisture, must be between 0.08 and 0.16
 !     
       real*8, dimension(:), allocatable :: grnwht, fleafiwht, fleafwht, mgddgf,        &
                                            mxmatwht, fnlfmxw, fngrmxw, fnoptw,         &

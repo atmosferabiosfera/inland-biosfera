@@ -228,7 +228,6 @@ subroutine rd_param(irestart)
     endif
 
       call readitem(parm_unit, parm_file, woodnorm)
-
       if(isimagro.gt.0) then
 
          call readitem(parm_unit, parm_file, rhovegvlg)
@@ -257,14 +256,9 @@ subroutine rd_param(irestart)
                         dummyvar, dummyvar, dummyvar, dummyvar, dummyvar,  &
                         dummyvar, dummyvar, dummyvar)   
       end do
-      
-      if(isimagro .gt. 0)then
-!         call readitem(parm_unit, parm_file, chifuz)
-!         call readitem(parm_unit, parm_file, chiflz)
-      else 
-         call readitem(parm_unit, parm_file, chifuz)
-         call readitem(parm_unit, parm_file, chiflz)
-      endif
+
+      call readitem(parm_unit, parm_file, chifuz)
+      call readitem(parm_unit, parm_file, chiflz)
 
       call readitems(parm_unit, parm_file, 2, dleaf(1), dleaf(2), dummyvar,    &
                      dummyvar, dummyvar, dummyvar,dummyvar, dummyvar, dummyvar,&
@@ -518,8 +512,9 @@ subroutine rd_param(irestart)
                         grnfill(j), bfact(j), dummyvar, dummyvar) 
       end do
 
-        pcm(16)=mod(pmmin(16)+(mxmat(16)/30),12.)+1
-        pcd(16)=pdmin(16)
+!        pcm(16)=mod(pmmin(16)+(mxmat(16)/30),12.)+1
+!        pcd(16)=pdmin(16)
+
       
       do j = 1, 2 ! number of wheat crop types 
          call readitems(parm_unit, parm_file, 7, grnwht(j), fleafiwht(j), &
@@ -564,10 +559,6 @@ subroutine rd_param(irestart)
          call readitems(parm_unit, parm_file, 10, cgrain(j), convfact(j),    &
                         maxhi(j), fyield(j), cfrac(j), fnlfmx(j), fngrmx(j), &
                         sratio(j), rratio(j), fnopt(j)) 
-      end do
-
-      do j = scpft, ecpft 
-         call readitems(parm_unit, parm_file, 1, grainmoisture(j)) 
       end do
 
       close (parm_unit)
