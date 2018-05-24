@@ -1,0 +1,239 @@
+==============================================
+COMPUTER REQUIREMENTS FOR RUNNING INLAND/IBIS
+    - Operating system: Unix or compatible
+    - Compilers: GNU gfortran, PGI pgf90 or Intel ifort
+    - C Preprocessor (GNU cpp or compatible)
+    - NetCDF libraries to run GRID mode simulations (see README.grid)
+
+DIRECTORY TREE OF INLAND/IBIS
+inland
+  |---contrib            Contributions from developers, not required to model execution.
+  |---docs               Description of the code.
+  |---src                Source code model.
+  |---include            Contains parameters for compile-time operations.
+  |---data 
+     |---offline
+       |---grid          Files and parameters to run simulations in GRID mode.
+       |  |---input      Boundary conditions and atmospheric forcings.
+       |  |---params     Parameter files of canopy, vegetation, soils and fire.
+       |  |---conf       Configuration files for the simulation.
+       |  |---output     Model output files.
+       |
+       |---single_point  Files and parameters to run simulations in SINGLE POINT mode.
+          |---input      Boundary conditions and atmospheric forcings.
+          |---params     Parameter files of canopy, vegetation, soils and fire.
+          |---conf       Configuration files for the simulation.
+          |---output     Model output files.
+
+INSTALLING and RUNNING INLAND/IBIS - GRID
+From the main directory, run:
+
+'./configure'       - sets up the compilation environment
+'make dev-symlinks' - to compile the code
+'./inland-grid'     - to run the model
+
+NOTE:
+To choose a specific compiler:
+          'FC=compiler ./configure'
+          e.g.: 'FC=gfortran ./configure'
+
+Output files: by default, output data is created in directory 'output/', following the pattern:
+   'inland-daily-YYYY.nc'   - daily output
+   'inland-monthly-YYYY.nc' - monthly output
+   'inland-yearly-YYYY.nc'  - annual output
+where 'YYYY' is the year of produced output
+
+
+Restart and diagnostic files are created by the end of each simulation year, in the directory 'output/'.
+
+
+INSTALLING and RUNNING INLAND/IBIS - SINGLE POINT
+From the main directory, run:
+
+'./configure --enable-single-point' - sets up the compilation environment
+'make dev-symlinks'
+'./inland-single_point'
+
+NOTE:
+To choose a specific compiler:
+          'FC=<compiler> ./configure --enable-single-point'
+          e.g.: 'FC=gfortran ./configure --enable-single-point'
+
+Output files: Single point simulations produce a ascii output file named 'single_point-output.csv', located in the directory 'output/'.
+
+biomass.csv
+crops_out.csv
+daysrun.csv
+mdaily.csv
+out_daily_tower.csv
+out_hourly_tower.csv
+physiology.csv
+soil.csv
+water.csv
+
+IMPORTANT POINTS:
+    1) Configuration parameters of the simulation
+       1.1) For GRID simulations - 'inland-grid.infile' found in 'data/offline/grid/conf'
+
+       1.2) For GRID simulations with crops on, the value for 'isimagro'must be 1, and the 'icroptype'value must be represented by 
+            respective crops: 13 - Soybean, 14 - Maize, 15 - Wheat ou 16 - Sugarcane
+
+       1.3) Must be necessary to change the number of soil layers to '11' at 'inlcude/compar.h':
+            #define NUMSOILLAYERS 11 /* nsoilay */
+
+! temporal parameters
+irestart   = 0        , ! irestart - 0: not a restart run  1: restart run (default 0)
+iyrrestart = 9999     , ! iyrrestart - year to restart model (default 9999)
+iyear0     = 1981     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
+nrun       = 3        , ! nrun - number of years in this simulation (change for restart) (default 2)
+iyrdaily   = 9999     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
+iyrmon     = 9999     , ! iyrmon - year to start reading montly data (default 9999)
+dtime      = 3600     , ! dtime - time step in seconds (default 3600)
+!sain
+! simulation parameters
+soilcspin  = 0        , ! soilcspin - 0: no soil spinup, 1: acceleration procedure used (default 0)
+isimveg    = 1        , ! isimveg - 0: static veg, 1: dynamic veg, 2: dynamic veg-cold start (default 0)
+isimfire   = 1        , ! 0: no fire disturbance (0%/yr), 1: natural const (0.5%/yr), 2: CTEM, 3: IBIS (default 1, ignored if isimveg=0)
+isimco2    = 0        , ! isimco2 - 0: fixed co2,  1: ramped co2 (default 0)
+co2init    = 0.000350 , ! co2init - initial co2 concentration in mol/mol (real) (default 0.000350)
+o2init     = 0.209000 , ! o2init - initial o2 concentration in mol/mol (real) (default 0.209000)
+isimland   = 0        ! 0: fixed land use,  1: dynamic land use
+iyrluc     = 9999     , ! year to start reading land transition data
+nluc       = 100      , ! number of years to read land transition data
+isinfilt   = 0        , ! isinfilt - Infiltration Function - 0: according to Darcy (1856); 1: according to Green-Ampt (1911) (default 0)
+isimrwu    = 0        , ! isimrwu - Root water uptake module - 0: according to Foley et al., 1996; 1 according to Li et al. (2006) (default 0)
+!
+! output parameters
+iyearout   = 1        , ! iyearout - 0: no yearly output, 1: yearly output (default 1)
+imonthout  = 1        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
+idailyout  = 0        , ! idailyout - 0: no daily output, 1: daily output (default 0)
+idiag      = 0        , ! idiag - 0: no diagnostic output, 1-10 # of files to output (default 0)
+!
+! crops simulation paramters
+imetyear   = 9999     , ! year to start using hourly met data
+dmetyear   = 1        , ! day to start using hourly met data (17 geovane)
+imetend    = 9999     , ! year to end reading in hourly met data
+dmetend    = 119      , ! day to end reading in hourly met data (39 geovane)
+irrigate   = 0        , ! 0: no irrigation 1: irrigation strategy used
+isimagro   = 1        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
+icroptype  = 16       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc 
+iwheattype = 1        , ! 1: spring wheat 2: winter wheat - only used if icroptype = wheat
+cropsfile  = "crops_monfreda_05d.nc" , ! cropsfile - read crop data to produce crop veg map (use mlpt>1)
+irotation  = 0        , ! 0: none 1: winter wheat/fallow 2: 2 corn/soy 3: corn/soy/spring wheat 4: soy/winter wheat/corn
+iholdsoiln = 1        , ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N  
+ffact      = 1.0      , ! numeric multiplying factor applied to N fertilizer after 2000 (for all crops)
+isoilay    = 9        , ! soil layer for which nitrate leaching/drainage is output  
+elevin     = 550      , ! site elevation        (m)
+thigh      = 6        , ! tower input elevation (m)
+!
+! simulation domain - an entry with the same name and corresponding lon/lat values must be defined in inland-grid.domains
+domain      = "SAM", ! domain name used to define lon/lat boundaries (default '')
+!
+! subgrid tile parameters - ignore if not using subgrid tiles
+mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)
+vegtypefile= ""       , ! file to read initial vegtype (and tileprop if mlpt>1) (default '', read default)
+hrmapfile  = ""       , ! hrmapfile - read high-res data to produce initial veg map (default '', don't read)
+!
+! Heterogeneous Parameterization
+itauw      =  0       , ! itauw - 0:reads 1 dimension tauwood0 from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+ivmax      =  0       , ! ivmax - 0:reads 1 dimension vmax_pft from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+isla       =  0       , ! isla  - 0:reads 1 dimension specla from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+ica        =  0         ! ica   - 0:reads 1 dimension carbon allocation to wood, leaf and root from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+
+       1.3) For SINGLE POINT simulations - 'inland-single_point.infile', foudn in 'data/offline/single_point/conf'
+
+! temporal parameters
+irestart   = 0        , ! irestart - 0: not a restart run  1: restart run (default 0)
+iyrrestart = 9999     , ! iyrrestart - year to restart model (default 9999)
+iyear0     = 2008     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
+nrun       = 3        , ! nrun - number of years in this simulation (change for restart) (default 2)
+iyrdaily   = 9999     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
+iyrmon     = 9999     , ! iyrmon - year to start reading montly data (default 9999)
+dtime      = 3600     , ! dtime - time step in seconds (default 3600)
+!sain
+! simulation parameters
+soilcspin  = 0        , ! soilcspin - 0: no soil spinup, 1: acceleration procedure used (default 0)
+isimveg    = 1        , ! isimveg - 0: static veg, 1: dynamic veg, 2: dynamic veg-cold start (default 0)
+isimfire   = 1        , ! 0: no fire disturbance (0%/yr), 1: natural const (0.5%/yr), 2: CTEM, 3: IBIS (default 1, ignored if isimveg=0)
+isimco2    = 0        , ! isimco2 - 0: fixed co2,  1: ramped co2 (default 0)
+co2init    = 0.000350 , ! co2init - initial co2 concentration in mol/mol (real) (default 0.000350)
+o2init     = 0.209000 , ! o2init - initial o2 concentration in mol/mol (real) (default 0.209000)
+isimland   = 0        ! 0: fixed land use,  1: dynamic land use
+iyrluc     = 9999     , ! year to start reading land transition data
+nluc       = 100      , ! number of years to read land transition data
+isinfilt   = 0        , ! isinfilt - Infiltration Function - 0: according to Darcy (1856); 1: according to Green-Ampt (1911) (default 0)
+isimrwu    = 0        , ! isimrwu - Root water uptake module - 0: according to Foley et al., 1996; 1 according to Li et al. (2006) (default 0)
+!
+! output parameters
+iyearout   = 1        , ! iyearout - 0: no yearly output, 1: yearly output (default 1)
+imonthout  = 1        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
+idailyout  = 0        , ! idailyout - 0: no daily output, 1: daily output (default 0)
+idiag      = 0        , ! idiag - 0: no diagnostic output, 1-10 # of files to output (default 0)
+!
+! crops simulation paramters
+imetyear   = 2008     , ! year to start using hourly met data
+dmetyear   = 1        , ! day to start using hourly met data (17 geovane)
+imetend    = 2010     , ! year to end reading in hourly met data
+dmetend    = 119      , ! day to end reading in hourly met data (39 geovane)
+irrigate   = 0        , ! 0: no irrigation 1: irrigation strategy used
+isimagro   = 1        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
+icroptype  = 16       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc 
+iwheattype = 1        , ! 1: spring wheat 2: winter wheat - only used if icroptype = wheat
+cropsfile  = "crops_monfreda_05d.nc" , ! cropsfile - read crop data to produce crop veg map (use mlpt>1)
+irotation  = 0        , ! 0: none 1: winter wheat/fallow 2: 2 corn/soy 3: corn/soy/spring wheat 4: soy/winter wheat/corn
+iholdsoiln = 1        , ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N  
+ffact      = 1.0      , ! numeric multiplying factor applied to N fertilizer after 2000 (for all crops)
+isoilay    = 9        , ! soil layer for which nitrate leaching/drainage is output  
+elevin     = 550      , ! site elevation        (m)
+thigh      = 6        , ! tower input elevation (m)
+!
+! simulation domain - an entry with the same name and corresponding lon/lat values must be defined in inland-grid.domains
+domain      = "single_agro", ! domain name used to define lon/lat boundaries (default '')
+!
+! subgrid tile parameters - ignore if not using subgrid tiles
+mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)
+vegtypefile= ""       , ! file to read initial vegtype (and tileprop if mlpt>1) (default '', read default)
+hrmapfile  = ""       , ! hrmapfile - read high-res data to produce initial veg map (default '', don't read)
+!
+! Heterogeneous Parameterization
+itauw      =  0       , ! itauw - 0:reads 1 dimension tauwood0 from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+ivmax      =  0       , ! ivmax - 0:reads 1 dimension vmax_pft from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+isla       =  0       , ! isla  - 0:reads 1 dimension specla from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+ica        =  0         ! ica   - 0:reads 1 dimension carbon allocation to wood, leaf and root from parms canopy; 1:reads 2 dimension from input HP maps (default 0)
+!
+
+
+     2) For further information about './configure', type './configure -help'
+
+     3) File 'config.log', generated in the main directory after running './configure', provides details on the computing environment in which it was executed. This file helps to identify possible errors during the installation.
+
+     4) To remove compiled files and binaries.
+      4.1) 'make clean' to remove the binary files and file execution;
+      4.2) 'make uninstall' to remove the installation files.
+
+     5) To restart simulations in the GRID mode, using the 'restart' feature, one needs to change 'inland.infile' found in directory 'conf':
+      5.1) Set parameter 'irestart' to '1';
+      5.1) Set parameter 'iyrrestart' to year of restart; 
+      5.3) Set parameter 'nrun' in accordance to the number of years remaining to finish the simulation when it was interrupted;
+      5.4) After these changes, run the model;
+      5.5) Important:
+        5.5.1) Restart works only in dynamic vegetation mode (parameter 'isimveg' set to '1' or '2');
+        5.5.2) Restart starts from the last year found in output files;
+        5.5.3) Restart is not supported if the code is recompiled;
+        5.5.4) Restart does not work in 'single-point' simulations
+      
+     6) Simulations in 'single-point' mode 
+      6.1) Input data should be created/used assuming the local time where data.
+      6.2) To change sites of simulations:
+         Sites available: 
+           - Santarem Km67 (k67)
+           - Santarem Km83 (k83)
+           - Manaus Km34 (k34)
+           - Reserva Jaru (rja)
+         6.2.1) Change site's input file name to clim-input
+                Directory: inland/data/offline/single_point/input
+                Ex: cp clim-input-k67 clim-input
+         6.2.2) Change parameters file name (single_point_parameters) to desired site
+                Directory: inland/data/offline/single_point/params
+                Ex: cp single_point_parameters_k67 single_point_parameters
+         6.2.3) Making alterations requested the file docs/parameters_single_point.txt for the desired site

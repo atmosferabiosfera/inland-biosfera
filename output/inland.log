@@ -1,0 +1,102 @@
+  
+ **************************************
+ * InLand - Surface model for the MBSCG
+ **************************************
+ * Version 1.0.0, November 2012
+ **************************************
+  
+ Domain parameters 
+ INFO: model lon, lat resolution (degrees) :     1.00    1.00
+ INFO: model domain (nlon x nlat)          :     360  x  180
+ INFO: model limits (N,S,W,E)              :   -19.00   -19.74   -48.00   -47.00
+  
+ Temporal parameters 
+ INFO: first year run in this sequence     :         2005
+ INFO: last year run in this sequence      :         2006
+ INFO: length of this simulation (years)   :            2
+ INFO: number of iterations per day        :           24
+  
+ Simulation parameters
+ INFO: Vegetation method                   :            1
+ INFO: Fire method                         :            2
+ INFO: CO2 method                          :            0
+ INFO: initial co2 concentration in mol/mol: 0.000380
+ INFO: initial o2 concentration in mol/mol : 0.209000
+ INFO: Spin-up soil method                 :            0
+ INFO: Land Use method                     :            0
+ INFO: Infltration method                  :            0
+ INFO: Root water uptake method            :            0
+  
+ Heterogeneous Parameterization
+ INFO: Tauwood0 parameters                 :            0
+ INFO: Vmax parameters                     :            0
+ INFO: Specla parameters                   :            0
+ INFO: Carbon Allocation to wood parameters:            0
+  
+ Crop Simulation parameters
+ INFO: Agro method                         :            1
+ INFO: Crop type method                    :           13
+  
+ I/O Parameters 
+ INFO: input directory                     : ./data/offline/grid                                                                                                                                                                                                                                            
+ INFO: input file                          : ./data/offline/grid/conf/inland-grid.infile                                                                                                                                                                                                                    
+ INFO: data directory                      : ./input                                                                                                                                                                                                                                                        
+ INFO: output directory                    : output                                                                                                                                                                                                                                                         
+  
+ * * * annual diagnostic fields * * *        2005
+  
+ total nee             of the domain (gt-c/yr) :         0.00242623133875
+ total npp             of the domain (gt-c/yr) :         0.00242623133875
+ total gpp             of the domain (gt-c/yr) :         0.00392499913211
+ total biomass         of the domain (gt-c)    :         0.00214006174042
+ aboveground litter    of the domain (gt-c)    :         0.00000000000000
+ belowground litter    of the domain (gt-c)    :         0.00000000000000
+ total soil carbon     of the domain (gt-c)    :         0.00000000000000
+ total soil co2 flux   of the domain (gt-c)    :         0.00001689971050
+ aboveground litter n  of the domain (gt-c)    :         0.00000000000000
+ belowground litter n  of the domain (gt-c)    :         0.00000000000000
+ total soil nitrogen   of the domain (gt-c)    :         0.00000000000000
+  
+ average precipitation of the domain (mm/yr)   :      1505.78418959489750
+ average aet           of the domain (mm/yr)   :       843.15828546587124
+ average transpiration of the domain (mm/yr)   :        25.31168862504812
+ average runoff        of the domain (mm/yr)   :       477.34265305820344
+ average surf runoff   of the domain (mm/yr)   :       426.29497416020848
+ average drainage      of the domain (mm/yr)   :        51.04767889799492
+ average moisture recharge of domain (mm/yr)   :       185.34303268671007
+  
+ total aet      / precipitation                :         0.55994629993605
+ total runoff   / precipitation                :         0.31700602009019
+  
+ transpiration  / total aet                    :         0.03002009119920
+ surface runoff / total runoff                 :         0.89305862660513
+  
+  
+ * * * annual diagnostic fields * * *        2006
+  
+ total nee             of the domain (gt-c/yr) :         0.01575680590983
+ total npp             of the domain (gt-c/yr) :         0.02708812833330
+ total gpp             of the domain (gt-c/yr) :         0.04842652832719
+ total biomass         of the domain (gt-c)    :         0.00178798808371
+ aboveground litter    of the domain (gt-c)    :         0.00003483536051
+ belowground litter    of the domain (gt-c)    :         0.00020910483595
+ total soil carbon     of the domain (gt-c)    :         0.01046288335585
+ total soil co2 flux   of the domain (gt-c)    :         0.01214628318983
+ aboveground litter n  of the domain (gt-c)    :         0.00001733094758
+ belowground litter n  of the domain (gt-c)    :         0.00000836582386
+ total soil nitrogen   of the domain (gt-c)    :         0.00070208905457
+  
+ average precipitation of the domain (mm/yr)   :      1505.78411896836883
+ average aet           of the domain (mm/yr)   :       959.05872548035325
+ average transpiration of the domain (mm/yr)   :       303.04925319316203
+ average runoff        of the domain (mm/yr)   :       538.24790537248134
+ average surf runoff   of the domain (mm/yr)   :       497.58544703145805
+ average drainage      of the domain (mm/yr)   :        40.66245834102332
+ average moisture recharge of domain (mm/yr)   :         8.43188965681356
+  
+ total aet      / precipitation                :         0.63691648317915
+ total runoff   / precipitation                :         0.35745356760785
+  
+ transpiration  / total aet                    :         0.31598612800418
+ surface runoff / total runoff                 :         0.92445403328995
+  

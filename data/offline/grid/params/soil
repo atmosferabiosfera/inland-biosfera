@@ -1,0 +1,257 @@
+# IBIS parameter set: ibis 2.5      Set up by D.T. Price. 2001/01/20
+#
+# Modified to include several parameters used by Optis, the parameter 
+# optimizer for Inland
+# Optis will be distributed only in the second version of Inland
+#
+#========================================================================
+# params.soi : soil parameters....
+#========================================================================
+#
+# #, *, c, C, ! or / denote comments in this file. Input routine 
+# will ignore any text to the right of these symbols, anywhere they 
+# occur....  So feel free to comment freely! There are only two 
+# rules to observe when placing data and comments in this file.
+# Rule 1: data must be in the correct order, as indicated below, but
+#         lines can be separated by blanks or comments and individual
+#         fields can be separated by blanks or line-ends any way you 
+#         like.
+# Rule 2: you MAY NOT join any consecutive lines of data. In general
+#         this is not a problem so long as the existing sequence of
+#         line-ends and commented separators is retained. In principle, 
+#         you are free to remove comment lines, but if at a later date
+#         you attempt to join two consecutive lines of data, where the
+#         input routine is not expecting this, it *will* break the 
+#         program (though not irreparably).
+# Rule 3: THERE IS NO RULE 3!!!
+
+#   nsoilay is now specified in compar.h
+#   6   ! nsoilay : number of soil layers (actually a constant in comsoi.h)
+#        !           could be read in here, if a new constant, maxsoilay,
+#        !           was introduced to dimension the soil layer arrays  
+
+#------------------------------------------------------
+# Soil layer thicknesses (m) 
+# N.B. Number of layers must equal nsoilay!!!
+#------------------------------------------------------
+  0.10  ! hsoi(1)
+  0.15  ! hsoi(2)
+  0.25  ! hsoi(3)
+  0.50  ! hsoi(4)
+  1.00  ! hsoi(5)
+  4.00  ! hsoi(6)
+#======================================================
+# Number of layers necessary to get to 1 m depth - 
+# for biogeochem calculations :nslaym
+#------------------------------------------------------
+4
+
+
+#------------------------------------------------------
+# Other miscellaneous soil parameters
+#------------------------------------------------------
+
+  0.10  ! bperm   : soil hydraulic diffusivity lower b.c. (units???)
+  4.5   ! wpudmax : normalization constant for puddles (kg m-2)  
+  0.5   ! zwpmax  : maximum value of zwpud (currently assumed to be 0.5)
+  11    ! nsoi    : number of soil texture classes
+#======================================================
+
+
+#------------------------------------------------------
+# Soil properties data from Rawls et al. (1992)
+# Organic properties data compiled by Mustapha El Maayar (2000)
+# Organic FC and WP taken from Nijssen et al., 1997 (JGR; table 3 OBS-top)
+
+#------------------------------------------------------
+# Variable column header definitions
+#------------------------------------------------------
+# Sand     : sand fraction
+# Silt     : silt fraction
+# Clay     : clay fraction
+# Porosity : porosity (volume fraction)
+# FC       : field capacity (volume fraction)
+# WP       : wilting point (volume fraction)
+# bexp     : Campbell's 'b' exponent
+# AEP      : air entry potential (m-H20)
+# SHC      : saturated hydraulic conductivity (m s-1)
+# cpwfdat  : capillary pressure at the wetting front for Green-Ampt infiltration model ! Castanho Kai 
+#------------------------------------------------------------------------------------------------------
+#  Sand   Silt   Clay  Porosity    FC      WP    bexp    AEP       SHC        cpwfdat 	Texture class
+#------------------------------------------------------------------------------------------------------
+   0.92   0.05   0.03    0.437    0.091   0.033    1.7   0.07   5.83300E-05  0.0495		! Sand
+   0.81   0.12   0.07    0.437    0.125   0.055    2.1   0.09   1.69720E-05  0.0613		! Loamy Sand
+   0.65   0.25   0.10    0.453    0.207   0.095    3.1   0.15   7.19440E-06  0.1101		! Sandy Loam
+   0.42   0.40   0.18    0.463    0.270   0.117    4.5   0.11   3.66670E-06  0.0889		! Loam
+   0.20   0.65   0.15    0.501    0.330   0.133    4.7   0.21   1.88890E-06  0.1668		! Silty Loam
+   0.60   0.13   0.27    0.398    0.255   0.148    4.0   0.28   1.19440E-06  0.2185		! Sandy Clay Loam
+   0.32   0.34   0.34    0.464    0.318   0.197    5.2   0.26   6.38890E-07  0.2088		! Clay Loam
+   0.09   0.58   0.33    0.471    0.366   0.208    6.6   0.33   4.16670E-07  0.2730		! Silty Clay Loam
+   0.53   0.07   0.40    0.430    0.339   0.239    6.0   0.29   3.33330E-07  0.2390		! Sandy Clay
+   0.10   0.45   0.45    0.479    0.387   0.250    7.9   0.34   2.50000E-07  0.2922		! Silty Clay
+   0.20   0.20   0.60    0.475    0.396   0.272    7.6   0.37   1.66670E-07  0.3163		! Clay
+#   0.00   0.00   0.00    0.800    0.600   0.200    7.6   0.37   1.00000E-05  xxx		! Organic - TBA
+#======================================================================================================
+
+#----------------------------------------------------------------------
+# Decomposition pool/transformation parameters (see also Kucharik 
+# et al. 2000)
+
+#----------------------------------------------------------------------
+# lig_frac: split of lignified litter material between protected and
+# non-protected slow OM pools
+#----------------------------------------------------------------------
+      0.50 
+
+#----------------------------------------------------------------------
+# fbsom: protected biomass as a fraction of total soil organic carbon
+# from Verberne et al., 1990
+#----------------------------------------------------------------------
+      0.017
+
+#----------------------------------------------------------------------
+# effac: efficiency of microbial biomass reincorporated into biomass
+# pool (from NCSOIL parameterizations; Molina et al., 1983)
+#----------------------------------------------------------------------
+      0.40 
+
+#======================================================================
+# Define C:N ratios of substrate pools and biomass: 
+# Values for metabolic and structural plant material and for lignin are 
+# from Parton et al., 1987 and Whitmore and Parry, 1988, indexed as follows:
+#      cnr(1): c:n ratio of microbial biomass
+#      cnr(2): c:n ratio of passive soil carbon
+#      cnr(3): c:n ratio of protected slow soil carbon
+#      cnr(4): c:n ratio of non-protected slow soil C
+#      cnr(5): c:n ratio of resistant litter lignin
+#      cnr(6): c:n ratio of structural plant (leaf and root) litter
+#      cnr(7): c:n ratio of metabolic (plant and root) litter
+#      cnr(8): c:n ratio of woody biomass components
+
+#---------------------------------------------------------------------
+#  cnr(1)  cnr(2)  cnr(3)  cnr(4)  cnr(5)  cnr(6)  cnr(7)  cnr(8)
+#---------------------------------------------------------------------
+     8.0    15.0    10.0    15.0   100.0   150.0     6.0   250.0 
+#=====================================================================
+
+# Miscellaneous other C:N factors...
+#      fmax  : maximum fraction allowed in resistant fraction
+#      rconst: rconst is a constant defined as 1200 [Huh?]
+#      h20   : C leaching fudge factor
+#      cnleaf: average c:n ratio for leaf litterfall #not used 
+#      cnroot: average c:n ratio for root turnover     
+#      cnwood: average c:n ratio for woody debris    #not used
+
+#---------------------------------------------------------------------
+#  fmax   rconst   cnleaf   cnwood   cnroot   h20
+#---------------------------------------------------------------------
+   0.45   1200.0   40.0     200.0    60.0     0.30e-03
+#=====================================================================
+
+#--------------------------------------------------------------------------------------
+#      co       ! initial inorganic nitrogen in soil storage pools 
+#      cf       ! buffering constant for inorganic N in soil solution
+#      fnitrate ! fraction of leached inorganic nitrogen that is nitrate - other portion is ammonium
+#      nloss    ! fraction of immobile inorganic nitrogen that is lost annually to volatilization/denitrification 
+#---------------------------------------------------------------------
+#  co       cf     fnitrate   nloss   cndepth
+#---------------------------------------------------------------------
+   0.0050   0.07   0.90       0.50    0
+#=====================================================================
+#--------------------------------------------------------------------------------------
+
+# Specific maximum decay rate or growth constants; rates are per day.
+# Constants are taken from Parton et al., 1987 and Verberne et al., 1990
+# and special issue of Geoderma (comparison of 9 organic matter models) in Dec. 1997
+
+# Leaching parameterization was changed to agree with field data, and led to 
+# changes in the values of the constants given below.  
+
+# Approximate factors for Verberne et al. model where efficiencies are 100%
+# for some of the transformations: one problem was that their rate constants were
+# based on 25C, and our modifying functions are based on 15 C...thus the rate constants
+# are somewhat smaller compared to the Verberne et al. (1990) model parameters.
+# Rates are based on a daily decomposition timestep (per day)
+#--------------------------------------------------------------------------------------
+
+#      klm: dpm leaf litter --> microbial biomass
+#      kls: spm leaf litter --> microbial biomass
+#      kll: rpm leaf litter --> non or protected om
+#      krm: dpm root litter --> microbial biomass
+#      krs: spm root litter --> microbial biomass
+#      krl: rpm root litter --> non or protected om 
+#      kwm: dpm woody litter --> microbial biomass
+#      kws: spm woody litter --> microbial biomass
+#      kwl: rpm woody litter --> non or protected om 
+
+#---------------------------------------------------------------------
+#   klm    kls    kll    krm    krs    krl    kwm    kws    kwl
+#---------------------------------------------------------------------
+  0.150  0.010  0.010  0.100  0.005  0.005  0.001  0.001  0.001 
+#=====================================================================
+
+#      kbn: biomass --> non protected organic matter 
+#      kbp: biomass --> protected organic matter
+#      knb: non-protected om --> biomass
+#      kns: non-protected om --> stabilized om
+#      kpb: protected om --> biomass
+#      kps: protected om --> stabilized om
+#      ksb: stabilized om --> biomass
+
+#---------------------------------------------------------------------
+#   kbn     kbp     knb     kns     kpb     kps     ksb
+#---------------------------------------------------------------------
+  0.045   0.005   0.001 1.0e-06  0.0001 1.0e-06 8.0e-07
+#=====================================================================
+
+# Yields (efficiencies) with which microbes gain biomass from C 
+# source; the rest is driven off as CO2 (microbial respiration). All 
+# microbial CO2 is assumed to leave the soil profile over the course 
+# of a year. Values are taken primarily from the models of Verberne 
+# and from CENTURY.
+#----------------------------------------------------------------------
+
+#      ylm: efficiency for metabolic plant material - leaf matter
+#      yrm: efficiency for metabolic plant material - root matter
+#      ywm: efficiency for metabolic plant material - woody matter
+#      yls: efficiency for structural plant material - leaf matter
+#      yrs: efficiency for structural plant material - root matter
+#      yws: efficiency for structural plant material - woody matter
+#      yll: plant material resistant fraction - leaf matter
+#      yrl: plant material resistant fraction - root matter
+#      ywl: plant material resistant fraction - woody matter
+
+#---------------------------------------------------------------------
+#   ylm    yrm    ywm    yls    yrs    yws    yll    yrl    ywl
+#---------------------------------------------------------------------
+   0.40   0.40   0.40   0.30   0.30   0.30   1.00   1.00   1.00
+#=====================================================================
+
+#      ybn: biomass       --> non-protected pool
+#      ybp: biomass       --> protected pool
+#      yps: protected     --> passive
+#      yns: non-protected --> passive
+#      ysb: passive pool  --> biomass
+#      ypb: protected     --> biomass
+#      ynb: non-protected --> biomass
+
+#---------------------------------------------------------------------
+#   ybn     ybp     yps     yns     ysb     ypb     ynb
+#---------------------------------------------------------------------
+   1.00    1.00    1.00    1.00    0.20    0.20    0.25
+#=====================================================================
+#
+# Additional parameters identified by optis calibration tool
+#   This first block is for initial values of these variables.
+#   They were all renamed from <name>_coef to <name> as they are the 
+# initial value for the variable itself. - fzm
+#   Note: in parenthesis the original name used on Optis' IBIS
+#
+# stressfac: moisture stress factor
+# wsoi: fraction of soil pore space containing liquid water
+# kfactor: Constants' fixed factor, common on leaf, root and wood litter,
+#         biomass and carbon pools (used in soilbgc subroutine) - fzm
+#
+-5.0 # stressfac (stressf_coef)
+0.50 # wsoi (wsoi_coef)
+1.   # kfactor
