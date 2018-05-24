@@ -1,0 +1,1 @@
+This folder contains scripts that extract data from various gridded NetCDF inland input files into sparse NetCDF's for use with sparse mode, based on a tab-delimited list of lat lon points
