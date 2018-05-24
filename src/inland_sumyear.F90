@@ -245,12 +245,6 @@ end if
                        aynpp(i,10) + aynpp(i,11) + aynpp(i,12)
        endif
 
-         !if(i.eq.1) then 
-         ! do np= 1,npft
-         !  print*,i,np,aynpp(i,np)
-         ! enddo
-         ! read(*,*)
-         !endif
 ! ---------------------------------------------------------------------
 ! * * * annual carbon budget terms * * *
 ! ---------------------------------------------------------------------

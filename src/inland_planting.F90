@@ -192,7 +192,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                         croplive(i,j)  = 1.0         
                         cropplant(i,j) = 1.0         
                         idop(i,j) = jday     
-
+                       
                         if (j .eq. 13) soydop(1,iyear-iyear0+5) = jday
                         if (j .eq. 14) corndop(1,iyear-iyear0+5) = jday
                         if (j .eq. 15) whtdop(1,iyear-iyear0+5) = jday
@@ -208,7 +208,8 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                         cdays(i) .ge. pstart(i,j)) then 
                         croplive(i,j) = 1.0
                         cropplant(i,j) = 1.0         
-                        idop(i,j) = jday     
+                        idop(i,j) = jday
+                        
                         if (j .eq. 13) soydop(1,iyear-iyear0+5) = jday
                         if (j .eq. 14) corndop(1,iyear-iyear0+5) = jday
                         if (j .eq. 15) whtdop(1,iyear-iyear0+5) = jday
@@ -222,6 +223,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 ! insert here - do iy from iyear-5 to iyear-1 --> previous 5 year mean of hybrids planted
 !FIXME: gabriel abrahao: This is already implemented, but causes problems in tropical regions and is overriden right below it. See below for more information.
 ! keep planting date flexible for that year's weather conditions
+
                      yc = 5.0
                      do iy = iyear-5,iyear-1     ! hybrid based on previous 5 year average - farm management 
                         if (j .eq. 13) then 
@@ -248,12 +250,11 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                            gddmaturity(i,j) = max(950.,min(avehybrid(i,j), hybgdd(j)))
 
                      endif
-                  endif 
+                  endif  
 !FIXME: gabriel abrahao: this basically overrides the last lines of code that change the hybrid's GDD in an adaptation strategy based on the distance between freeze events. The reason is that this obviously doesnt make sense in tropical regions where there's no freezing, and the last lines of code will basically set the hybrid to a 950 GDD one. It would be interesting to implement a different strategy here for when there is no freeze, though, probably based on the length of the rainy season on that pixel.
 !override gddmaturity
-gddmaturity(i,j) = hybgdd(j)
-
-  
+                  gddmaturity(i,j) = hybgdd(j)
+ 
                endif
 
 		if (cropy(i).eq.0) then
@@ -287,10 +288,11 @@ gddmaturity(i,j) = hybgdd(j)
                      if(gddsgcp(i,1) .eq. 0) gddsgcp(i,1)=0.000000000000001
                      if(gddsgcp(i,2) .eq. 0) gddsgcp(i,2)=0.000000000000001
                            gddmaturity(i,16) = max(gdd12(i)*0.8, min (gddsgc(i,iyear-iyear0+5-1), hybgdd(j))) ! assign hybrid based on last year
+
                            gddmaturity(i,j) = gddmaturity(i,j)*(gddsgcp(i,1)/gddsgcp(i,2))
  
-                endif
-             else 
+                        endif
+                     else 
                         sumdp(i,j) = 0
                         sumhy(i,j) = 0
 

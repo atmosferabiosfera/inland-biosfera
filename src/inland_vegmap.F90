@@ -55,6 +55,7 @@ subroutine vegmap
 !
 ! crop biomass -- as used as an overriding condition for
 ! determining a vegetation class
+! why is not cropbio defined for every point if its calculation is based on biomass(i,j)? - ET
 !
         cropbio  = 0.
         do 105 j = scpft, ecpft
@@ -211,7 +212,11 @@ subroutine vegmap
 !
         if (gdd0(i).lt.100.0)         vegtype0(i) = 15.0  ! polar desert
 !
+
+    if(isimagro .gt. 0) then
         if (cropbio .gt. 0.0)         vegtype0(i) = 16.0  ! croplands
+     end if
+
 !
  100  continue
 !

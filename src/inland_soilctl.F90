@@ -155,8 +155,10 @@ subroutine soilctl(kpti, kptj)
 !     to small amounts of negative wpud (in soilh2o) due to
 !     round-off error
 
-! isinfilt - Infiltration Function - 0: according to Darcy (1856); 1: according to Green-Ampt (1911) (default 0)
+      if(isimagro .gt. 0) zdpud = rhow * dtime * max (dble(0.), 1.-wisoi(i,1))**2 * hydraul(i,1)
 
+! isinfilt - Infiltration Function - 0: according to Darcy (1856); 1: according to Green-Ampt (1911) (default 0)
+      if(isimagro .eq.0)then
        if (isinfilt.eq.0) then
 
           zdpud = rhow * dtime * max (dble(0.), 1.-wisoi(i,1))**2 * hydraul(i,1)
@@ -174,7 +176,8 @@ subroutine soilctl(kpti, kptj)
                   +  sqrt((max (dble(0.), 1.-wisoi(i,1))**2*hydraul(i, 1) * 1000.0 * dtime - 2.0 * fwpudtot(i)) ** 2        &
                   +  8.0 * max (dble(0.), 1.-wisoi(i,1))**2*hydraul(i, 1) * 1000.0 * dtime * (cpwf(i, layerno) * 1000 *     &
                   dtsw + fwpudtot(i))))
-       endif            
+       endif 
+      endif !end of isimagro           
 
 
          fwpud(i) = max (dble(0.), min (wpud(i), zdpud)) / dtime
@@ -362,6 +365,7 @@ subroutine soilctl(kpti, kptj)
          chav = ch2o*wpud(i) + cice*wipud(i) + rwork
          tsoi(i,k) = tmelt + (dh(i)-hfus*dw(i)) / chav
 500   continue
+    if(isimagro .eq. 0)then
 !     if (ipointout .eq. 1 .and. myid .eq. 0) then
       if (ipointout .eq. 1) then
          i = 1001
@@ -415,5 +419,6 @@ subroutine soilctl(kpti, kptj)
 !           call flush(2102)
          end if
       endif
+     endif !end of isimagro
       return 
 end subroutine soilctl

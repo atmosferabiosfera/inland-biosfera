@@ -232,10 +232,12 @@ end if
          amnpp(i,11) = ((nmtimes-1) * amnpp(i,11) + tnpp(i,11) * rwork3) * rwork
          amnpp(i,12) = ((nmtimes-1) * amnpp(i,12) + tnpp(i,12) * rwork3) * rwork
 
-         amnpptot(i) = amnpp(i,1) + amnpp(i,2)  + amnpp(i,3)  + amnpp(i,4) + &
-                       amnpp(i,5) + amnpp(i,6)  + amnpp(i,7)  + amnpp(i,8) + &
-                       amnpp(i,9) + amnpp(i,10) + amnpp(i,11) + amnpp(i,12)
-
+         if (isimagro .eq. 0) then
+                amnpptot(i) = amnpp(i,1) + amnpp(i,2)  + amnpp(i,3)  + amnpp(i,4) + &
+                              amnpp(i,5) + amnpp(i,6)  + amnpp(i,7)  + amnpp(i,8) + &
+                              amnpp(i,9) + amnpp(i,10) + amnpp(i,11) + amnpp(i,12)
+         endif
+ 
          if (isimagro .gt. 0) then
              amnpp(i,13)  = ((nmtimes-1) * amnpp(i,13)  + tnpp(i,13)  * rwork3) * rwork
              amnpp(i,14) = ((nmtimes-1) * amnpp(i,14) + tnpp(i,14) * rwork3) * rwork

@@ -103,7 +103,7 @@ subroutine rdday(jday, istyr, iwest, jnorth)
          write (*,*) 'make sure INLAND_DATADIR is set to proper path and that file exists'
          stop 1
       end if
-
+      write(*,*)dim(xinprecd),dim(icount)
       call readvar(filen,aname,xinprecd,istart,icount,0,istat)
       if (istat.lt.0) goto 9999
 

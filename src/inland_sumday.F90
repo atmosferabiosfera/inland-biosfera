@@ -54,8 +54,10 @@ subroutine sumday (mcsec, loopi, kpti, kptj)
       if (mcsec .eq. 0) then
          ndtime(loopi) = 0
          do i = kpti, kptj
+           if(isimagro .eq. 0)then
             gdd0this(i) = gdd0this(i) + max(dble(0.), (td(i) - 273.16))
             gdd5this(i) = gdd5this(i) + max(dble(0.), (td(i) - 278.16))
+           endif
          end do
          adburnfrac(:) = 0
       end if
@@ -175,7 +177,7 @@ end if
          awc      = 0.0
 
 ! averages for first 2 layers of soil
-         do 110 k = 1, 2
+         do 110 k = 1, 3
             soiltemp =  soiltemp + tsoi(i,k)  * hsoi(k)
             soilmois =  soilmois + wsoi(i,k)  * hsoi(k)
             soilice  =  soilice  + wisoi(i,k) * hsoi(k)
@@ -189,10 +191,10 @@ end if
       if(isimagro .gt. 0) then
         do  k = 4, 6
           soilmois2 =  soilmois2 + wsoi(i,k)  * hsoi(k)
-	    enddo
+	enddo
 
           soilmois2 = soilmois2 / (hsoi(4)+hsoi(5)+hsoi(6))
-      endif
+      endif !isimagro
 
 !
 ! calculate average root temperature, soil temperature and moisture and 
@@ -238,7 +240,7 @@ end if
          adtlaysoi(i) = ((ndtimes-1) * adtlaysoi(i) + tsoi(i,1)) * rwork
          adwlaysoi(i) = ((ndtimes-1) * adwlaysoi(i) + wsoi(i,1)) * rwork
 
-        if (istep .eq. 24) then
+!        if (istep .eq. 24) then
 
 !          if((iyear.eq.2009.and.jday.ge.353).or.(iyear.eq.2010.and.jday.le.115)) then
           if(imetyear .ne. 9999) then
@@ -248,7 +250,7 @@ end if
                          ,(adwsoi(i)*0.4 + adwsoi2(i)*0.6)*poros(1,1)*50.*10.            &
                          ,adtrunoff(i),adsrunoff(i),addrainage(i)
 	
-          endif
+!          endif
 
 	endif
 

@@ -67,7 +67,7 @@ subroutine iniveg (isimveg, irestart)
       if (irestart .eq. 0) then
 
 ! we are already initializing TD using the weather generator if not coupled
-           a10td(:) = 273.16
+!           a10td(:) = 273.16
            a11soiltd(:) = 273.16
            daylength(:) = 0.
            a3tdmin(:) = 0.
@@ -452,7 +452,7 @@ subroutine iniveg (isimveg, irestart)
 ! constrain ztop to be at least 0.5 meter lower than 
 ! zbot for upper canopy
 
-            ztop(i,2) =  35.0  !to match the tower, wind
+            ztop(i,2) =  5.0  !to match the tower, wind
           
          end if !end agro
 
@@ -502,9 +502,9 @@ subroutine iniveg (isimveg, irestart)
 ! constrain ztop to be at least 0.5 meter lower than 
 ! zbot for upper canopy
 
-               ztop(i,2) =  35.0  !to match the tower, wind
+               ztop(i,2) =  5.0  !to match the tower, wind
           
-           endif !end icropsum
+           endif !end isimagro
 
          end if  ! end restart if loop
 100   continue
@@ -515,6 +515,7 @@ subroutine iniveg (isimveg, irestart)
 !
 ! SANT -for the global crop model, we have to be specified for each culture..
     if(isimagro .gt. 0)then
+        chifuz = 0.65  !Pousa - this value was declared to compare with Agro-IBIS
       if (iwheattype .gt. 0) then
         chiflz = 0.65 
       else

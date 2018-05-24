@@ -106,24 +106,22 @@ subroutine dynaveg (iwest,jnorth)
       niter = 10
       rwork = 1. / float(niter)
 
-
 ! set fire disturbance depending on isimfire value
-      if (isimfire.eq.0) then ! fixed
+! 0: no fire disturbance (0%/yr), 1: natural const (0.5%/yr), 2: CTEM, 3: IBIS (default 1, ignored if isimveg=0)
+      if (isimfire.eq.0) then ! no fire disturbance (0%/yr)
+         disturbf(:) = 0.0
+      else if (isimfire.eq.1) then ! natural const (0.5%/yr)
          disturbf(:) = 0.005
-      else if (isimfire.eq.1) then ! dynam
-         ! this was formerly in fire subroutine
+      else if (isimfire.eq.2) then ! CTEM method
+         disturbf(:) = pfireyr(:)
+      else if (isimfire.eq.3) then ! former IBIS subroutine
          do i = lbeg, lend
             burn = firefac(i) * min (dble(1.0), totlit(i) / 0.200)
             disturbf(i) = 1.0 - exp(-0.5 * burn)
             disturbf(i) = max (dble(0.0), min (dble(1.0), disturbf(i)))
          end do
-      else if (isimfire.eq.2) then ! CTEM
-         disturbf(:) = pfireyr(:)
-      else if (isimfire.eq.3) then ! no fire
-         disturbf(:) = 0
-      else ! should not happen
-         disturbf(:) = 0
       endif
+
 ! initialize wood for gridcell
     if (isimagro .eq. 0) then
 
@@ -131,7 +129,7 @@ subroutine dynaveg (iwest,jnorth)
 ! disturbances caused by land use are set to 0, unless
 ! there is available data to be assimilated
       disturbl = 0.0
-      if (iyear.ge.iyrluc.and.iyear.le.iyrluc+nluc) then
+      if (iyear.ge.iyrluc.and.iyear.le.iyrluc+nluc.and.isimland.gt.0) then
          call rdlndtrans(iwest,jnorth)
       endif
 #endif
@@ -155,15 +153,8 @@ subroutine dynaveg (iwest,jnorth)
          cdisturb(i) = 0.0
          cdistinit = 0.0
 
-! set fixed disturbance regime
-         disturbf(i) = 0.005
+! set fixed disturbance regime other than fire
          disturbo(i) = 0.005
-
-! call fire disturbance routine
-! Update disturbf from the firemodel
-      if (isimfire.gt.0) then
-        disturbf(i) = pfireyr(i)
-      endif
 
 #ifndef SINGLE_POINT_MODEL
 ! ---------------------------------------------------------------------

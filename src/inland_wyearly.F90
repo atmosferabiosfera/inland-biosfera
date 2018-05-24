@@ -452,6 +452,15 @@ subroutine wyearly (nday)
       call writevar(filen,idies,'landusetype',landusetype,istart,icount,ftime,istat)
       if ( mlpt .gt. 1 ) call writevar(filen,idies,'tilefrac',tilefrac,istart,icount,ftime,istat)
 
+! last tilefrac tile is waterfrac
+      if ( mlpt .gt. 1 ) then
+         istart(3) = mlpt+1
+         icount(3) = 1
+         istart(4) = mstep
+         icount(4) = 1
+         
+         call writevar(filen,idies,'tilefrac',waterfrac,istart,icount,ftime,istat)
+      endif
 
 ! these vars have subgrid average
       if ( mlpt .gt. 1 )  then
@@ -627,7 +636,7 @@ subroutine wyearly (nday)
             ! eventually merge into main file
             call inifile(idiestile,filentile,'Inland', &
                          'inland wyearly - tiles',cdate,nlonsub,lonscale,nlatsub,latscale, &
-                         'tile','tile','none','Z',mlpt,tindex,'none', &
+                         'tile','tile','none','Z',mlpt+1,tindex,'none', &
                          tunits,'gregorian',istat)
 
             dimnames(3) = 'tile'
@@ -638,9 +647,7 @@ subroutine wyearly (nday)
                         ndims,dimnames,istat)
             call inivar(idiestile,'tilefrac','tile fraction','none',ndims,dimnames, &
                          istat)
-            call inivar(idiestile,'waterfrac','water fraction','none',ndims,dimnames, &
-                         istat)
-            call inivar_byte(idies,'landusetype','land use (1-4)','none',ndims,dimnames, &
+            call inivar_byte(idiestile,'landusetype','land use (1-4)','none',ndims,dimnames, &
                             istat)
             call inivar_int(idiestile,'itilechild','tile child index','none', &
                            ndims,dimnames,istat)
@@ -683,15 +690,12 @@ subroutine wyearly (nday)
       call writevar(filentile,idiestile,'tilefrac',tilefrac,istart,icount,ftime,istat)
 
 ! land use
-      call writevar(filen,idies,'landusetype',landusetype,istart,icount,ftime,istat)
+      call writevar(filen,idiestile,'landusetype',landusetype,istart,icount,ftime,istat)
 
 
 ! itileparent
       buffer = itileparent ! need to copy integer to real variable
       call writevar(filentile,idiestile,'itileparent',buffer,istart,icount,ftime,istat)
-
-      icount(3) = 1
-      call writevar(filentile,idiestile,'waterfrac',waterfrac,istart,icount,ftime,istat)
 
 ! itilechild
       ! itilechild is a 2D var, need to loop over mlpt
@@ -715,6 +719,19 @@ subroutine wyearly (nday)
 
       buffer1 = ntilechild
       call writevar(filentile,idiestile,'ntilechild',buffer1,istart,icount,ftime,istat)
+
+
+! last tile is waterfrac (vegtype=30)
+      istart(3) = mlpt+1
+      icount(3) = 1
+      istart(4) = mstep
+      icount(4) = 1
+
+      buffer1 = 30.
+      !print *,cdummy
+      call writevar(filentile,idiestile,'vegtype',buffer1,istart,icount,ftime,istat)
+      call writevar(filentile,idiestile,'tilefrac',waterfrac,istart,icount,ftime,istat)
+
 
       ! close file
       call closefile(idiestile,istat)
@@ -773,8 +790,8 @@ subroutine wyearly (nday)
          call inivar(idies,'grainn','nitrogen removed by grain - kg/ha', &
                     'kg/ha',ndims+1,dimnames,istat)
 
-         call inivar(idies,'cropyld','crop yield - grain(bu/ac) or stalk (t/ha)', &
-                    'bu/ac',ndims+1,dimnames,istat)
+         call inivar(idies,'cropyld','crop yield - grain(t/ha) or stalk (t/ha)', &
+                    't/ha',ndims+1,dimnames,istat)
 
          call inivar(idies,'dmyield','crop yield dry matter - Mg/ha', &
                     'Mg/ha',ndims+1,dimnames,istat)

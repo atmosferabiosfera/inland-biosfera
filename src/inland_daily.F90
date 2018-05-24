@@ -219,9 +219,9 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! 
 ! this is a simple linear interpolation technique that takes into
 ! account the length of each month 
-      it1w = 1
-      it1w = 1
-      dt = 1
+!      it1w = 1
+!      it1w = 1
+!      dt = 1
       if (jdaily .eq. 0) then
          if (float(iday).lt.float(ndaypm(imonth)+1)/2.0) then
             it1w = imonth - 1
@@ -887,15 +887,25 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! first estimate the expected daily average wind speed (from monthly
 ! means)
             eud = xinwind(i,it1w) + dt * (xinwind(i,it2w) - xinwind(i,it1w))
- 
+
 ! following logic of the EPIC weather generator
 ! select random wind speed following this equation
             ud(i) = 1.13989 * eud * (-log(ran2(seed,seed2,seed3,seed4)))**0.30 
+
+        if(isimagro .gt. 0)then
+           ud(i) = ud(i)*(1. + 0.79824*log((za(i)-0.65*ztop(i,2)) /&
+                      (0.35*ztop(i,2))))
+        endif
+
+!            if(isimagro .gt. 0) ud(i) = max (dble(2.5), min (dble(50.0), ud(i)))
+
  
 ! constrain daily wind speeds to be between 2.5 and 10.0 m/sec
-            ud(i) = max (dble(2.5), min (dble(10.0), ud(i)))
-
-            if(isimagro .gt. 0) ud(i) = max (dble(2.5), min (dble(50.0), ud(i)))
+            if(isimagro .gt. 0) then
+               ud(i) = max (dble(2.5), min (dble(50.0), ud(i)))
+            else 
+               ud(i) = max (dble(2.5), min (dble(10.0), ud(i)))
+            endif
 
 ! ---------------------------------------------------------------------- 
 ! * * * use real daily climate data * * *
@@ -1097,7 +1107,7 @@ endif
          gdd5this(i) = gdd5this(i) + max(dble(0.), (td(i) - 278.16))
     
 
-       if(isimagro .gt. 0) then
+       if(isimagro .gt. 0 .and. npoi .ne. 1) then
 
         gdd0cthis(i) = gdd0cthis(i) + max (0.0 ,(td(i) - baset(15)))    ! wheat
         gdd8this(i)  = gdd8this(i)  + max (0.0 ,(td(i) - baset(14)))    ! maize 
@@ -1113,69 +1123,70 @@ endif
 ! Journal of Climatology, 20: 929-932.  Changes in North American Spring 
 !       
 !
-!        if (tmin(i) .ge. 273.16) then
-!          consdays(i) = consdays(i) + 1
-!          maxcons(i)  = max(maxcons(i), consdays(i))
-!          if (maxcons(i) .eq. consdays(i)) then
+        if (tmin(i) .ge. 273.16) then
+          consdays(i) = consdays(i) + 1
+          maxcons(i)  = max(maxcons(i), consdays(i))
+          if (maxcons(i) .eq. consdays(i)) then
 !
-!            iniday(i) = cdays(i)+1 - maxcons(i)
-!          endif
+            iniday(i) = cdays(i)+1 - maxcons(i)
+          endif
 !
-!          daygddc(i,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14)))) 
-!          daygdds(i,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13)))) 
-!          daygddw(i,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(15)))) 
-!        daygddsgc(i,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16)))) 
+!         if(cdays(i) .eq. 367) cdays(i)=366
+          daygddc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14)))) 
+          daygdds(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13)))) 
+          daygddsgc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16)))) 
+
 !
-!         else
-!            consdays(i) = 0
-!         endif
+         else
+            consdays(i) = 0
+         endif
 !
-!         if (cdays(i).eq.365) then
+         if (cdays(i).eq.365) then
 !Growing-degree day 
-!            if (iniday(i) .eq. 9999) then
-!               iniday(i) = cdays (i)
-!               maxcons(i) = 1
-!            elseif (iniday(i) .eq. 0) then
-!	       iniday(i)=1
-!            endif      
-!               endday(i) = iniday(i) + maxcons(i)-1
+            if (iniday(i) .eq. 9999) then
+               iniday(i) = cdays (i)
+               maxcons(i) = 1
+            elseif (iniday(i) .eq. 0) then
+	       iniday(i)=1
+            endif      
+               endday(i) = iniday(i) + maxcons(i)-1
 
-!         do 125 k = iniday(i), endday(i)
+         do 125 k = iniday(i), endday(i)
+
+             gddfzcorn(i) =  gddfzcorn(i) + daygddc(1,cdays(i))
+             gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,cdays(i))
+             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,cdays(i))
+             gsdays(i) = gsdays(i) + 1
+
+
+ 125      continue
+
+              elseif (cdays(i).eq.366) then
+
+             if (iniday(i).eq.0) then
+                 iniday(i) = 1
+             endif     
+
+             endday(i) = iniday(i) + maxcons(i)-1
+
+             gddfzcorn(i) = 0.
+             gddfzsoy(i)  = 0.
+             gddfzsgc(i) =  0.
+             gsdays(i) =    0.
+
+
+
+         do  k = iniday(i), endday(i)
+
+             gddfzcorn(i) =  gddfzcorn(i) + daygddc(1,cdays(i))
+             gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,cdays(i))
+             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,cdays(i))
+             gsdays(i) = gsdays(i) + 1
 !
-!             gddfzcorn(i) =  gddfzcorn(i) + daygddc(i,cdays(i))
-!             gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(i,cdays(i))
-!             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(i,cdays(i))
-!             gsdays(i) = gsdays(i) + 1
-
-
-! 125      continue
-
-!              elseif (cdays(i).eq.366) then
-
-!             if (iniday(i).eq.0) then
-!                 iniday(i) = 1
-!             endif     
-
-!             endday(i) = iniday(i) + maxcons(i)-1
-
-!             gddfzcorn(i) = 0.
-!             gddfzsoy(i)  = 0.
-!             gddfzsgc(i) =  0.
-!             gsdays(i) =    0.
-
-
-
- !         do  k = iniday(i), endday(i)
-
-!             gddfzcorn(i) =  gddfzcorn(i) + daygddc(i,cdays(i))
-!             gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(i,cdays(i))
-!             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(i,cdays(i))
-!             gsdays(i) = gsdays(i) + 1
 !
+          enddo
 !
-!          enddo
-!
-!        endif
+        endif
 ! accumulate growing degree days for planted crops past planting
 !
         do 150 j = scpft, ecpft 

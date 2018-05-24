@@ -61,7 +61,7 @@ subroutine initialcrop (irestart)
          hui(:,:)=0.0
          aleaf(:,:)=0.0
          aroot(:,:)=0.0
-         astem(:,:)=0.0  
+         astem(:)=0.0  
          arepr(:)=0.0 
          awood(:,:)=0.0
          leafout(:,:)=0.0  
