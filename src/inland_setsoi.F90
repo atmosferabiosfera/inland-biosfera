@@ -79,8 +79,18 @@ subroutine setsoi(kpti, kptj)
                         * ((2.24*100.)**powice)
           endif
 
+!gabriel apagar
+!write(*,*) "nsoilay", nsoilay
+!if (i.eq.1) then
+!write(*,*) k, msand, fsand,consoi(i,k)
+!end if
+!write(*,*) "i = ",i
+
+!
+
 110      continue
 100   continue
+
 
 ! set qglif - the fraction of soil sfc evaporation from soil
 ! liquid (relative to total from liquid and ice)

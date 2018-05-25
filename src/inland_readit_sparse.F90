@@ -59,6 +59,8 @@ subroutine readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 ! ---------------------------------------------------------------------
       data istart / 1,1,1,1 /, icount / nlon,nlat,1,1 /
 
+!gabriel apagar
+write(*,*) 'Reading sparse matrices...'
 ! 2-d surface and vegetation arrays
 
 #ifndef SINGLE_POINT_MODEL
@@ -767,6 +769,14 @@ subroutine readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       do j = 1, nsoilay
          call arr2vec(cdummy((j-1)*nlonsub*nlatsub + 1), sand(1,j))
       end do
+
+!gabriel apagar
+! write(*,*) nsoilay
+! do i = 1,4
+! write(*,*) "------------------------------------",i,"-----------------------------------------------"
+! write(*,*) sand(i,:)
+! end do
+! stop
 
       filen = trim(datadir)//'/soita.clay.nc'
       aname = 'claypct'

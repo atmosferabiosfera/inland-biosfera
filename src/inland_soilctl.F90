@@ -59,6 +59,10 @@ subroutine soilctl(kpti, kptj)
          end do
       end do
 
+!gabriel apagar
+write(*,*) "hydraul(1,:)",hydraul(1,:)
+!stop
+
 ! for soil, set soil infiltration rate fwtop (for 
 ! soilh2o) and upper heat flux fhtop (for soilheat)
 !

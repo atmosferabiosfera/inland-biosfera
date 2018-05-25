@@ -514,7 +514,12 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       o2conc  = o2init
 
 ! read global boundary condition datasets
-      call readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
+! gabriel abrahao: call readit_sparse instead if we are reading sparse matrices
+      if (isparse.eq.0) then
+        call readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
+      else
+        call readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)        
+      end if
 #ifndef SINGLE_POINT_MODEL
       if(npoi .eq. 1) then
          call build_file
