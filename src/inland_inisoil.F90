@@ -161,16 +161,24 @@ subroutine inisoil (irestart)
 ! last layer (layer 6)
 ! analysis of the current WISE-IGBP soil textural dataset
 ! reveals very little information below 4 m.
+
+! gabriel abrahao: in order to make natural and agro more compatible, 
+! the default input files now have 11 layers, ending at 240cm. 
+! The information for the 240cm layer is the same as the 400cm layer
+! in the old default. Also, both parameter files have 12 layers
+! Its just a matter of repeating the 11th one for layers below it,
+! and the natural vegetation will be using essentially the same information
+! as before but solving the equations with more layers. 
       do 310 i = lbeg, lend 
          do 300 k = 1, nsoilay
 
 ! Convert input sand and clay percents to fractions
-            if (k.le.6) then
+            if (k.le.11) then
                msand = nint(sand(i,k))
                mclay = nint(clay(i,k)) 
             else
-               msand = nint(sand(i,6)) 
-               mclay = nint(clay(i,6)) 
+               msand = nint(sand(i,11)) 
+               mclay = nint(clay(i,11)) 
           endif
       if(isimagro .eq. 0) then
           fsand    = 0.01 * msand
@@ -206,7 +214,7 @@ subroutine inisoil (irestart)
 !
           lmin = textcls (msand,mclay)  !class from the global file.
 !gabriel apagar
-write(*,*) i,k,"lmin|",lmin, "msand|",mclay, "msand|",mclay
+write(*,*) i,k,"lmin|",lmin, "msand|",msand, "mclay|",mclay
 
 
           fracsand(i,k) = texdat(1,lmin)

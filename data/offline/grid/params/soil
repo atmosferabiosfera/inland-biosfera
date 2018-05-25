@@ -26,7 +26,7 @@
 # Rule 3: THERE IS NO RULE 3!!!
 
 #   nsoilay is now specified in compar.h
-#   6   ! nsoilay : number of soil layers (actually a constant in comsoi.h)
+#   12   ! nsoilay : number of soil layers (actually a constant in comsoi.h)
 #        !           could be read in here, if a new constant, maxsoilay,
 #        !           was introduced to dimension the soil layer arrays  
 
@@ -34,17 +34,23 @@
 # Soil layer thicknesses (m) 
 # N.B. Number of layers must equal nsoilay!!!
 #------------------------------------------------------
-  0.10  ! hsoi(1)
-  0.15  ! hsoi(2)
-  0.25  ! hsoi(3)
-  0.50  ! hsoi(4)
-  1.00  ! hsoi(5)
-  4.00  ! hsoi(6)
+  0.05  ! hsoi(1)
+  0.05  ! hsoi(2)
+  0.10  ! hsoi(3)
+  0.10  ! hsoi(4)
+  0.10  ! hsoi(5)
+  0.10  ! hsoi(6)
+  0.20  ! hsoi(7)
+  0.20  ! hsoi(8)
+  0.50  ! hsoi(9)
+  0.50  ! hsoi(10)
+  0.50  ! hsoi(11)
+  3.60  ! hsoi(12)
 #======================================================
 # Number of layers necessary to get to 1 m depth - 
 # for biogeochem calculations :nslaym
 #------------------------------------------------------
-4
+8
 
 
 #------------------------------------------------------

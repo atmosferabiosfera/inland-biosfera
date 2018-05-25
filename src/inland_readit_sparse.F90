@@ -753,14 +753,17 @@ write(*,*) 'Reading sparse matrices...'
 !
 ! icount(3) is the 6 layers used in soita.sand.nc soita.clay.nc
 
-      if ( nsoilay .ne. 6 ) then
+      !gabriel abrahao this used to be 6
+      if ( nsoilay .ne. 11 ) then
          write (*,*) ''
-         write (*,*) 'WARNING: nsoilay = ',nsoilay,' but should be 6!'
+         write (*,*) 'WARNING: nsoilay = ',nsoilay,' but should be 11!'
          write (*,*) 'fix me in inland_readit'
          !stop 1
       end if
 
-      icount(3) = 6 !nsoilay 
+      !icount(3) = 6 !nsoilay 
+      !gabriel abrahao this used to be 6
+      icount(3) = 11 !nsoilay in input file
       icount(4) = 1
       filen = trim(datadir)//'/soita.sand.nc'
       aname = 'sandpct'

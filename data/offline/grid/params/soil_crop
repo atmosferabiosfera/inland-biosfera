@@ -41,6 +41,7 @@
   0.50  ! hsoi(9)
   0.50  ! hsoi(10)
   0.50  ! hsoi(11)
+  3.60  ! hsoi(11)
 #======================================================
 # Number of layers necessary to get to 1 m depth - 
 # for biogeochem calculations :nslaym
