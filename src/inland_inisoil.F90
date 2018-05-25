@@ -149,6 +149,9 @@ subroutine inisoil (irestart)
 200 continue
     endif ! check for crop existence
 !
+!gabriel apagar
+!write(*,*) i,k,fsand
+
 ! create soil properties look-up table
 !
 ! set soil parameters at each layer for the global domain
@@ -175,6 +178,9 @@ subroutine inisoil (irestart)
           fsilt    = 0.01 * (100 - msand - mclay)
      endif
 
+!gabriel apagar
+!write(*,*) i,k,clay(i,k)
+
 ! for now, we assume that all soils have a 1% organic content -- 
 ! this is just a place holder until we couple the soil carbon
 ! dynamics to the soil physical properties
@@ -199,6 +205,9 @@ subroutine inisoil (irestart)
 ! no silt in IBIS so set CONUS silt equal to silt loam
 !
           lmin = textcls (msand,mclay)  !class from the global file.
+!gabriel apagar
+write(*,*) i,k,"lmin|",lmin, "msand|",mclay, "msand|",mclay
+
 
           fracsand(i,k) = texdat(1,lmin)
           fracsilt(i,k) = texdat(2,lmin)
