@@ -1,5 +1,5 @@
 input/
-output/
+output/*
 autom4te.cache/*
 src/*.o
 src/*.mod

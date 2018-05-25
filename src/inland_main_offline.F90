@@ -199,7 +199,7 @@ program main !main_offline!
 
 ! namelist declaration
 #ifndef SINGLE_POINT_MODEL
-      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims
+      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims, isparse
 #else
       namelist/INLAND_SINGLE_POINT/ iyear0, nrun, dtime, soilcspin, isimveg, isimfire, isoilforc, isimco2, co2init, o2init, isinfilt, isimrwu, snorth, ssouth, swest, seast
 #endif /* SINGLE_POINT_MODEL */
