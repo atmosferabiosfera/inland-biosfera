@@ -773,13 +773,6 @@ write(*,*) 'Reading sparse matrices...'
          call arr2vec(cdummy((j-1)*nlonsub*nlatsub + 1), sand(1,j))
       end do
 
-!gabriel apagar
-! write(*,*) nsoilay
-! do i = 1,4
-! write(*,*) "------------------------------------",i,"-----------------------------------------------"
-! write(*,*) sand(i,:)
-! end do
-! stop
 
       filen = trim(datadir)//'/soita.clay.nc'
       aname = 'claypct'

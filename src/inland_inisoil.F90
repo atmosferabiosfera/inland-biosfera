@@ -148,9 +148,7 @@ subroutine inisoil (irestart)
 #endif /* SINGLE_POINT_MODEL */
 200 continue
     endif ! check for crop existence
-!
-!gabriel apagar
-!write(*,*) i,k,fsand
+
 
 ! create soil properties look-up table
 !
@@ -186,8 +184,6 @@ subroutine inisoil (irestart)
           fsilt    = 0.01 * (100 - msand - mclay)
      endif
 
-!gabriel apagar
-!write(*,*) i,k,clay(i,k)
 
 ! for now, we assume that all soils have a 1% organic content -- 
 ! this is just a place holder until we couple the soil carbon
@@ -213,8 +209,7 @@ subroutine inisoil (irestart)
 ! no silt in IBIS so set CONUS silt equal to silt loam
 !
           lmin = textcls (msand,mclay)  !class from the global file.
-!gabriel apagar
-write(*,*) i,k,"lmin|",lmin, "msand|",msand, "mclay|",mclay
+
 
 
           fracsand(i,k) = texdat(1,lmin)

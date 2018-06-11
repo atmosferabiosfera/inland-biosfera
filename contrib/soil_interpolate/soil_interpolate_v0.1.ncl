@@ -3,12 +3,12 @@
 ;Currently it does not exactly interpolate, but instead pick values on the closest layer
 
 begin
-infname             =   "../../input/soita.sand.nc"
-varname               =   "sandpct"
-outfname            =   "soita.sand.nc"
-; infname             =   "../../input/soita.clay.nc"
-; varname               =   "claypct"
-; outfname            =   "soita.clay.nc"
+;infname             =   "../../input/soita.sand.nc"
+;varname               =   "sandpct"
+;outfname            =   "soita.sand.nc"
+ infname             =   "../../input/soita.clay.nc"
+ varname               =   "claypct"
+ outfname            =   "soita.clay.nc"
 
 ;Layer heights (downward) to interpolate to
 newhsoi =   (/0.05,0.05,0.10,0.10,0.10,0.10,0.20,0.20,0.50,0.50,0.50/)*100 ;The metadata is in centimeters
