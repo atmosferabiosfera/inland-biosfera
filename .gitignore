@@ -1,4 +1,4 @@
-input/
+input/daily/
 output/*
 data/offline/grid/output/*
 autom4te.cache/*
