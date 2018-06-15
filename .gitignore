@@ -1,4 +1,10 @@
 input/daily/
+conf
+output
+params
+inland-grid
+include/inland_config.h
+include/stamp-h1
 output/*
 data/offline/grid/output/*
 autom4te.cache/*
