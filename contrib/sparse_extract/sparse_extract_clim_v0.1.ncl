@@ -12,6 +12,7 @@ outfolder   = "../../../clim_input_sparse/"
 plistfname  = "points.list" ;lon lat, no headers, no trailing newlines
 
 timvname = "time"
+levvname = "level"
 latvname = "latitude"
 lonvname = "longitude"
 
@@ -19,6 +20,7 @@ fin = addfile(infolder + fname,"r")
 varin = fin->$vname$
 ;Also extract coordinate variables for ease of use later
 intime = varin&$timvname$
+inlevs = varin&$levvname$
 inlats = varin&$latvname$
 inlons = varin&$lonvname$
 
@@ -32,23 +34,26 @@ plons = plist(:,0)
 plats = plist(:,1)
 
 
-;The default structure is only latitude is a coordinate variable, and as such it must be sorted, and longitude is singleton
+;The default structure is only latitude is a coordinate variable, and as such it must be sorted, and longitude is singleton as well as level when applicable
 ;In line with the grid default, latitude is sorted from positive to negative
 permvec = dim_pqsort(plats, -1)
 plats = plats(permvec)
 plons = plons(permvec)
 
 ;Allocate output variable
-varout = new((/dimsizes(intime),dimsizes(plats),1/),typeof(varin))
+varout = new((/dimsizes(intime),dimsizes(inlevs),dimsizes(plats),1/),typeof(varin))
 varout!0 = timvname
-varout!1 = latvname
-varout!2 = lonvname
+varout!1 = levvname
+varout!2 = latvname
+varout!3 = lonvname
 
 ;Also copy metadata to coordvars
 outtime = intime
+outlevs = inlevs
 outlats = plats
 outlons = plons(0) ;Set as just the first point
 copy_VarAtts(intime, outtime)
+copy_VarAtts(inlevs, outlevs)
 copy_VarAtts(inlats, outlats)
 copy_VarAtts(inlons, outlons)
 
@@ -58,13 +63,14 @@ copy_VarAtts(inlons, auxlons)
 
 ;Assign coordinate variables. Remember that longitude is now singleton
 varout&$timvname$ = outtime
+varout&$levvname$ = outlevs
 varout&$latvname$ = outlats
 varout&$lonvname$ = outlons
 
 printVarSummary(varout)
 
 do i = 0,npoi-1
-    varout(:,i,0) = (/ varin(:,0,{plats(i)},{plons(i)}) /) ;Mind the singleton level here
+    varout(:,:,i,0) = (/ varin(:,:,{plats(i)},{plons(i)}) /) ;Mind the singleton level here
 end do
 
 

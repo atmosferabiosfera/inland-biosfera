@@ -61,6 +61,8 @@ subroutine readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 
 !gabriel apagar
 write(*,*) 'Reading sparse matrices...'
+write(*,*) nlon,nlat
+
 ! 2-d surface and vegetation arrays
 
 #ifndef SINGLE_POINT_MODEL
@@ -82,11 +84,16 @@ write(*,*) 'Reading sparse matrices...'
       icount = (/nlon,1,1,1/)
       call readvar(filen,aname,lonscale,istart,icount,-1,istat)
       if (istat.lt.0) goto 9999
+!gabriel apagar
+write(*,*) "lonscale:   ",lonscale
 
       aname = 'latitude'
       icount = (/nlat,1,1,1/)
       call readvar(filen,aname,latscale,istart,icount,-1,istat)
       if (istat.lt.0) goto 9999
+
+!gabriel apagar
+write(*,*) "latscale:   ",latscale
 
       ! now read other vars, reset icount
       icount = (/nlon,nlat,1,1/)
@@ -95,75 +102,90 @@ write(*,*) 'Reading sparse matrices...'
       call readvar(filen,aname,xmask,istart,icount,-1,istat)
       if (istat.lt.0) goto 9999
 
-      if (abs(abs(lonscale(1)-lonscale(2))-xres).gt.0.001 .or. abs(abs(latscale(1)-latscale(2))-yres).gt.0.001) then
-         write (*,9000)
-         write(*,*) 'resolution mismatch!'
-         write(*,*) 'xres, yres in inland_compar.h = ', xres, yres
-         write(*,*) 'xres, yres from '//trim(datadir)//'/surta.nc = ', &
-                    abs(lonscale(1)-lonscale(2)), abs(latscale(1)-latscale(2))
-         stop 1
-      end if
+      !!gabriel.abrahao: this check doesn't make sense for sparse. FIXME:Add some other check for sparse arrays
+      ! if (abs(abs(lonscale(1)-lonscale(2))-xres).gt.0.001 .or. abs(abs(latscale(1)-latscale(2))-yres).gt.0.001) then
+      !    write (*,9000)
+      !    write(*,*) 'resolution mismatch!'
+      !    write(*,*) 'xres, yres in inland_compar.h = ', xres, yres
+      !    write(*,*) 'xres, yres from '//trim(datadir)//'/surta.nc = ', &
+      !               abs(lonscale(1)-lonscale(2)), abs(latscale(1)-latscale(2))
+      !    stop 1
+      ! end if
 #endif /* SINGLE_POINT_MODEL */
 
-! subset the grid if not default whole grid
-      if (snorth.lt.latscale(1) .or. ssouth.gt.latscale(nlat) .or. &
-          swest.gt.lonscale(1) .or.  seast.lt.lonscale(nlon)) then
-         jnorth = 0
-        
-         if (snorth .lt. (latscale(nlat)+latscale(nlat-1))/2.) then
-            jnorth = nlat
-         elseif (snorth .ge. (latscale(1)+latscale(2))/2.) then
-            jnorth = 1
-         else
-            do j = nlat-1,1,-1
-               if (snorth .ge. (latscale(j)+latscale(j+1))/2.) jnorth = j
-            end do
-         end if
-         jsouth = 0
-         if (ssouth .lt. (latscale(nlat)+latscale(nlat-1))/2.) then
-            jsouth = nlat
-         elseif (ssouth .ge. (latscale(1)+latscale(2))/2.) then
-            jsouth = 1
-         else
-            do j = nlat-1,1,-1
-               if (ssouth .ge. (latscale(j)+latscale(j+1))/2.) jsouth = j
-            end do
-         end if
-!
-         iwest = 0
-         if (swest .lt. (lonscale(1)+lonscale(2))/2.) then
-            iwest = 1
-         elseif (swest .ge. (lonscale(nlon)+lonscale(nlon-1))/2.) then
-            iwest = nlon
-         else
-            do i = 2, nlon
-               if(swest .ge. (lonscale(i)+lonscale(i-1))/2.) iwest=i
-            end do
-         end if
-         ieast = 0
-         if (seast .lt. (lonscale(1)+lonscale(2))/2.) then
-            ieast = 1
-         elseif (seast .ge. (lonscale(nlon)+lonscale(nlon-1))/2.) then
-            ieast = nlon
-         else
-            do i = 2, nlon
-               if(seast .ge. (lonscale(i)+lonscale(i-1))/2.) ieast=i
-            end do
-         end if
-         nlonsub = ieast - iwest + 1
-         nlatsub = jsouth - jnorth + 1
-         istart(1) = iwest
-         icount(1) = nlonsub
-         istart(2) = jnorth
-         icount(2) = nlatsub
-      else
+!gabriel apagar
+write(*,*) "xmask:   :",xmask
+
+!gabriel.abrahao: in sparse it will be easier if we drop the domain functionality. Always use the whole grid.
          iwest = 1
          ieast = nlon
          jnorth = 1
          jsouth = nlat
          nlonsub = nlon
          nlatsub = nlat
-      end if
+
+! ! subset the grid if not default whole grid
+!       if (snorth.lt.latscale(1) .or. ssouth.gt.latscale(nlat) .or. &
+!           swest.gt.lonscale(1) .or.  seast.lt.lonscale(nlon)) then
+!          jnorth = 0
+        
+!          if (snorth .lt. (latscale(nlat)+latscale(nlat-1))/2.) then
+!             jnorth = nlat
+!          elseif (snorth .ge. (latscale(1)+latscale(2))/2.) then
+!             jnorth = 1
+!          else
+!             do j = nlat-1,1,-1
+!                if (snorth .ge. (latscale(j)+latscale(j+1))/2.) jnorth = j
+!             end do
+!          end if
+!          jsouth = 0
+!          if (ssouth .lt. (latscale(nlat)+latscale(nlat-1))/2.) then
+!             jsouth = nlat
+!          elseif (ssouth .ge. (latscale(1)+latscale(2))/2.) then
+!             jsouth = 1
+!          else
+!             do j = nlat-1,1,-1
+!                if (ssouth .ge. (latscale(j)+latscale(j+1))/2.) jsouth = j
+!             end do
+!          end if
+! !
+!          iwest = 0
+!          if (swest .lt. (lonscale(1)+lonscale(2))/2.) then
+!             iwest = 1
+!          elseif (swest .ge. (lonscale(nlon)+lonscale(nlon-1))/2.) then
+!             iwest = nlon
+!          else
+!             do i = 2, nlon
+!                if(swest .ge. (lonscale(i)+lonscale(i-1))/2.) iwest=i
+!             end do
+!          end if
+!          ieast = 0
+!          if (seast .lt. (lonscale(1)+lonscale(2))/2.) then
+!             ieast = 1
+!          elseif (seast .ge. (lonscale(nlon)+lonscale(nlon-1))/2.) then
+!             ieast = nlon
+!          else
+!             do i = 2, nlon
+!                if(seast .ge. (lonscale(i)+lonscale(i-1))/2.) ieast=i
+!             end do
+!          end if
+!          nlonsub = ieast - iwest + 1
+!          nlatsub = jsouth - jnorth + 1
+!          istart(1) = iwest
+!          icount(1) = nlonsub
+!          istart(2) = jnorth
+!          icount(2) = nlatsub
+!       else
+!          iwest = 1
+!          ieast = nlon
+!          jnorth = 1
+!          jsouth = nlat
+!          nlonsub = nlon
+!          nlatsub = nlat
+!       end if
+
+!gabriel apagar
+write(*,*) "ieast:   ",ieast,"jsouth:   ",jsouth,"nlonsub:   ",nlonsub,"nlatsub:   ",nlatsub
 
 ! Variables in inland parameter used for readit subroutine.
 ! Attach (via pointers) nlonsub/nlatsub to plona/plata from inland_compar
@@ -173,6 +195,9 @@ write(*,*) 'Reading sparse matrices...'
 ! Remember plona => nlonsub and plata => nlatsub on inland_prealloc!
       allocate(lmask(plona,plata))
       lmask(:,:) = 0
+
+!gabriel apagar
+write(*,*) "lmask:   ",lmask
 
 ! First, we calculate nlpoints
 ! At this point we cycle thru all the loop without changing anything.
@@ -197,6 +222,10 @@ write(*,*) 'Reading sparse matrices...'
             end if
          end do !i
       end do !j
+
+!gabriel apagar
+write(*,*) "nlpoints:   ",nlpoints
+stop
 
       write (*,9010) 
       write (*,9020) nlpoints
