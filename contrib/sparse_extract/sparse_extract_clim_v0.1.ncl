@@ -4,8 +4,9 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 begin
 
-;fname       = "surta.nc"
-;vname       = "surta"
+;Default values for example and testing purposes, should be commented in order to be set as command arguments in shell
+;fname       = "prec.mon.nc"
+;vname       = "prec"
 ;infolder    = "../../../clim_input/"
 ;outfolder   = "../../../clim_input_sparse/"
 
@@ -55,6 +56,9 @@ varout!1 = levvname
 varout!2 = latvname
 varout!3 = lonvname
 
+;Copy attributes (units, long_name, missing value, etc.)
+copy_VarAtts(varin,varout)
+
 ;Also copy metadata to coordvars
 outtime = intime
 outlevs = inlevs
@@ -85,6 +89,13 @@ end do
 ;Erase output file if exists, open it and write variables
 system("[ -e" + outfolder + fname + " ] && rm " + outfolder + fname)
 fout = addfile(outfolder + fname,"c")
+
+;Copy global attributes and set a new one
+copy_VarAtts(fin,fout)
+fout@sparse_comment = "Sparse array, singleton dummy longitude. Actual longitudes are in auxlongitude. Extracted with script " + get_script_prefix_name() + " on " + systemfunc("date")
+
+
+;Write output and auxiliary variables
 fout->$vname$ = varout
 fout->auxlongitude = auxlons
 fout->auxpid = pids
