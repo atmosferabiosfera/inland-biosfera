@@ -4,17 +4,23 @@ load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/contributed.ncl"
 
 begin
 
-fname       = "surta.nc"
-vname       = "surta"
-infolder    = "../../../clim_input/"
-outfolder   = "../../../clim_input_sparse/"
+;fname       = "surta.nc"
+;vname       = "surta"
+;infolder    = "../../../clim_input/"
+;outfolder   = "../../../clim_input_sparse/"
 
 plistfname  = "points.list" ;lon lat, no headers, no trailing newlines
 
 timvname = "time"
-levvname = "level"
+levvname = "level" ;This can change below
 latvname = "latitude"
 lonvname = "longitude"
+
+;Handle the cases where level is actually layer
+vcaseslayer=(/"sandpct","claypct"/)
+if (any(vcaseslayer.eq.vname)) then
+	levvname="layer"
+end if
 
 fin = addfile(infolder + fname,"r")
 varin = fin->$vname$

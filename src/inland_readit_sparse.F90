@@ -376,8 +376,6 @@ write(*,*) "ieast:   ",ieast,"jsouth:   ",jsouth,"nlonsub:   ",nlonsub,"nlatsub:
 
 ! ---------------------------------------------------------------------
 
-!gabriel apagar
-stop
 
 ! Now we write data to the structures.
 ! initialize lonindex, latindex for use in arr2vec, vec2arr, etc.
@@ -452,6 +450,9 @@ stop
          ii = i - iwest + 1
          lonscale(ii) = lonscale(i)
       end do
+
+!gabriel apagar
+stop
 
 ! ---------------------------------------------------------------------
 ! now we read topo, vegtype and clim input
