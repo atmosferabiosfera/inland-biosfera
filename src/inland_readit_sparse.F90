@@ -95,6 +95,23 @@ write(*,*) "lonscale:   ",lonscale
 !gabriel apagar
 write(*,*) "latscale:   ",latscale
 
+      !gabriel.abrahao read auxlongitude, that will contain the actual lon for each lat, so it is [nlat]
+      aname = 'auxlongitude'
+      icount = (/nlat,1,1,1/)
+      call readvar(filen,aname,auxlonscale,istart,icount,-1,istat)
+      if (istat.lt.0) goto 9999
+!gabriel apagar
+write(*,*) "auxlonscale:   ",auxlonscale
+
+      !gabriel.abrahao read auxpid, that will contain point ids for each lat, so it is [nlat]
+      aname = 'auxpid'
+      icount = (/nlat,1,1,1/)
+      call readvar(filen,aname,auxpid,istart,icount,-1,istat)
+      if (istat.lt.0) goto 9999
+!gabriel apagar
+write(*,*) "auxpid:   ",auxpid
+
+
       ! now read other vars, reset icount
       icount = (/nlon,nlat,1,1/)
 
@@ -111,6 +128,14 @@ write(*,*) "latscale:   ",latscale
       !               abs(lonscale(1)-lonscale(2)), abs(latscale(1)-latscale(2))
       !    stop 1
       ! end if
+      if (nlon.ne.1) then
+         write (*,9000)
+         write(*,*) 'nlon .ne. 1'
+         write(*,*) 'nlon in inland_compar.h = ', nlon
+         write(*,*) 'Should be 1 for sparse arrays, see READMEsparse.'
+         stop 1
+      end if
+
 #endif /* SINGLE_POINT_MODEL */
 
 !gabriel apagar
@@ -196,8 +221,7 @@ write(*,*) "ieast:   ",ieast,"jsouth:   ",jsouth,"nlonsub:   ",nlonsub,"nlatsub:
       allocate(lmask(plona,plata))
       lmask(:,:) = 0
 
-!gabriel apagar
-write(*,*) "lmask:   ",lmask
+
 
 ! First, we calculate nlpoints
 ! At this point we cycle thru all the loop without changing anything.
@@ -223,10 +247,6 @@ write(*,*) "lmask:   ",lmask
          end do !i
       end do !j
 
-!gabriel apagar
-write(*,*) "nlpoints:   ",nlpoints
-stop
-
       write (*,9010) 
       write (*,9020) nlpoints
       if ( mlpt .gt. 1 ) write (*,9030) mlpt
@@ -244,6 +264,8 @@ stop
          write(*,*) 'ERROR in readit - lend != npoi - must rewrite code that deals with npoi'
          stop 1
       end if
+
+
 
 ! ---------------------------------------------------------------------
 ! allocate variables dependant on npoi which will be used here, was in inland_prealloc
@@ -353,6 +375,9 @@ stop
       garea(:) = 0.
 
 ! ---------------------------------------------------------------------
+
+!gabriel apagar
+stop
 
 ! Now we write data to the structures.
 ! initialize lonindex, latindex for use in arr2vec, vec2arr, etc.

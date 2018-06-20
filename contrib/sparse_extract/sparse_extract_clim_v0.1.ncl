@@ -29,14 +29,16 @@ printVarSummary(varin)
 ;Read the points list, using wc to count lines beforehand
 npoi = toint(systemfunc("wc -l " + plistfname + "|grep -o '[0-9][0-9]*'"))
 print("Number of points (check first and last lines in input file): " + npoi)
-plist =  asciiread(plistfname, (/npoi,2/), "float")
-plons = plist(:,0)
-plats = plist(:,1)
+plist =  asciiread(plistfname, (/npoi,3/), "float")
+pids = plist(:,0)
+plons = plist(:,1)
+plats = plist(:,2)
 
 
 ;The default structure is only latitude is a coordinate variable, and as such it must be sorted, and longitude is singleton as well as level when applicable
 ;In line with the grid default, latitude is sorted from positive to negative
 permvec = dim_pqsort(plats, -1)
+pids = pids(permvec)
 plats = plats(permvec)
 plons = plons(permvec)
 
@@ -79,6 +81,7 @@ system("[ -e" + outfolder + fname + " ] && rm " + outfolder + fname)
 fout = addfile(outfolder + fname,"c")
 fout->$vname$ = varout
 fout->auxlongitude = auxlons
+fout->auxpid = pids
 
 
 end
