@@ -802,6 +802,7 @@ write(*,*) "ieast:   ",ieast,"jsouth:   ",jsouth,"nlonsub:   ",nlonsub,"nlatsub:
       call readvar(filen,aname,deltat,istart,icount,0,istat)
       if (istat.lt.0) goto 9999
 
+
 ! 3-d soil texture array
 !
 ! icount(3) is the 6 layers used in soita.sand.nc soita.clay.nc
@@ -834,6 +835,14 @@ write(*,*) "ieast:   ",ieast,"jsouth:   ",jsouth,"nlonsub:   ",nlonsub,"nlatsub:
       do j = 1, nsoilay
          call arr2vec(cdummy((j-1)*nlonsub*nlatsub + 1), clay(1,j))
       end do
+
+
+!gabriel apagar
+write(*,*) "shape(sand):   :",shape(sand) 
+write(*,*) "sand(1,:):   :",sand(1,:)
+write(*,*) "sand(2,:):   :",sand(2,:)
+write(*,*) "sand(3,:):   :",sand(3,:)
+stop
 
 ! 3-d climate arrays
       icount(3) = 1
