@@ -3,10 +3,10 @@
 ;Currently it does not exactly interpolate, but instead pick values on the closest layer
 
 begin
-;infname             =   "~/input_clim_meiograu/soita.sand.nc"
+;infname             =   "../../../base_input_1g/soita.sand.nc"
 ;varname               =   "sandpct"
 ;outfname            =   "soita.sand.nc"
-infname             =   "../../../clim_input/soita.clay.nc"
+infname             =   "../../../base_input_1g/soita.clay.nc"
 varname             =   "claypct"
 outfname            =   "soita.clay.nc"
 
