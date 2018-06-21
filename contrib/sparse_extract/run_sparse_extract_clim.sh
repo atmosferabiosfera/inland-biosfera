@@ -7,7 +7,8 @@ nclbin="ncl"
 
 nclscript="sparse_extract_clim_v0.1.ncl"
 
-infolder="../../../clim_input/"
+#infolder="../../../clim_input/"
+infolder="../../input/"
 outfolder="../../../clim_input_sparse/"
 
 #fname="surta.nc"
@@ -16,7 +17,13 @@ for fname in $(cd $infolder;ls *.nc); do
 	#Guess variable name
 	vname=$(echo $fname | sed 's/\([^.]*\)\..*/\1/')
 
-	#Handle clay and sand cases where there is an added "pct"
+	#Handle clay and sand filenames "soita."
+	if [ $vname = "soita" ] ; then
+		vname=$(echo $fname | sed 's/\([^.]*\)\.\([^.]*\)\..*/\2/')
+	fi
+
+
+	#Handle clay and sand variable cases where there is an added "pct"
 	if [ $vname = "sand" ] || [ $vname = "clay" ] ; then
 		vname=$vname"pct"
 	fi

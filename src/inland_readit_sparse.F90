@@ -451,8 +451,6 @@ write(*,*) "ieast:   ",ieast,"jsouth:   ",jsouth,"nlonsub:   ",nlonsub,"nlatsub:
          lonscale(ii) = lonscale(i)
       end do
 
-!gabriel apagar
-stop
 
 ! ---------------------------------------------------------------------
 ! now we read topo, vegtype and clim input
