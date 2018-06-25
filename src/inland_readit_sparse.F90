@@ -87,7 +87,8 @@ write(*,*) nlon,nlat
 !gabriel apagar
 write(*,*) "lonscale:   ",lonscale
 
-      aname = 'latitude'
+!gabriel.abrahao Here we read latscale from auxiliar variable auxlatscale, as they are both the same size
+      aname = 'auxlatitude'
       icount = (/nlat,1,1,1/)
       call readvar(filen,aname,latscale,istart,icount,-1,istat)
       if (istat.lt.0) goto 9999
@@ -842,7 +843,11 @@ write(*,*) "shape(sand):   :",shape(sand)
 write(*,*) "sand(1,:):   :",sand(1,:)
 write(*,*) "sand(2,:):   :",sand(2,:)
 write(*,*) "sand(3,:):   :",sand(3,:)
-stop
+
+!gabriel apagar
+write(*,*) 
+write(*,*) "========================================================================= CLIMATE clim ===================================================="
+write(*,*) 
 
 ! 3-d climate arrays
       icount(3) = 1
@@ -864,6 +869,14 @@ stop
       do ntime = 1,12
          call arr2vec(cdummy((ntime-1)*nlonsub*nlatsub + 1),clmt(1,ntime))
       end do
+
+!gabriel apagar
+write(*,*) "shape(clmt):   :",shape(clmt) 
+write(*,*) "clmt(1,:):   :",clmt(1,:)
+write(*,*) "clmt(2,:):   :",clmt(2,:)
+write(*,*) "clmt(3,:):   :",clmt(3,:)
+
+stop
 
       filen = trim(datadir)//'/trange.mon.nc'
       aname = 'trange'

@@ -5,7 +5,7 @@
 
 nclbin="ncl"
 
-nclscript="sparse_extract_clim_v0.1.ncl"
+nclscript="sparse_extract_clim_v0.2.ncl"
 
 #infolder="../../../clim_input/"
 infolder="../../input/"
