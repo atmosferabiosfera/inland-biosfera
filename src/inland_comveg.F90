@@ -187,6 +187,8 @@ module inland_comveg
 !     disturbl(npoi)      ! fraction of biomass pool lost every year to disturbances other than fire - now assigned to land transition
 !
       real*8, dimension(:,:), allocatable :: cbiol, cbior, cbiow
+      real*8, dimension(:,:), allocatable :: aycbiol, aycbior, aycbiow, ayplai !gabriel abrahao: year average of the biomass carbon pools and lai
+      real*8, dimension(:,:), allocatable :: dumcbiol, dumcbior, dumcbiow, dumplai !gabriel abrahao: dummy variables of biomass carbon pools and lai to hold their values while dynaveg makes calculations using average yearly values
 !
 !     cbiol(npoi,npft),   ! carbon in leaf biomass pool (kg_C m-2)
 !     cbior(npoi,npft),   ! carbon in fine root biomass pool (kg_C m-2)

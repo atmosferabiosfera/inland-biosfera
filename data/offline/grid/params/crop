@@ -77,11 +77,11 @@
 #    pdmin(npft)         ! earliest day in earliest month to plant (day)
 #    pcm(npft)           ! Planting Calendar month (month)
 #    pcd(npft)           ! Planting Calendar day   (day)                           
-#important - plant. calendar (pcm/pdm) should be between harvest (pmmin/pdmin+mxmat) and planting (pmmin/pdmin) 
+#important - plant. calendar (pcm/pdm) shoul be between harvest (pmmin/pdmin+mxmat) and planting (pmmin/pdmin) 
 #------------------------------------------------------------------------------------------------------------------
 # ptemp  pmintemp  pmmin  pdmin  pcm    pcd     PFT
 #------------------------------------------------------------------------------------------------------------------
-  284.16  279.16    11     15      6      1    ! 13
+  284.16  279.16    12     8      6      1     ! 13
   283.16  279.16    10    15      6      1     ! 14
   280.16  272.16    4      1      1      1     ! 15
   283.16  279.16    11     1      11     1     ! 16
@@ -211,17 +211,8 @@
 #---------------------------------------------------------------------------------------------
 # cgrain    convfact    maxhi   fyield  cfrac  fnlfmx  fngrmx  sratio  rratio  fnopt    PFT
 #---------------------------------------------------------------------------------------------
-  0.45      10.0       0.40    0.85    0.50   0.06    0.065   0.40    0.75    0.0200 ! 13
-  0.43      10.0      0.65    1.00    0.50   0.015   0.017   0.05    0.75    0.0285 ! 14
-  0.45      10.0       0.60    1.00    0.45   0.009   0.0225  0.40    0.75    0.0075 ! 15
+  0.45      150.0       0.40    0.85    0.50   0.06    0.065   0.40    0.75    0.0200 ! 13
+  0.43      159.46      0.65    1.00    0.50   0.015   0.017   0.05    0.75    0.0285 ! 14
+  0.45      150.0       0.60    1.00    0.45   0.009   0.0225  0.40    0.75    0.0075 ! 15
   0.421     159.46     999.0    0.80    0.50   0.015   0.017   0.05    0.75    0.0285 ! 16
 #=============================================================================================
-#    grainmoisture(npft) ! grain moisture, must be between 0.08 and 0.16
-#--------------------
-#  grainmoisture  PFT
-#--------------------
-   0.0        ! 13 the value for this pft is 0.120 (when used grain moisture) 
-   0.0        ! 14 the value for this pft is 0.155 (when used grain moisture)
-   0.0        ! 15 the value for this pft is 0.135 (when used grain moisture)
-   999.9      ! 16
-#====================

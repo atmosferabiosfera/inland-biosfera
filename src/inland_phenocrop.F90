@@ -482,6 +482,7 @@ subroutine phenocrop (kpti,kptj)
        if(imetyear .ne. 9999) then        
 !sant - convertendo de kg.C/m2 para  tonelada MS/ha
           if(npoi .eq. 1)then
+            open (222, status='unknown', file='output/biomass.csv')
             write(222,42)iyear,jday,idpp(i,j),plai(i,j),plai(i,j)*grnfraccrop(i,j),             &
                          cbiol(i,j)*(1/0.45)*10.0,(aylprod(i,j)-cbiol(i,j))*(1/0.45)*10.0,      &
                          (aybprod(i,j)-ayrprod(i,j)-aylprod(i,j)-cbiog(i,j))*(1/0.45)*10.0,     &
@@ -522,6 +523,7 @@ subroutine phenocrop (kpti,kptj)
                         croplive(i,j) = 0.0
                         harvdate(i,j) = jday
                   endif
+
 
                   if (j .eq. 16) then   
                      if (cropy(i) .eq. 1) then

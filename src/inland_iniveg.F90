@@ -344,6 +344,12 @@ subroutine iniveg (isimveg, irestart)
                cbior(i,j) = 0.5 * cbiol(i,j)
                cbiow(i,j) = 0.0
 
+               !gabriel abrahao: initialize average yearly biomass pools to be used when isenescen.ge.1
+               aycbiol(i,j) = cbiol(i,j)
+               aycbior(i,j) = cbior(i,j)
+               aycbiow(i,j) = cbiow(i,j)
+              
+
 ! crop biomass storage -- stem and grain (fruit)
             if(isimagro .gt. 0)then
                cbios(i,j) = 0.0

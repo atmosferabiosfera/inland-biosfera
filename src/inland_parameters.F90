@@ -9,6 +9,15 @@ module inland_parameters
       save
 
       integer rddaydims  !Gabriel Abrahao: added in the namelist declaration in main_offline and used in rdday. 0 for reading daily data in 4d, 1 in 3d
+      integer isenescen  !Gabriel Abrahao: added in the namelist declaration in main_offline and used in rdday. 0 for reading daily data in 4d, 1 in 3d
+
+
+
+      real numherb  !Gabriel Abrahao: added in the namelist declarion in main_offline and used in dynaveg. Number of herbivores per hectare that will eat lower canopy pft's .ge. 9
+      real consherb  !Gabriel Abrahao: added in the namelist declarion in main_offline and used in dynaveg. Herbivory carbon consumption per year per herbivore (kgC year^-1 herbivore^-1)
+      real grazef !Gabriel Abrahao:  Grazing efficiency i.e. if this value =0.5 the biomass drop caused by herbivory will be 2x the consumption, the rest will go to the litter. 
+      integer nyrstherb !Gabriel Abrahao: Number of years before turning herbivory on
+      integer herbpft !Gabriel Abrahao: PFT that herbivores will eat
 
       integer myid       ! mpi process (same as iam in ccm)
       integer nproc      ! number of mpi processes (same as npes in ccm)

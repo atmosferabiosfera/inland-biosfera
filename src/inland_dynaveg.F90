@@ -4,7 +4,7 @@ subroutine dynaveg (iwest,jnorth)
 ! ---------------------------------------------------------------------
 
       use inland_parameters
-      use inland_control, only: isimfire,iyear,iyrluc,nluc,isimland
+      use inland_control, only: isimfire,iyear,iyrluc,nluc,isimland,iyear0
       use inland_compft
       use inland_comsoi
       use inland_comsum
@@ -156,6 +156,11 @@ subroutine dynaveg (iwest,jnorth)
 ! set fixed disturbance regime other than fire
          disturbo(i) = 0.005
 
+!gabriel apagar
+if (i.eq.1) then
+write(*,*) "falll 1   :",falll(1)
+end if
+
 #ifndef SINGLE_POINT_MODEL
 ! ---------------------------------------------------------------------
 ! * * * Balance between disturbances * * *
@@ -231,10 +236,44 @@ subroutine dynaveg (iwest,jnorth)
             do 10 nit = 1, niter
 
 ! determine litter fall rates
-               falll(i) = falll(i) + (cbiol(i,j) - cbiolmin(i,j)) / &
-                          tauleaf(j) * rwork
-               fallr(i) = fallr(i) + cbior(i,j) / tauroot(j) * rwork
-               fallw(i) = fallw(i) + cbiow(i,j) / tauwood(i,j) * rwork			! Castanho HP, 2013
+if ((nit.eq.1 .and. i.eq.1) .and. j .eq. 11) then
+write(*,*) "falll antes:     ",falll(1)
+write(*,*) "cbiol      :     ",cbiol(1,11)
+write(*,*) "aycbiol    :     ",aycbiol(1,11)
+write(*,*) "cbiolmin   :     ",cbiolmin(1,11)
+write(*,*) "tauleaf    :     ",tauleaf(11)
+write(*,*) "resultado  :     ",(cbiol(i,j) - cbiolmin(i,j)) / tauleaf(j)
+write(*,*) "resultado2 :     ",(aycbiol(i,j) - cbiolmin(i,j)) / tauleaf(j)
+write(*,*) "consumo    :     ",(numherb * 0.0001 * consherb/(1-grazef))
+write(*,*) "rwork      :     ",rwork
+if ((iyear - iyear0) .ge. nyrstherb) then
+write(*,*) "EATING ------ EATING ------ EATING ------ EATING ------ EATING ------ EATING ------ EATING",iyear,iyear0
+end if
+end if
+
+
+!gabriel abrahao: if isenescen is on, use yearly averages of biomass pools to calculate litter fall rates
+               if (isenescen.ge.1) then
+!gabriel abrahao: in case herbivory is happening, add (1-grazef) of the consumption to falll, but never add more than the current cbiol
+                  if (((iyear - iyear0) .ge. nyrstherb) .and. j.eq.herbpft) then
+                     falll(i) = falll(i) + min(aycbiol(i,j),((aycbiol(i,j) - cbiolmin(i,j))/tauleaf(j) + (numherb * 0.0001 * consherb/(1-grazef)))) * rwork
+                  else
+                     falll(i) = falll(i) + (aycbiol(i,j) - cbiolmin(i,j)) / tauleaf(j) * rwork
+                  end if
+                  fallr(i) = fallr(i) + aycbior(i,j) / tauroot(j) * rwork
+                  fallw(i) = fallw(i) + aycbiow(i,j) / tauwood(i,j) * rwork
+               else !isenesen
+!gabriel abrahao: if isenescen is off, just use the current biomass pools
+                  falll(i) = falll(i) + (cbiol(i,j) - cbiolmin(i,j)) / tauleaf(j) * rwork
+                  fallr(i) = fallr(i) + cbior(i,j) / tauroot(j) * rwork
+                  fallw(i) = fallw(i) + cbiow(i,j) / tauwood(i,j) * rwork			! Castanho HP, 2013
+               end if !isenescen
+
+
+
+if ((nit.eq.niter .and. i.eq.1) .and. j .eq. 11) then
+write(*,*) "falll depois:     ",falll(1)
+end if
 
 ! ---------------------------------------------------------------------
 ! * * * apply disturbances * * *
@@ -279,6 +318,7 @@ subroutine dynaveg (iwest,jnorth)
 ! to the original carbon balance differential equation
 
 #ifndef SINGLE_POINT_MODEL
+!gabriel abrahao: isenescen only works if isimland is 0 TODO FIXME: Currently causes double accumulation if isimland.eq.1, remove accumulation from here if isenescen.ge.1
                if (isimland .eq. 1 ) then
                   if (j.le.8) then
                      cbiol(i,j) = cbiol(i,j) + (                                     &
@@ -313,18 +353,58 @@ subroutine dynaveg (iwest,jnorth)
                                   cbior(i,j)) * rwork 
                   endif
 	       else   
+!Gabriel Abrahao: Accounts for herbivore leaf consumption in ptfs .ge.9 at the end of the year if isenescen.eq.0
+!gabriel apagar
+if (isenescen .eq. 0) then
+               if (((iyear - iyear0) .ge. nyrstherb) .and. j.eq.herbpft) then
                   cbiol(i,j) = cbiol(i,j) + (                                     &
-                	       aleaf(i,j) * max (dble(0.), aynpp(i,j)) - (cbiol(i,j) - &
+                	       aleaf(i,j) * max (dble(0.0), aynpp(i,j)) - (cbiol(i,j) - &
                 	       cbiolmin(i,j)) / tauleaf(j) - (disturbf(i) +    &
-                	       disturbo(i)) * (cbiol(i,j) - cbiolmin(i,j))) * rwork 
+                	       disturbo(i)) * (cbiol(i,j) - cbiolmin(i,j)) - (numherb * 0.0001 * consherb/grazef)) * rwork ! The 0.0001 converts consumption per ha to per m^2
+               else
+                  cbiol(i,j) = cbiol(i,j) + (                                     &
+                	       aleaf(i,j) * max (dble(0.0), aynpp(i,j)) - (cbiol(i,j) - &
+                	       cbiolmin(i,j)) / tauleaf(j) - (disturbf(i) +    &
+                	       disturbo(i)) * (cbiol(i,j) - cbiolmin(i,j))) * rwork ! The 0.0001 converts consumption per ha to per m^2
+               end if
 
                   cbiow(i,j) = cbiow(i,j) + (				      &
-                       	       awood(i,j) * max (dble(0.), aynpp(i,j)) - cbiow(i,j) / &
+                       	       awood(i,j) * max (dble(0.0), aynpp(i,j)) - cbiow(i,j) / &
                 	       tauwood(i,j) - (disturbf(i)+disturbo(i)) * cbiow(i,j)) * rwork
 
                   cbior(i,j) = cbior(i,j) + (				      &
-                    	       aroot(i,j) * max (dble(0.), aynpp(i,j)) - cbior(i,j) / &
+                    	       aroot(i,j) * max (dble(0.0), aynpp(i,j)) - cbior(i,j) / &
                 	       tauroot(j) - (disturbf(i)+disturbo(i)) * cbior(i,j)) * rwork
+!gabriel abrahao: If isenescen is 1, the C balance equation is solved elsewhere (currently in main_offline) and only the disturbances should be done here
+else
+                  cbiol(i,j) = cbiol(i,j) + (  0.0                                   &
+                	        - (disturbf(i) +    &
+                	       disturbo(i)) * (cbiol(i,j) - cbiolmin(i,j))) * rwork 
+
+                  cbiow(i,j) = cbiow(i,j) + ( 0.0				      &
+                	        - (disturbf(i)+disturbo(i)) * cbiow(i,j)) * rwork
+
+                  cbior(i,j) = cbior(i,j) + ( 0.0				      &
+                	        - (disturbf(i)+disturbo(i)) * cbior(i,j)) * rwork
+end if
+!gabriel apagar
+if (i.eq.4 .and. j.eq.11 .and. nit.eq.10) then
+	write(*,*) "WARNING: Changes applied to carbon balance in dynaveg"
+	write(*,*) "cbiol:           ",cbiol(i,j)
+	write(*,*) "cbiow:           ",cbiow(i,j)
+	write(*,*) "cbior:           ",cbior(i,j)
+	!write(*,*) "deltacbiol: ",aleaf(i,j) * max (dble(0.), aynpp(i,j)) - (cbiol(i,j) -cbiolmin(i,j)) / tauleaf(j) - (disturbf(i) +disturbo(i)) * (cbiol(i,j) - cbiolmin(i,j))  
+	write(*,*) "aynpp:           ",aynpp(i,j)
+	write(*,*) "cbiol/tauleaf:   ",(cbiol(i,j) - cbiolmin(i,j))/tauleaf(j)
+	write(*,*) "disturbf:        ",disturbf(i)
+	write(*,*) "disturbo:        ",disturbo(i)
+	!write(*,*) "cbiolmin:   ",cbiolmin(i,j)
+
+open(1991,file="/home/gabriel/doutorado/inlands/testes/pastagem_12AGO_mother_rd3d_teste/yearly_cbiol.csv",access="APPEND")
+write(1991,*) iyear,cbiol(4,11)
+end if
+
+!!end gabriel apagar
                endif
 #else
                cbiol(i,j) = cbiol(i,j) + (                                     &
@@ -348,6 +428,19 @@ subroutine dynaveg (iwest,jnorth)
 
 10			continue ! end of iteration loop
 
+!gabriel abrahao:FIXME: this may be a dangerous approach. If isenescen is 1, biomass pools values are not as meaningful in an yearly context because in this case we are looking at the december value instead of an actual yearly value. So we save the pools to dummy variables here and use the average yearly variables for the rest of dynaveg, recovering the original monthly values in the end
+            if (isenescen.ge.1) then
+               dumcbiol(i,j) = cbiol(i,j)
+               dumcbior(i,j) = cbior(i,j)
+               dumcbiow(i,j) = cbiow(i,j)
+               dumplai(i,j) = plai(i,j)
+
+               cbiol(i,j) = aycbiol(i,j)
+               cbior(i,j) = aycbior(i,j)
+               cbiow(i,j) = aycbiow(i,j)
+               plai(i,j)  = ayplai(i,j)
+            end if
+
             if (j.le.8) wood = wood + max (dble(0.0), cbiow(i,j))
                seedbio = max(dble(0.),(cbiolmin(i,j) - cbiol(i,j)))
 
@@ -362,8 +455,12 @@ subroutine dynaveg (iwest,jnorth)
             cbior(i,j) = max (dble(0.0), cbior(i,j))
 
 ! update vegetation's physical characteristics
-            plai(i,j)    = cbiol(i,j) * specla(i,j)			! Castanho HP, 2013
             biomass(i,j) = cbiol(i,j) + cbiow(i,j) + cbior(i,j)
+            if (isenescen .eq. 0) then
+               plai(i,j)    = cbiol(i,j) * specla(i,j)			! Castanho HP, 2013
+            else
+               !gabriel.abrahao@ufv.br: If isenescen is not zero, this should be done somewhere else
+            end if
 110      continue
 
 ! ---------------------------------------------------------------------
@@ -470,11 +567,38 @@ subroutine dynaveg (iwest,jnorth)
          sapvolume = saparea * ztop(i,2) * 0.75  ! m**3
          denswood  = 400.0                       ! kg/m**3
          sapfrac(i) = min (dble(0.50), max (dble(0.05), sapvolume * denswood / wood))
+!gabriel.abrahao@ufv.br apagar
+!totbiol(i) = cbiol(i,11)
+!write(*,*) "WARNING: This version sets biomass to be only cbiol, see gabriel.abrahao@ufv.br in inland_dynaveg"
+if (i.eq.4) then
+! write(*,*) 
+! write(*,*) "plai:		",plai(i,11)
+! write(*,*) "cbiol:		",cbiol(i,11)
+! write(*,*) "biomass:		",biomass(i,11)
+! write(*,*) "totbiol:		",totbiol(i)
+! write(*,*) "ciobl/biomass:	",cbiol(i,11) / biomass(i,11)
+! write(*,*) "plai/cbiol:	",plai(i,11) / cbiol(i,11)
+!gabriel apagar
+	write(*,*) "YEARLY -- YEARLY --YEARLY --YEARLY --YEARLY --YEARLY --YEARLY --YEARLY --YEARLY --YEARLY --YEARLY --YEARLY"
+	write(*,*) "ayco2mic:  ", ayco2mic(4)
+	write(*,*) "cdisturb:  ", cdisturb(4)
+	write(*,*) "caccount:  ", caccount(4)
+end if
+
 100   continue
        endif  ! check for crop existence 
 ! ---------------------------------------------------------------------
 ! * * * map out vegetation classes for this year * * *
 ! ---------------------------------------------------------------------
       call vegmap
+!gabriel abrahao:FIXME: this may be a dangerous approach. If isenescen is 1, biomass pools values are not as meaningful in an yearly context because in this case we are looking at the december value instead of an actual yearly value. So the pools were saved after applying the disturbances to dummy variables and we used the average yearly variables for the rest of dynaveg, recovering the original monthly values here
+            if (isenescen.ge.1) then
+               cbiol(:,:) = dumcbiol(:,:)
+               cbior(:,:) = dumcbior(:,:)
+               cbiow(:,:) = dumcbiow(:,:)
+               plai(:,:)  = dumplai(:,:) 
+            end if
+
+
       return
 end  subroutine dynaveg

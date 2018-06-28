@@ -731,6 +731,14 @@ subroutine alloc(irestart)
       allocate(cbiol(lbeg:lend,npft),&
                cbior(lbeg:lend,npft),&
                cbiow(lbeg:lend,npft),&
+               aycbiol(lbeg:lend,npft),&
+               aycbior(lbeg:lend,npft),&
+               aycbiow(lbeg:lend,npft),&
+               ayplai(lbeg:lend,npft),&
+               dumcbiol(lbeg:lend,npft),&
+               dumcbior(lbeg:lend,npft),&
+               dumcbiow(lbeg:lend,npft),&
+               dumplai(lbeg:lend,npft),&
                cbios(lbeg:lend,npft),&
                cbiog(lbeg:lend,npft),&
 		       plaimx(lbeg:lend,npft))
@@ -1072,11 +1080,7 @@ subroutine alloc(irestart)
       tmax(:) = 0.
       tmin(:) = 0.
       qd(:) = 0.
-      if(irestart .eq. 1 .or. isimagro .eq.1)then
-         ud(:) = 0.
-      elseif(isimagro .eq. 0)then
-         ud(:) = 0.
-      endif
+      ud(:) = 0.
 
 ! comatm's weather generator specific variables
 !---------------------------------------------------

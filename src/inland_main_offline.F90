@@ -51,10 +51,14 @@ program main !main_offline!
       use inland_comwork
       use inland_comfire
       use inland_lsmmapib, only: lati, loni
-      use inland_comveg, only: exist, topparu, topparl, tneetot,plai,tl, use, plaimx, aleaf, aroot, awood, cil4, fallrsgc
+      use inland_comveg, only: exist, topparu, topparl, tneetot,plai,tl, cbiol,cbior,cbiow,aycbiol,aycbior,aycbiow,ayplai, use, plaimx, aleaf, aroot, awood, cil4, fallrsgc, specla !gabriel apagar depois de tl e fallrsgc
       use inland_combgc, only:cnroot, cnleaf,rconst, cnwood, cnroot
       use inland_comhyd, only:gsuvap,gtrans
       use inland_comsoi, only: tsoi, soihfl, h20, smsoil, cndepth, wsoi, fwpud
+
+!gabriel apagar
+use inland_comsum, only: adnpp, amnpp, aynpp
+use inland_compft, only: xminlai,tauleaf, tauroot, tauwood
 
       implicit none
 
@@ -199,7 +203,7 @@ program main !main_offline!
 
 ! namelist declaration
 #ifndef SINGLE_POINT_MODEL
-      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims
+      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims, consherb, numherb, isenescen, grazef, nyrstherb, herbpft
 #else
       namelist/INLAND_SINGLE_POINT/ iyear0, nrun, dtime, soilcspin, isimveg, isimfire, isoilforc, isimco2, co2init, o2init, isinfilt, isimrwu, snorth, ssouth, swest, seast
 #endif /* SINGLE_POINT_MODEL */
@@ -758,7 +762,6 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
                if (cdays(i).lt.366) then
                   cdays(i) = cdays(i) + 1
                endif
-
             enddo
         else !if irestart
 !#### TODO optimization this if!!!!
@@ -888,7 +891,6 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
                plens   = dtime * plen
                startp  = dtime * min(niter-plen, int(ran2(seed,seed2,seed3,seed4)*(niter-plen+1)))
                endp    = startp + plens
-
 #endif /* SINGLE_POINT_MODEL */
 
       if(isimagro .gt. 0) then
@@ -1009,7 +1011,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 #ifdef SINGLE_POINT_MODEL
 ! FIXME ET: this should not be inside the main loop, but in a function or subroutine...
 ! energy budget of the surface
-         call single(linenum, test)
+         call single(linenum, test, soilmoistl)
          if (test.eq.0.) goto 9999
 #endif /* SINGLE_POINT_MODEL */
 
@@ -1115,6 +1117,51 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
     endif
             endif
 #endif /* SINGLE_POINT_MODEL */
+
+
+if (isenescen .eq. 1) then
+
+    !gabriel abrahao: zero the average yearly pools in the first month
+    if (imonth.eq.1) then
+        aycbiol(:,:) = 0.0
+        aycbior(:,:) = 0.0
+        aycbiow(:,:) = 0.0
+        ayplai(:,:) = 0.0
+    end if
+
+    do i = lbeg,lend
+            do j = 1,npft
+                if (((iyear - iyear0) .ge. nyrstherb) .and. j.eq.herbpft) then
+                cbiol(i,j) = max(dble(0.0), cbiol(i,j) +  (aleaf(i,j) * amnpp(i,j)) - (cbiol(i,j) - (exist(i,j)*xminlai)/specla(i,j))/(tauleaf(j)*12.0) - (numherb * 0.0001 * consherb/grazef)/12.0)
+                else
+                cbiol(i,j) = max(dble(0.0), cbiol(i,j) +  (aleaf(i,j) * amnpp(i,j)) - (cbiol(i,j) - (exist(i,j)*xminlai)/specla(i,j))/(tauleaf(j)*12.0))
+                end if
+                cbiow(i,j) = max(dble(0.0), cbiow(i,j) +  (awood(i,j) * amnpp(i,j)) - (cbiow(i,j)/(tauwood(i,j)*12.0)))
+                cbior(i,j) = max(dble(0.0), cbior(i,j) +  (aroot(i,j) * amnpp(i,j)) - (cbior(i,j)/(tauroot(j)*12.0)))
+
+                plai(i,j)    = cbiol(i,j) * specla(i,j)  
+                !biomass(i,j) = cbiol(i,j) + cbiow(i,j) + cbior(i,j) !Better to calculate this on dynaveg
+
+                !gabriel abrahao: build average yearly pools
+                aycbiol(i,j) = aycbiol(i,j) + cbiol(i,j)/12.0
+                aycbior(i,j) = aycbior(i,j) + cbior(i,j)/12.0
+                aycbiow(i,j) = aycbiow(i,j) + cbiow(i,j)/12.0
+                ayplai(i,j) = ayplai(i,j) + plai(i,j)/12.0
+
+
+            end do
+   end do
+else !gabriel abrahao:if isenescen is 0, just set the average to the current value
+
+   aycbiol(i,j) = cbiol(i,j)
+   aycbior(i,j) = cbior(i,j)
+   aycbiow(i,j) = cbiow(i,j)
+   ayplai(i,j)  = plai(i,j)
+
+
+endif !isenescen.eq.1
+!end gabriel apagar
+
 !---------------------- MONTH MONTH MONTH ----------------------------------
 ! end of the monthly loop
 !---------------------- MONTH MONTH MONTH ----------------------------------
@@ -1220,6 +1267,10 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
          write(12,*) fallrsgc
          close(12)
          write (STDOUT,9102) char(13), char(13), iyear, imonth-1, iday-1
+
+
+
+
 !---------------------- YEAR YEAR YEAR -------------------------------------
 ! end of the yearly loop
 !---------------------- YEAR YEAR YEAR -------------------------------------
