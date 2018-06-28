@@ -876,7 +876,6 @@ write(*,*) "clmt(1,:):   :",clmt(1,:)
 write(*,*) "clmt(2,:):   :",clmt(2,:)
 write(*,*) "clmt(3,:):   :",clmt(3,:)
 
-stop
 
       filen = trim(datadir)//'/trange.mon.nc'
       aname = 'trange'

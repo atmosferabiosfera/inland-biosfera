@@ -30,7 +30,7 @@ isimrwu    = 0        , ! isimrwu - Root water uptake module - 0: according to F
 ! output parameters
 iyearout   = 1        , ! iyearout - 0: no yearly output, 1: yearly output (default 1)
 imonthout  = 1        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
-idailyout  = 0        , ! idailyout - 0: no daily output, 1: daily output (default 0)
+idailyout  = 1        , ! idailyout - 0: no daily output, 1: daily output (default 0)
 idiag      = 0        , ! idiag - 0: no diagnostic output, 1-10 # of files to output (default 0)
 !
 ! crops simulation paramters
