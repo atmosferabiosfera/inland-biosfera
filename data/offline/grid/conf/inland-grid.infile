@@ -7,7 +7,7 @@
 irestart   = 0        , ! irestart - 0: not a restart run  1: restart run (default 0)
 iyrrestart = 9999     , ! iyrrestart - year to restart model (default 9999)
 iyear0     = 1990     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
-nrun       = 10        , ! nrun - number of years in this simulation (change for restart) (default 2)
+nrun       = 20        , ! nrun - number of years in this simulation (change for restart) (default 2)
 iyrdaily   = 9999     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
 iyrmon     = 9999     , ! iyrmon - year to start reading montly data (default 9999)
 dtime      = 3600     , ! dtime - time step in seconds (default 3600)
@@ -29,7 +29,7 @@ isimrwu    = 0        , ! isimrwu - Root water uptake module - 0: according to F
 !
 ! Herbivory parameters
 consherb   = 1460      , ! Herbivory carbon consumption per year per herbivore (kgC year^-1 herbivore^-1) (gabriel.abrahao@ufv.br: 8kg dry matter per day, 50% C in dry matter)
-numherb    = 0.5        , ! Number of herbivores per hectare
+numherb    = 0.0        , ! Number of herbivores per hectare
 grazef     = 0.6        , ! Grazing efficiency i.e. if this value =0.5 the biomass drop caused by herbivory will be 2x the consumption, the rest will go to the litter. 
 nyrstherb  = 1          , ! Number of years before turning herbivory on
 herbpft    = 11          , ! PFT that herbivores will eat
@@ -37,7 +37,7 @@ herbpft    = 11          , ! PFT that herbivores will eat
 ! output parameters
 iyearout   = 1        , ! iyearout - 0: no yearly output, 1: yearly output (default 1)
 imonthout  = 1        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
-idailyout  = 1        , ! idailyout - 0: no daily output, 1: daily output (default 0)
+idailyout  = 0        , ! idailyout - 0: no daily output, 1: daily output (default 0)
 idiag      = 0        , ! idiag - 0: no diagnostic output, 1-10 # of files to output (default 0)
 !
 ! crops simulation paramters
@@ -58,7 +58,7 @@ elevin     = 550      , ! site elevation        (m)
 thigh      = 6        , ! tower input elevation (m)
 !
 ! simulation domain - an entry with the same name and corresponding lon/lat values must be defined in inland-grid.domains
-domain      = "vicosa", ! domain name used to define lon/lat boundaries (default '')
+domain      = "br2", ! domain name used to define lon/lat boundaries (default '')
 !
 ! subgrid tile parameters - ignore if not using subgrid tiles
 mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)

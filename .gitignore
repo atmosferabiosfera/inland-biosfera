@@ -20,3 +20,5 @@ data/offline/grid/params/Makefile
 data/offline/single_point/conf/Makefile 
 data/offline/single_point/params/Makefile 
 fort.* 
+
+output/

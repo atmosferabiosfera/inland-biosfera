@@ -6,21 +6,21 @@
  **************************************
   
  Domain parameters 
- INFO: model lon, lat resolution (degrees) :     1.00    1.00
- INFO: model domain (nlon x nlat)          :     360  x  180
- INFO: model limits (N,S,W,E)              :   -19.00   -19.74   -48.00   -47.00
+ INFO: model lon, lat resolution (degrees) :     0.25    0.25
+ INFO: model domain (nlon x nlat)          :     168  x  162
+ INFO: model limits (N,S,W,E)              :   -19.25   -20.75   -43.25   -42.25
   
  Temporal parameters 
- INFO: first year run in this sequence     :         2005
- INFO: last year run in this sequence      :         2006
- INFO: length of this simulation (years)   :            2
+ INFO: first year run in this sequence     :         1990
+ INFO: last year run in this sequence      :         2009
+ INFO: length of this simulation (years)   :           20
  INFO: number of iterations per day        :           24
   
  Simulation parameters
  INFO: Vegetation method                   :            1
- INFO: Fire method                         :            2
+ INFO: Fire method                         :            0
  INFO: CO2 method                          :            0
- INFO: initial co2 concentration in mol/mol: 0.000380
+ INFO: initial co2 concentration in mol/mol: 0.000390
  INFO: initial o2 concentration in mol/mol : 0.209000
  INFO: Spin-up soil method                 :            0
  INFO: Land Use method                     :            0
@@ -33,70 +33,588 @@
  INFO: Specla parameters                   :            0
  INFO: Carbon Allocation to wood parameters:            0
   
- Crop Simulation parameters
- INFO: Agro method                         :            1
- INFO: Crop type method                    :           13
-  
  I/O Parameters 
  INFO: input directory                     : ./data/offline/grid                                                                                                                                                                                                                                            
  INFO: input file                          : ./data/offline/grid/conf/inland-grid.infile                                                                                                                                                                                                                    
  INFO: data directory                      : ./input                                                                                                                                                                                                                                                        
  INFO: output directory                    : output                                                                                                                                                                                                                                                         
   
- * * * annual diagnostic fields * * *        2005
+ * * * annual diagnostic fields * * *        1990
   
- total nee             of the domain (gt-c/yr) :         0.00242623133875
- total npp             of the domain (gt-c/yr) :         0.00242623133875
- total gpp             of the domain (gt-c/yr) :         0.00392499913211
- total biomass         of the domain (gt-c)    :         0.00214006174042
+ total nee             of the domain (gt-c/yr) :         0.02519319271978
+ total npp             of the domain (gt-c/yr) :         0.02519278987821
+ total gpp             of the domain (gt-c/yr) :         0.06757049158715
+ total biomass         of the domain (gt-c)    :         0.03472240242890
  aboveground litter    of the domain (gt-c)    :         0.00000000000000
  belowground litter    of the domain (gt-c)    :         0.00000000000000
  total soil carbon     of the domain (gt-c)    :         0.00000000000000
- total soil co2 flux   of the domain (gt-c)    :         0.00001689971050
+ total soil co2 flux   of the domain (gt-c)    :         0.01940992182627
  aboveground litter n  of the domain (gt-c)    :         0.00000000000000
  belowground litter n  of the domain (gt-c)    :         0.00000000000000
  total soil nitrogen   of the domain (gt-c)    :         0.00000000000000
   
- average precipitation of the domain (mm/yr)   :      1505.78418959489750
- average aet           of the domain (mm/yr)   :       843.15828546587124
- average transpiration of the domain (mm/yr)   :        25.31168862504812
- average runoff        of the domain (mm/yr)   :       477.34265305820344
- average surf runoff   of the domain (mm/yr)   :       426.29497416020848
- average drainage      of the domain (mm/yr)   :        51.04767889799492
- average moisture recharge of domain (mm/yr)   :       185.34303268671007
+ average precipitation of the domain (mm/yr)   :      1287.00214091706653
+ average aet           of the domain (mm/yr)   :      1098.42813305925415
+ average transpiration of the domain (mm/yr)   :       853.73262080038899
+ average runoff        of the domain (mm/yr)   :        77.81975554652119
+ average surf runoff   of the domain (mm/yr)   :        73.77450129121573
+ average drainage      of the domain (mm/yr)   :         4.04525425530547
+ average moisture recharge of domain (mm/yr)   :       110.75463239024829
   
- total aet      / precipitation                :         0.55994629993605
- total runoff   / precipitation                :         0.31700602009019
+ total aet      / precipitation                :         0.85347809311068
+ total runoff   / precipitation                :         0.06046590994097
   
- transpiration  / total aet                    :         0.03002009119920
- surface runoff / total runoff                 :         0.89305862660513
+ transpiration  / total aet                    :         0.77723120439627
+ surface runoff / total runoff                 :         0.94801764376030
+  
+  
+ * * * annual diagnostic fields * * *        1991
+  
+ total nee             of the domain (gt-c/yr) :         0.01220121804219
+ total npp             of the domain (gt-c/yr) :         0.02363987800438
+ total gpp             of the domain (gt-c/yr) :         0.06969973178477
+ total biomass         of the domain (gt-c)    :         0.03639006497268
+ aboveground litter    of the domain (gt-c)    :         0.00139895726730
+ belowground litter    of the domain (gt-c)    :         0.00086937253914
+ total soil carbon     of the domain (gt-c)    :         0.00773489669317
+ total soil co2 flux   of the domain (gt-c)    :         0.03437339361963
+ aboveground litter n  of the domain (gt-c)    :         0.00001174280786
+ belowground litter n  of the domain (gt-c)    :         0.00000791650179
+ total soil nitrogen   of the domain (gt-c)    :         0.00036801054332
+  
+ average precipitation of the domain (mm/yr)   :      1286.96412349669436
+ average aet           of the domain (mm/yr)   :      1146.90801048198318
+ average transpiration of the domain (mm/yr)   :       902.11816803947818
+ average runoff        of the domain (mm/yr)   :       117.59183530718832
+ average surf runoff   of the domain (mm/yr)   :        96.69484465902354
+ average drainage      of the domain (mm/yr)   :        20.89699064816477
+ average moisture recharge of domain (mm/yr)   :        22.50250523273675
+  
+ total aet      / precipitation                :         0.89117325770187
+ total runoff   / precipitation                :         0.09137149448090
+  
+ transpiration  / total aet                    :         0.78656540872913
+ surface runoff / total runoff                 :         0.82229216345187
+  
+  
+ * * * annual diagnostic fields * * *        1992
+  
+ total nee             of the domain (gt-c/yr) :         0.00757458876540
+ total npp             of the domain (gt-c/yr) :         0.02392570506560
+ total gpp             of the domain (gt-c/yr) :         0.07060228806270
+ total biomass         of the domain (gt-c)    :         0.03728167548472
+ aboveground litter    of the domain (gt-c)    :         0.00147411229127
+ belowground litter    of the domain (gt-c)    :         0.00089340370895
+ total soil carbon     of the domain (gt-c)    :         0.01382046323435
+ total soil co2 flux   of the domain (gt-c)    :         0.03972699903458
+ aboveground litter n  of the domain (gt-c)    :         0.00001393318565
+ belowground litter n  of the domain (gt-c)    :         0.00000881429049
+ total soil nitrogen   of the domain (gt-c)    :         0.00104216149578
+  
+ average precipitation of the domain (mm/yr)   :      1291.90814314597765
+ average aet           of the domain (mm/yr)   :      1159.81277919167178
+ average transpiration of the domain (mm/yr)   :       920.96356115156016
+ average runoff        of the domain (mm/yr)   :       120.59402152889653
+ average surf runoff   of the domain (mm/yr)   :        83.37752159416198
+ average drainage      of the domain (mm/yr)   :        37.21649993473455
+ average moisture recharge of domain (mm/yr)   :        11.50793552579647
+  
+ total aet      / precipitation                :         0.89775173671974
+ total runoff   / precipitation                :         0.09334566251377
+  
+ transpiration  / total aet                    :         0.79406226390558
+ surface runoff / total runoff                 :         0.69139017454678
+  
+  
+ * * * annual diagnostic fields * * *        1993
+  
+ total nee             of the domain (gt-c/yr) :         0.00563195753575
+ total npp             of the domain (gt-c/yr) :         0.02372167118436
+ total gpp             of the domain (gt-c/yr) :         0.07048939673496
+ total biomass         of the domain (gt-c)    :         0.03771921184268
+ aboveground litter    of the domain (gt-c)    :         0.00151912719358
+ belowground litter    of the domain (gt-c)    :         0.00092042721753
+ total soil carbon     of the domain (gt-c)    :         0.01871854340630
+ total soil co2 flux   of the domain (gt-c)    :         0.04159893017288
+ aboveground litter n  of the domain (gt-c)    :         0.00001432854102
+ belowground litter n  of the domain (gt-c)    :         0.00000910180168
+ total soil nitrogen   of the domain (gt-c)    :         0.00157471319405
+  
+ average precipitation of the domain (mm/yr)   :      1286.96409082087939
+ average aet           of the domain (mm/yr)   :      1153.59379024602754
+ average transpiration of the domain (mm/yr)   :       921.14898050900024
+ average runoff        of the domain (mm/yr)   :       131.15290827002880
+ average surf runoff   of the domain (mm/yr)   :       100.40671415519758
+ average drainage      of the domain (mm/yr)   :        30.74619411483124
+ average moisture recharge of domain (mm/yr)   :         2.24809821455874
+  
+ total aet      / precipitation                :         0.89636828134825
+ total runoff   / precipitation                :         0.10190875503478
+  
+ transpiration  / total aet                    :         0.79850376128719
+ surface runoff / total runoff                 :         0.76556986405876
+  
+  
+ * * * annual diagnostic fields * * *        1994
+  
+ total nee             of the domain (gt-c/yr) :         0.00479622904397
+ total npp             of the domain (gt-c/yr) :         0.02404035911547
+ total gpp             of the domain (gt-c/yr) :         0.07096683493245
+ total biomass         of the domain (gt-c)    :         0.03807220295443
+ aboveground litter    of the domain (gt-c)    :         0.00155001440628
+ belowground litter    of the domain (gt-c)    :         0.00091751608149
+ total soil carbon     of the domain (gt-c)    :         0.02271889872706
+ total soil co2 flux   of the domain (gt-c)    :         0.04280844422962
+ aboveground litter n  of the domain (gt-c)    :         0.00001463658904
+ belowground litter n  of the domain (gt-c)    :         0.00000907729214
+ total soil nitrogen   of the domain (gt-c)    :         0.00201432588533
+  
+ average precipitation of the domain (mm/yr)   :      1286.96411827958946
+ average aet           of the domain (mm/yr)   :      1159.44305896818423
+ average transpiration of the domain (mm/yr)   :       924.10144908231382
+ average runoff        of the domain (mm/yr)   :       112.43927226627952
+ average surf runoff   of the domain (mm/yr)   :        77.24822297817158
+ average drainage      of the domain (mm/yr)   :        35.19104928810793
+ average moisture recharge of domain (mm/yr)   :        15.12603855156169
+  
+ total aet      / precipitation                :         0.90091327528084
+ total runoff   / precipitation                :         0.08736783774251
+  
+ transpiration  / total aet                    :         0.79702184763148
+ surface runoff / total runoff                 :         0.68702172667244
+  
+  
+ * * * annual diagnostic fields * * *        1995
+  
+ total nee             of the domain (gt-c/yr) :         0.00371192530646
+ total npp             of the domain (gt-c/yr) :         0.02380205360728
+ total gpp             of the domain (gt-c/yr) :         0.07068887528543
+ total biomass         of the domain (gt-c)    :         0.03825237281986
+ aboveground litter    of the domain (gt-c)    :         0.00157032591938
+ belowground litter    of the domain (gt-c)    :         0.00090412939934
+ total soil carbon     of the domain (gt-c)    :         0.02607992878736
+ total soil co2 flux   of the domain (gt-c)    :         0.04369244158672
+ aboveground litter n  of the domain (gt-c)    :         0.00001483513932
+ belowground litter n  of the domain (gt-c)    :         0.00000910969299
+ total soil nitrogen   of the domain (gt-c)    :         0.00237996368232
+  
+ average precipitation of the domain (mm/yr)   :      1286.96410113916818
+ average aet           of the domain (mm/yr)   :      1155.07814282444087
+ average transpiration of the domain (mm/yr)   :       925.35514595845405
+ average runoff        of the domain (mm/yr)   :       126.75449300312248
+ average surf runoff   of the domain (mm/yr)   :        89.67505939642771
+ average drainage      of the domain (mm/yr)   :        37.07943360669477
+ average moisture recharge of domain (mm/yr)   :         5.15372914475499
+  
+ total aet      / precipitation                :         0.89752164943996
+ total runoff   / precipitation                :         0.09849108680726
+  
+ transpiration  / total aet                    :         0.80111908593105
+ surface runoff / total runoff                 :         0.70747045940390
+  
+  
+ * * * annual diagnostic fields * * *        1996
+  
+ total nee             of the domain (gt-c/yr) :         0.00366126271254
+ total npp             of the domain (gt-c/yr) :         0.02434793614920
+ total gpp             of the domain (gt-c/yr) :         0.07174243629966
+ total biomass         of the domain (gt-c)    :         0.03872066170175
+ aboveground litter    of the domain (gt-c)    :         0.00157530581222
+ belowground litter    of the domain (gt-c)    :         0.00092988599372
+ total soil carbon     of the domain (gt-c)    :         0.02889642326194
+ total soil co2 flux   of the domain (gt-c)    :         0.04453947495729
+ aboveground litter n  of the domain (gt-c)    :         0.00001492514357
+ belowground litter n  of the domain (gt-c)    :         0.00000908892179
+ total soil nitrogen   of the domain (gt-c)    :         0.00268290179840
+  
+ average precipitation of the domain (mm/yr)   :      1291.90817256571677
+ average aet           of the domain (mm/yr)   :      1174.22298526267400
+ average transpiration of the domain (mm/yr)   :       942.67289671478432
+ average runoff        of the domain (mm/yr)   :       128.06300726683889
+ average surf runoff   of the domain (mm/yr)   :        91.55214716321525
+ average drainage      of the domain (mm/yr)   :        36.51086010362366
+ average moisture recharge of domain (mm/yr)   :       -10.35106525531243
+  
+ total aet      / precipitation                :         0.90890591931985
+ total runoff   / precipitation                :         0.09912702000523
+  
+ transpiration  / total aet                    :         0.80280569239914
+ surface runoff / total runoff                 :         0.71489924465425
+  
+  
+ * * * annual diagnostic fields * * *        1997
+  
+ total nee             of the domain (gt-c/yr) :         0.00241813066671
+ total npp             of the domain (gt-c/yr) :         0.02374848700871
+ total gpp             of the domain (gt-c/yr) :         0.07066933689046
+ total biomass         of the domain (gt-c)    :         0.03847659799617
+ aboveground litter    of the domain (gt-c)    :         0.00158766500501
+ belowground litter    of the domain (gt-c)    :         0.00095045360001
+ total soil carbon     of the domain (gt-c)    :         0.03136702835357
+ total soil co2 flux   of the domain (gt-c)    :         0.04494413191912
+ aboveground litter n  of the domain (gt-c)    :         0.00001508050297
+ belowground litter n  of the domain (gt-c)    :         0.00000927577860
+ total soil nitrogen   of the domain (gt-c)    :         0.00294788286376
+  
+ average precipitation of the domain (mm/yr)   :      1287.95980968458434
+ average aet           of the domain (mm/yr)   :      1163.65156566516839
+ average transpiration of the domain (mm/yr)   :       935.78428456662107
+ average runoff        of the domain (mm/yr)   :       127.48153601536156
+ average surf runoff   of the domain (mm/yr)   :        94.85728443352126
+ average drainage      of the domain (mm/yr)   :        32.62425158184030
+ average moisture recharge of domain (mm/yr)   :        -3.17431002815035
+  
+ total aet      / precipitation                :         0.90348437654288
+ total runoff   / precipitation                :         0.09897943635880
+  
+ transpiration  / total aet                    :         0.80417911355768
+ surface runoff / total runoff                 :         0.74408645674061
+  
+  
+ * * * annual diagnostic fields * * *        1998
+  
+ total nee             of the domain (gt-c/yr) :         0.00181606062603
+ total npp             of the domain (gt-c/yr) :         0.02342318229407
+ total gpp             of the domain (gt-c/yr) :         0.07017756860904
+ total biomass         of the domain (gt-c)    :         0.03846896627044
+ aboveground litter    of the domain (gt-c)    :         0.00157436552616
+ belowground litter    of the domain (gt-c)    :         0.00095541152786
+ total soil carbon     of the domain (gt-c)    :         0.03339048968317
+ total soil co2 flux   of the domain (gt-c)    :         0.04520476147397
+ aboveground litter n  of the domain (gt-c)    :         0.00001505543654
+ belowground litter n  of the domain (gt-c)    :         0.00000921894548
+ total soil nitrogen   of the domain (gt-c)    :         0.00316862809404
+  
+ average precipitation of the domain (mm/yr)   :      1287.46869976580615
+ average aet           of the domain (mm/yr)   :      1153.71892506249606
+ average transpiration of the domain (mm/yr)   :       925.92098638442997
+ average runoff        of the domain (mm/yr)   :       133.74899176726404
+ average surf runoff   of the domain (mm/yr)   :        94.82601141223387
+ average drainage      of the domain (mm/yr)   :        38.92298035503018
+ average moisture recharge of domain (mm/yr)   :         0.00423370934785
+  
+ total aet      / precipitation                :         0.89611415428768
+ total runoff   / precipitation                :         0.10388523759187
+  
+ transpiration  / total aet                    :         0.80255334836799
+ surface runoff / total runoff                 :         0.70898486903916
+  
+  
+ * * * annual diagnostic fields * * *        1999
+  
+ total nee             of the domain (gt-c/yr) :         0.00170498417709
+ total npp             of the domain (gt-c/yr) :         0.02368300982727
+ total gpp             of the domain (gt-c/yr) :         0.07025604661839
+ total biomass         of the domain (gt-c)    :         0.03824792429219
+ aboveground litter    of the domain (gt-c)    :         0.00160049833930
+ belowground litter    of the domain (gt-c)    :         0.00092179501205
+ total soil carbon     of the domain (gt-c)    :         0.03502881782607
+ total soil co2 flux   of the domain (gt-c)    :         0.04535263489193
+ aboveground litter n  of the domain (gt-c)    :         0.00001506888604
+ belowground litter n  of the domain (gt-c)    :         0.00000919664316
+ total soil nitrogen   of the domain (gt-c)    :         0.00335022248121
+  
+ average precipitation of the domain (mm/yr)   :      1286.96409208357454
+ average aet           of the domain (mm/yr)   :      1158.95490427956747
+ average transpiration of the domain (mm/yr)   :       922.77639723257653
+ average runoff        of the domain (mm/yr)   :       121.63324319192806
+ average surf runoff   of the domain (mm/yr)   :        86.68973495708697
+ average drainage      of the domain (mm/yr)   :        34.94350823484110
+ average moisture recharge of domain (mm/yr)   :         6.37021507253699
+  
+ total aet      / precipitation                :         0.90053398646363
+ total runoff   / precipitation                :         0.09451176139266
+  
+ transpiration  / total aet                    :         0.79621423907447
+ surface runoff / total runoff                 :         0.71271416170575
+  
+  
+ * * * annual diagnostic fields * * *        2000
+  
+ total nee             of the domain (gt-c/yr) :         0.00200386181101
+ total npp             of the domain (gt-c/yr) :         0.02423934790496
+ total gpp             of the domain (gt-c/yr) :         0.07124152346124
+ total biomass         of the domain (gt-c)    :         0.03854224501654
+ aboveground litter    of the domain (gt-c)    :         0.00159717702261
+ belowground litter    of the domain (gt-c)    :         0.00090574083993
+ total soil carbon     of the domain (gt-c)    :         0.03626535986568
+ total soil co2 flux   of the domain (gt-c)    :         0.04580103197998
+ aboveground litter n  of the domain (gt-c)    :         0.00001508834278
+ belowground litter n  of the domain (gt-c)    :         0.00000900442441
+ total soil nitrogen   of the domain (gt-c)    :         0.00349032492691
+  
+ average precipitation of the domain (mm/yr)   :      1291.78031771851897
+ average aet           of the domain (mm/yr)   :      1165.65248163630190
+ average transpiration of the domain (mm/yr)   :       930.81735255789454
+ average runoff        of the domain (mm/yr)   :       126.03392607867001
+ average surf runoff   of the domain (mm/yr)   :        91.62575441949781
+ average drainage      of the domain (mm/yr)   :        34.40817165917220
+ average moisture recharge of domain (mm/yr)   :         0.08193638148327
+  
+ total aet      / precipitation                :         0.90236123406418
+ total runoff   / precipitation                :         0.09756606781350
+  
+ transpiration  / total aet                    :         0.79853761495986
+ surface runoff / total runoff                 :         0.72699278099379
+  
+  
+ * * * annual diagnostic fields * * *        2001
+  
+ total nee             of the domain (gt-c/yr) :         0.00145669727338
+ total npp             of the domain (gt-c/yr) :         0.02378493063172
+ total gpp             of the domain (gt-c/yr) :         0.07078501584457
+ total biomass         of the domain (gt-c)    :         0.03863638334019
+ aboveground litter    of the domain (gt-c)    :         0.00158092237601
+ belowground litter    of the domain (gt-c)    :         0.00096530886261
+ total soil carbon     of the domain (gt-c)    :         0.03756220393680
+ total soil co2 flux   of the domain (gt-c)    :         0.04601221455884
+ aboveground litter n  of the domain (gt-c)    :         0.00001505980711
+ belowground litter n  of the domain (gt-c)    :         0.00000925573900
+ total soil nitrogen   of the domain (gt-c)    :         0.00361453355526
+  
+ average precipitation of the domain (mm/yr)   :      1286.96411056775378
+ average aet           of the domain (mm/yr)   :      1156.95398473468276
+ average transpiration of the domain (mm/yr)   :       932.90553463200263
+ average runoff        of the domain (mm/yr)   :       141.99308899092696
+ average surf runoff   of the domain (mm/yr)   :       107.79014200702301
+ average drainage      of the domain (mm/yr)   :        34.20294698390396
+ average moisture recharge of domain (mm/yr)   :       -11.98641790249422
+  
+ total aet      / precipitation                :         0.89897921413231
+ total runoff   / precipitation                :         0.11033181720063
+  
+ transpiration  / total aet                    :         0.80634627387185
+ surface runoff / total runoff                 :         0.75912245288157
+  
+  
+ * * * annual diagnostic fields * * *        2002
+  
+ total nee             of the domain (gt-c/yr) :         0.00068981369476
+ total npp             of the domain (gt-c/yr) :         0.02344026529428
+ total gpp             of the domain (gt-c/yr) :         0.06981419918939
+ total biomass         of the domain (gt-c)    :         0.03823022262576
+ aboveground litter    of the domain (gt-c)    :         0.00161265981578
+ belowground litter    of the domain (gt-c)    :         0.00091956387691
+ total soil carbon     of the domain (gt-c)    :         0.03855072151901
+ total soil co2 flux   of the domain (gt-c)    :         0.04604105899569
+ aboveground litter n  of the domain (gt-c)    :         0.00001518626325
+ belowground litter n  of the domain (gt-c)    :         0.00000925251436
+ total soil nitrogen   of the domain (gt-c)    :         0.00372978054414
+  
+ average precipitation of the domain (mm/yr)   :      1286.96410249396263
+ average aet           of the domain (mm/yr)   :      1145.74636154592281
+ average transpiration of the domain (mm/yr)   :       919.02812654759487
+ average runoff        of the domain (mm/yr)   :       130.64106704846964
+ average surf runoff   of the domain (mm/yr)   :        97.11754156778055
+ average drainage      of the domain (mm/yr)   :        33.52352548068909
+ average moisture recharge of domain (mm/yr)   :        10.56912322203763
+  
+ total aet      / precipitation                :         0.89027064494310
+ total runoff   / precipitation                :         0.10151104199045
+  
+ transpiration  / total aet                    :         0.80212179361196
+ surface runoff / total runoff                 :         0.74339213359111
+  
+  
+ * * * annual diagnostic fields * * *        2003
+  
+ total nee             of the domain (gt-c/yr) :         0.00136351989521
+ total npp             of the domain (gt-c/yr) :         0.02400971640736
+ total gpp             of the domain (gt-c/yr) :         0.07091185913922
+ total biomass         of the domain (gt-c)    :         0.03848313944294
+ aboveground litter    of the domain (gt-c)    :         0.00158212339327
+ belowground litter    of the domain (gt-c)    :         0.00093717387839
+ total soil carbon     of the domain (gt-c)    :         0.03934577488417
+ total soil co2 flux   of the domain (gt-c)    :         0.04618239552214
+ aboveground litter n  of the domain (gt-c)    :         0.00001503455408
+ belowground litter n  of the domain (gt-c)    :         0.00000911677835
+ total soil nitrogen   of the domain (gt-c)    :         0.00381464755410
+  
+ average precipitation of the domain (mm/yr)   :      1287.70353742453040
+ average aet           of the domain (mm/yr)   :      1161.36688922658027
+ average transpiration of the domain (mm/yr)   :       929.15979981727594
+ average runoff        of the domain (mm/yr)   :       140.44123373992812
+ average surf runoff   of the domain (mm/yr)   :       110.00490358762234
+ average drainage      of the domain (mm/yr)   :        30.43633015230578
+ average moisture recharge of domain (mm/yr)   :       -14.09075368599283
+  
+ total aet      / precipitation                :         0.90188995795521
+ total runoff   / precipitation                :         0.10906332836580
+  
+ transpiration  / total aet                    :         0.80005707794550
+ surface runoff / total runoff                 :         0.78328066948865
+  
+  
+ * * * annual diagnostic fields * * *        2004
+  
+ total nee             of the domain (gt-c/yr) :         0.00086232692563
+ total npp             of the domain (gt-c/yr) :         0.02380534647495
+ total gpp             of the domain (gt-c/yr) :         0.07074425733632
+ total biomass         of the domain (gt-c)    :         0.03859268133861
+ aboveground litter    of the domain (gt-c)    :         0.00158765707410
+ belowground litter    of the domain (gt-c)    :         0.00093291760327
+ total soil carbon     of the domain (gt-c)    :         0.04002315009844
+ total soil co2 flux   of the domain (gt-c)    :         0.04657658849203
+ aboveground litter n  of the domain (gt-c)    :         0.00001504352931
+ belowground litter n  of the domain (gt-c)    :         0.00000914283097
+ total soil nitrogen   of the domain (gt-c)    :         0.00388286487164
+  
+ average precipitation of the domain (mm/yr)   :      1291.90815947809369
+ average aet           of the domain (mm/yr)   :      1155.51118000101883
+ average transpiration of the domain (mm/yr)   :       922.14371688285712
+ average runoff        of the domain (mm/yr)   :       120.97838609507649
+ average surf runoff   of the domain (mm/yr)   :        93.98480484879047
+ average drainage      of the domain (mm/yr)   :        26.99358124628601
+ average moisture recharge of domain (mm/yr)   :        15.42747031362977
+  
+ total aet      / precipitation                :         0.89442207754754
+ total runoff   / precipitation                :         0.09364317827666
+  
+ transpiration  / total aet                    :         0.79803963201987
+ surface runoff / total runoff                 :         0.77687269505255
+  
+  
+ * * * annual diagnostic fields * * *        2005
+  
+ total nee             of the domain (gt-c/yr) :         0.00053021880658
+ total npp             of the domain (gt-c/yr) :         0.02362397690184
+ total gpp             of the domain (gt-c/yr) :         0.07022930835213
+ total biomass         of the domain (gt-c)    :         0.03837396858352
+ aboveground litter    of the domain (gt-c)    :         0.00160686514244
+ belowground litter    of the domain (gt-c)    :         0.00091679164921
+ total soil carbon     of the domain (gt-c)    :         0.04061964182837
+ total soil co2 flux   of the domain (gt-c)    :         0.04652759351220
+ aboveground litter n  of the domain (gt-c)    :         0.00001514077359
+ belowground litter n  of the domain (gt-c)    :         0.00000920808678
+ total soil nitrogen   of the domain (gt-c)    :         0.00394814928075
+  
+ average precipitation of the domain (mm/yr)   :      1286.96410287824619
+ average aet           of the domain (mm/yr)   :      1153.09609371881243
+ average transpiration of the domain (mm/yr)   :       921.50868095958219
+ average runoff        of the domain (mm/yr)   :       135.43322233351179
+ average surf runoff   of the domain (mm/yr)   :       101.17757448600170
+ average drainage      of the domain (mm/yr)   :        34.25564784751009
+ average moisture recharge of domain (mm/yr)   :        -1.53371124408088
+  
+ total aet      / precipitation                :         0.89598155157549
+ total runoff   / precipitation                :         0.10523465419946
+  
+ transpiration  / total aet                    :         0.79916035270543
+ surface runoff / total runoff                 :         0.74706613888907
   
   
  * * * annual diagnostic fields * * *        2006
   
- total nee             of the domain (gt-c/yr) :         0.01575680590983
- total npp             of the domain (gt-c/yr) :         0.02708812833330
- total gpp             of the domain (gt-c/yr) :         0.04842652832719
- total biomass         of the domain (gt-c)    :         0.00178798808371
- aboveground litter    of the domain (gt-c)    :         0.00003483536051
- belowground litter    of the domain (gt-c)    :         0.00020910483595
- total soil carbon     of the domain (gt-c)    :         0.01046288335585
- total soil co2 flux   of the domain (gt-c)    :         0.01214628318983
- aboveground litter n  of the domain (gt-c)    :         0.00001733094758
- belowground litter n  of the domain (gt-c)    :         0.00000836582386
- total soil nitrogen   of the domain (gt-c)    :         0.00070208905457
+ total nee             of the domain (gt-c/yr) :         0.00074483403250
+ total npp             of the domain (gt-c/yr) :         0.02386138522291
+ total gpp             of the domain (gt-c/yr) :         0.07064267788692
+ total biomass         of the domain (gt-c)    :         0.03850818072312
+ aboveground litter    of the domain (gt-c)    :         0.00161235178918
+ belowground litter    of the domain (gt-c)    :         0.00090306805599
+ total soil carbon     of the domain (gt-c)    :         0.04104311631828
+ total soil co2 flux   of the domain (gt-c)    :         0.04663627667760
+ aboveground litter n  of the domain (gt-c)    :         0.00001516239709
+ belowground litter n  of the domain (gt-c)    :         0.00000908291377
+ total soil nitrogen   of the domain (gt-c)    :         0.00399475482154
   
- average precipitation of the domain (mm/yr)   :      1505.78411896836883
- average aet           of the domain (mm/yr)   :       959.05872548035325
- average transpiration of the domain (mm/yr)   :       303.04925319316203
- average runoff        of the domain (mm/yr)   :       538.24790537248134
- average surf runoff   of the domain (mm/yr)   :       497.58544703145805
- average drainage      of the domain (mm/yr)   :        40.66245834102332
- average moisture recharge of domain (mm/yr)   :         8.43188965681356
+ average precipitation of the domain (mm/yr)   :      1287.01553212526483
+ average aet           of the domain (mm/yr)   :      1159.00571308851204
+ average transpiration of the domain (mm/yr)   :       927.28576905007162
+ average runoff        of the domain (mm/yr)   :       120.75948725826343
+ average surf runoff   of the domain (mm/yr)   :        87.18676515373679
+ average drainage      of the domain (mm/yr)   :        33.57272210452664
+ average moisture recharge of domain (mm/yr)   :         7.24628664520558
   
- total aet      / precipitation                :         0.63691648317915
- total runoff   / precipitation                :         0.35745356760785
+ total aet      / precipitation                :         0.90053747150559
+ total runoff   / precipitation                :         0.09382908305609
   
- transpiration  / total aet                    :         0.31598612800418
- surface runoff / total runoff                 :         0.92445403328995
+ transpiration  / total aet                    :         0.80007005882572
+ surface runoff / total runoff                 :         0.72198687766266
+  
+  
+ * * * annual diagnostic fields * * *        2007
+  
+ total nee             of the domain (gt-c/yr) :         0.00075081003756
+ total npp             of the domain (gt-c/yr) :         0.02393276309546
+ total gpp             of the domain (gt-c/yr) :         0.07086930162023
+ total biomass         of the domain (gt-c)    :         0.03855027473216
+ aboveground litter    of the domain (gt-c)    :         0.00159413981756
+ belowground litter    of the domain (gt-c)    :         0.00093210587962
+ total soil carbon     of the domain (gt-c)    :         0.04148443734393
+ total soil co2 flux   of the domain (gt-c)    :         0.04678431015987
+ aboveground litter n  of the domain (gt-c)    :         0.00001514430380
+ belowground litter n  of the domain (gt-c)    :         0.00000911682091
+ total soil nitrogen   of the domain (gt-c)    :         0.00403372717954
+  
+ average precipitation of the domain (mm/yr)   :      1286.96410076485404
+ average aet           of the domain (mm/yr)   :      1157.48010158998113
+ average transpiration of the domain (mm/yr)   :       926.65609182011644
+ average runoff        of the domain (mm/yr)   :       137.02743109830942
+ average surf runoff   of the domain (mm/yr)   :       103.62674379271843
+ average drainage      of the domain (mm/yr)   :        33.40068730559096
+ average moisture recharge of domain (mm/yr)   :        -7.55094316716668
+  
+ total aet      / precipitation                :         0.89938802558834
+ total runoff   / precipitation                :         0.10647339037419
+  
+ transpiration  / total aet                    :         0.80058058064861
+ surface runoff / total runoff                 :         0.75624816842966
+  
+  
+ * * * annual diagnostic fields * * *        2008
+  
+ total nee             of the domain (gt-c/yr) :         0.00065690585093
+ total npp             of the domain (gt-c/yr) :         0.02394402430139
+ total gpp             of the domain (gt-c/yr) :         0.07095650682582
+ total biomass         of the domain (gt-c)    :         0.03859467876653
+ aboveground litter    of the domain (gt-c)    :         0.00157910642498
+ belowground litter    of the domain (gt-c)    :         0.00095521765331
+ total soil carbon     of the domain (gt-c)    :         0.04184888927240
+ total soil co2 flux   of the domain (gt-c)    :         0.04692047481908
+ aboveground litter n  of the domain (gt-c)    :         0.00001511788993
+ belowground litter n  of the domain (gt-c)    :         0.00000911979928
+ total soil nitrogen   of the domain (gt-c)    :         0.00406935453170
+  
+ average precipitation of the domain (mm/yr)   :      1291.49418809777171
+ average aet           of the domain (mm/yr)   :      1161.95525525473909
+ average transpiration of the domain (mm/yr)   :       934.19447274890001
+ average runoff        of the domain (mm/yr)   :       135.13063360155314
+ average surf runoff   of the domain (mm/yr)   :        97.32769357104742
+ average drainage      of the domain (mm/yr)   :        37.80294003050574
+ average moisture recharge of domain (mm/yr)   :        -5.54401618870657
+  
+ total aet      / precipitation                :         0.89969840047532
+ total runoff   / precipitation                :         0.10463123632061
+  
+ transpiration  / total aet                    :         0.80398489401736
+ surface runoff / total runoff                 :         0.72024892488870
+  
+  
+ * * * annual diagnostic fields * * *        2009
+  
+ total nee             of the domain (gt-c/yr) :         0.00013568220706
+ total npp             of the domain (gt-c/yr) :         0.02340798150783
+ total gpp             of the domain (gt-c/yr) :         0.07003931610461
+ total biomass         of the domain (gt-c)    :         0.03836405984342
+ aboveground litter    of the domain (gt-c)    :         0.00160285114630
+ belowground litter    of the domain (gt-c)    :         0.00093855852846
+ total soil carbon     of the domain (gt-c)    :         0.04225763198972
+ total soil co2 flux   of the domain (gt-c)    :         0.04677316535580
+ aboveground litter n  of the domain (gt-c)    :         0.00001507916930
+ belowground litter n  of the domain (gt-c)    :         0.00000926130166
+ total soil nitrogen   of the domain (gt-c)    :         0.00410847775793
+  
+ average precipitation of the domain (mm/yr)   :      1286.96411255419775
+ average aet           of the domain (mm/yr)   :      1154.05851135178682
+ average transpiration of the domain (mm/yr)   :       920.84022921645476
+ average runoff        of the domain (mm/yr)   :       131.50185718916498
+ average surf runoff   of the domain (mm/yr)   :        97.54797494064972
+ average drainage      of the domain (mm/yr)   :        33.95388224851526
+ average moisture recharge of domain (mm/yr)   :         1.39878122610668
+  
+ total aet      / precipitation                :         0.89672936494038
+ total runoff   / precipitation                :         0.10217989445578
+  
+ transpiration  / total aet                    :         0.79791468123903
+ surface runoff / total runoff                 :         0.74179921885306
   

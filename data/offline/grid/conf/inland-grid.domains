@@ -2,6 +2,7 @@ default,    5.0    -15.0   -75.0   -55.0     ! default run (Amazon)
 sam,       13.1    -55.0   -81.0   -35.25    ! South America
 global,    90.0    -90.0  -180.0   180.0     ! global
 br,        0       -35    -65      -35
+br2,        6.0       -35    -65      -35
 toc,       -3.0   -12.0   -56.0    -42.0     ! Tocantins area
 small1,    -7.75   -9.25  -50.25   -48.75    ! small test areas
 small2,   -14.25  -14.74  -57.75   -57.25    ! 4 points
