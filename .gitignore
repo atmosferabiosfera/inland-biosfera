@@ -1,4 +1,6 @@
-output/
+input/daily/
+output/*
+data/offline/grid/output/*
 autom4te.cache/*
 src/*.o
 src/*.mod
