@@ -9,8 +9,8 @@
 
 #ifndef SINGLE_POINT_MODEL
 /* Definitions for the Grid model (2D) */
-#define PLON 1 /* nlon */
-#define PLAT 3 /* nlat */
+#define PLON 168 /* nlon */
+#define PLAT 162 /* nlat */
 /* LPT (npoi) not used anymore */
 #define XRES 0.25 /* xres */
 #define YRES 0.25 /* yres */
