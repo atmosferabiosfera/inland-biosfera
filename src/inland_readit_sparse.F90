@@ -843,11 +843,15 @@ write(*,*) "shape(sand):   :",shape(sand)
 write(*,*) "sand(1,:):   :",sand(1,:)
 write(*,*) "sand(2,:):   :",sand(2,:)
 write(*,*) "sand(3,:):   :",sand(3,:)
+!stop
 
 !gabriel apagar
 write(*,*) 
 write(*,*) "========================================================================= CLIMATE clim ===================================================="
 write(*,*) 
+=======
+!stop
+>>>>>>> Stashed changes
 
 ! 3-d climate arrays
       icount(3) = 1
