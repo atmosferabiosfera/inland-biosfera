@@ -264,10 +264,12 @@ subroutine wyearly (nday)
             dimnames(3:) = 'time'
             if ( mlpt .gt. 1 ) dimnames(3) = 'tile'
 
-            !gabriel abrahao: Initialize the pids in the output file for reference. 
+            !gabriel abrahao: Initialize auxlongitude and pids in the output file for reference. 
             if (isparse.eq.1) then
                call inivar(idies,'auxpid','Point ids for sparse mode', &
                        'id',2,dimnames(1:2),istat)
+               call inivar(idies,'auxlongitude','Longitudes for sparse mode', &
+                       'degrees',2,dimnames(1:2),istat)               
             end if
 
             call inivar(idies,'npptot','total npp','kg m-2 year-1',ndims,dimnames, &
@@ -421,6 +423,13 @@ subroutine wyearly (nday)
             if ( mlpt .gt. 1 ) dimnames(4) = 'tile'
             call inivar_byte(idiespft,'exist','existence for each pft','none',ndims+1, &
                         dimnames,istat)
+            !gabriel abrahao: Initialize auxlongitude and pids in the output file for reference. 
+            if (isparse.eq.1) then
+               call inivar(idiespft,'auxpid','Point ids for sparse mode', &
+                       'id',2,dimnames(1:2),istat)
+               call inivar(idiespft,'auxlongitude','Longitudes for sparse mode', &
+                       'degrees',2,dimnames(1:2),istat)               
+            end if            
 !            call inivar(idiespft,'exist','existence for each pft','none',ndims+1, &
 !                        dimnames,istat)
             call inivar(idiespft,'plai','leaf area index for each pft','fraction',&
@@ -448,6 +457,7 @@ subroutine wyearly (nday)
       !gabriel abrahao: Write the pids in the output file for reference.
       if (isparse.eq.1) then
          call writevar(filen,idies,'auxpid',auxpid,istart(1:2),icount(1:2),ftime,istat)
+         call writevar(filen,idies,'auxlongitude',auxlonscale,istart(1:2),icount(1:2),ftime,istat)
       end if
 
 
@@ -619,6 +629,12 @@ subroutine wyearly (nday)
       end if
       istart(ndims+1) = mstep
       icount(ndims+1) = 1
+
+            !gabriel abrahao: Write the pids in the output file for reference.
+      if (isparse.eq.1) then
+         call writevar(filenpft,idiespft,'auxpid',auxpid,istart(1:2),icount(1:2),ftime,istat)
+         call writevar(filenpft,idiespft,'auxlongitude',auxlonscale,istart(1:2),icount(1:2),ftime,istat)
+      end if
       
       call writevar(filenpft,idiespft,'exist',exist,istart,icount,ftime,istat)
       icount(4) = mlpt1
@@ -781,10 +797,12 @@ subroutine wyearly (nday)
             dimnames(4:) = 'time'
             if ( mlpt .gt. 1 ) dimnames(4) = 'tile'
 
-         !gabriel abrahao: Initialize the pids in the output file for reference. 
+         !gabriel abrahao: Initialize auxlongitude and pids in the output file for reference. 
          if (isparse.eq.1) then
             call inivar(idies,'auxpid','Point ids for sparse mode', &
                     'id',2,dimnames(1:2),istat)
+            call inivar(idies,'auxlongitude','Longitudes for sparse mode', &
+                    'degrees',2,dimnames(1:2),istat)               
          end if
 
          call inivar(idies,'cropy','crop cycle number in a cycle (1s planting - last ratoon)', &
@@ -896,6 +914,7 @@ subroutine wyearly (nday)
       !gabriel abrahao: Write the pids in the output file for reference.
       if (isparse.eq.1) then
          call writevar(filen,idies,'auxpid',auxpid,istart(1:2),icount(1:2),ftime,istat)
+         call writevar(filen,idies,'auxlongitude',auxlonscale,istart(1:2),icount(1:2),ftime,istat)
       end if
 
       call writevar(filen,idies,'cropy',cropout(:,scpft:,29),istart,icount,ftime,istat)
