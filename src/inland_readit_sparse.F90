@@ -88,7 +88,7 @@ write(*,*) nlon,nlat
 write(*,*) "lonscale:   ",lonscale
 
 !gabriel.abrahao Here we read latscale from auxiliar variable auxlatscale, as they are both the same size
-      aname = 'auxlatitude'
+      aname = 'latitude'
       icount = (/nlat,1,1,1/)
       call readvar(filen,aname,latscale,istart,icount,-1,istat)
       if (istat.lt.0) goto 9999
