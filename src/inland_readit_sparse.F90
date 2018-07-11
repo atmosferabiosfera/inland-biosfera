@@ -212,6 +212,8 @@ write(*,*) "xmask:   :",xmask
 
 !gabriel apagar
 write(*,*) "ieast:   ",ieast,"jsouth:   ",jsouth,"nlonsub:   ",nlonsub,"nlatsub:   ",nlatsub
+write(*,*) "istart",istart
+write(*,*) "icount",icount
 
 ! Variables in inland parameter used for readit subroutine.
 ! Attach (via pointers) nlonsub/nlatsub to plona/plata from inland_compar
