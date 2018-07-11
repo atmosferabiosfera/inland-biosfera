@@ -18,4 +18,6 @@ pids = arqinp->auxpid
 printVarSummary(varref)
 printVarSummary(varinp)
 
+print(lats)
+
 end
