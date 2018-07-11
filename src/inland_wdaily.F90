@@ -283,6 +283,15 @@ subroutine wdaily (jday,nday)
             dimnames(3) = 'pft'
             dimnames(4:) = 'time'
             if ( mlpt .gt. 1 ) dimnames(4) = 'tile'
+
+            !gabriel abrahao: Initialize auxlongitude and pids in the output file for reference. 
+            if (isparse.eq.1) then
+               call inivar(idies,'auxpid','Point ids for sparse mode', &
+                       'id',2,dimnames(1:2),istat)
+               call inivar(idies,'auxlongitude','Longitudes for sparse mode', &
+                       'degrees',2,dimnames(1:2),istat)               
+            end if
+
             call inivar(idies,'biomass','biomass status for each pft (kg_C m-2)','kg/m^2', &
                  ndims+1,dimnames,istat)
             call inivar(idies,'cbior','total fine root biomass for each  pft (kg_C m-2)', &
@@ -315,6 +324,12 @@ subroutine wdaily (jday,nday)
         icount(ndims+1) = 1
  
 !        write(*,*) biomass(:,scpft:)
+
+        !gabriel abrahao: Write the pids in the output file for reference.
+        if (isparse.eq.1) then
+           call writevar(filen,idies,'auxpid',auxpid,istart(1:2),icount(1:2),ftime,istat)
+           call writevar(filen,idies,'auxlongitude',auxlonscale,istart(1:2),icount(1:2),ftime,istat)
+        end if
 
         call writevar(filen,idies,'biomass',biomass(:,scpft:),istart,icount,ftime,istat)
         call writevar(filen,idies,'cbior',cbior(:,scpft:),istart,icount,ftime,istat)
