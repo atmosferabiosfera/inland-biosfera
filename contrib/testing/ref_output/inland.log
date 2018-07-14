@@ -45,58 +45,58 @@
   
  * * * annual diagnostic fields * * *        2005
   
- total nee             of the domain (gt-c/yr) :         0.00074900289968
- total npp             of the domain (gt-c/yr) :         0.00074900289968
- total gpp             of the domain (gt-c/yr) :         0.00122557613277
- total biomass         of the domain (gt-c)    :         0.00067139938408
+ total nee             of the domain (gt-c/yr) :         0.00239090380567
+ total npp             of the domain (gt-c/yr) :         0.00239090380567
+ total gpp             of the domain (gt-c/yr) :         0.00372353414293
+ total biomass         of the domain (gt-c)    :         0.00222399362816
  aboveground litter    of the domain (gt-c)    :         0.00000000000000
  belowground litter    of the domain (gt-c)    :         0.00000000000000
  total soil carbon     of the domain (gt-c)    :         0.00000000000000
- total soil co2 flux   of the domain (gt-c)    :         0.00000506339829
+ total soil co2 flux   of the domain (gt-c)    :         0.00001770303324
  aboveground litter n  of the domain (gt-c)    :         0.00000000000000
  belowground litter n  of the domain (gt-c)    :         0.00000000000000
  total soil nitrogen   of the domain (gt-c)    :         0.00000000000000
   
- average precipitation of the domain (mm/yr)   :      1535.51558291724359
- average aet           of the domain (mm/yr)   :       831.86853335811065
- average transpiration of the domain (mm/yr)   :        24.34879374234233
- average runoff        of the domain (mm/yr)   :       511.50307451293043
- average surf runoff   of the domain (mm/yr)   :       501.13770365339457
- average drainage      of the domain (mm/yr)   :        10.36537085953589
- average moisture recharge of domain (mm/yr)   :       192.15186786985819
+ average precipitation of the domain (mm/yr)   :      1540.65639195452877
+ average aet           of the domain (mm/yr)   :       830.48310955642921
+ average transpiration of the domain (mm/yr)   :        34.25040641645391
+ average runoff        of the domain (mm/yr)   :       216.87702765897609
+ average surf runoff   of the domain (mm/yr)   :       174.58174102448280
+ average drainage      of the domain (mm/yr)   :        42.29528663449328
+ average moisture recharge of domain (mm/yr)   :       493.59396629556500
   
- total aet      / precipitation                :         0.54175193180240
- total runoff   / precipitation                :         0.33311487047312
+ total aet      / precipitation                :         0.53904499010506
+ total runoff   / precipitation                :         0.14076923887217
   
- transpiration  / total aet                    :         0.02927000212888
- surface runoff / total runoff                 :         0.97973546714376
+ transpiration  / total aet                    :         0.04124154485784
+ surface runoff / total runoff                 :         0.80498032875571
   
   
  * * * annual diagnostic fields * * *        2006
   
- total nee             of the domain (gt-c/yr) :         0.00505063850383
- total npp             of the domain (gt-c/yr) :         0.00824082614010
- total gpp             of the domain (gt-c/yr) :         0.01498023956099
- total biomass         of the domain (gt-c)    :         0.00063934295501
- aboveground litter    of the domain (gt-c)    :         0.00000914815593
- belowground litter    of the domain (gt-c)    :         0.00006805657181
- total soil carbon     of the domain (gt-c)    :         0.00311303292033
- total soil co2 flux   of the domain (gt-c)    :         0.00342593033055
- aboveground litter n  of the domain (gt-c)    :         0.00000501757882
- belowground litter n  of the domain (gt-c)    :         0.00000260550889
- total soil nitrogen   of the domain (gt-c)    :         0.00020733421769
+ total nee             of the domain (gt-c/yr) :         0.00817521242617
+ total npp             of the domain (gt-c/yr) :         0.01253131945004
+ total gpp             of the domain (gt-c/yr) :         0.02020920843421
+ total biomass         of the domain (gt-c)    :         0.00202641979458
+ aboveground litter    of the domain (gt-c)    :         0.00013760910593
+ belowground litter    of the domain (gt-c)    :         0.00029274028569
+ total soil carbon     of the domain (gt-c)    :         0.00494216246123
+ total soil co2 flux   of the domain (gt-c)    :         0.00477462563488
+ aboveground litter n  of the domain (gt-c)    :         0.00001255857551
+ belowground litter n  of the domain (gt-c)    :         0.00000545865674
+ total soil nitrogen   of the domain (gt-c)    :         0.00028228375423
   
- average precipitation of the domain (mm/yr)   :      1535.51195071791881
- average aet           of the domain (mm/yr)   :       981.58111056825146
- average transpiration of the domain (mm/yr)   :       293.09661586617204
- average runoff        of the domain (mm/yr)   :       540.32212849144719
- average surf runoff   of the domain (mm/yr)   :       497.82256426778395
- average drainage      of the domain (mm/yr)   :        42.49956422366323
- average moisture recharge of domain (mm/yr)   :        13.54088716679278
+ average precipitation of the domain (mm/yr)   :      1742.99222231634485
+ average aet           of the domain (mm/yr)   :       887.93309403105764
+ average transpiration of the domain (mm/yr)   :       198.79655197747510
+ average runoff        of the domain (mm/yr)   :       490.52356491568344
+ average surf runoff   of the domain (mm/yr)   :       232.33066100458049
+ average drainage      of the domain (mm/yr)   :       258.19290391110297
+ average moisture recharge of domain (mm/yr)   :       364.49212048955604
   
- total aet      / precipitation                :         0.63925331880961
- total runoff   / precipitation                :         0.35188402684774
+ total aet      / precipitation                :         0.50943032485311
+ total runoff   / precipitation                :         0.28142613526055
   
- transpiration  / total aet                    :         0.29859643050435
- surface runoff / total runoff                 :         0.92134402427248
+ transpiration  / total aet                    :         0.22388685962247
+ surface runoff / total runoff                 :         0.47363812387793
   
