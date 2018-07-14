@@ -113,6 +113,10 @@ subroutine rdday(jday, istyr, iwest, jnorth)
       call readvar(filen,aname,xintd,istart,icount,0,istat)
       if (istat.lt.0) goto 9999
 
+      !gabriel apagar
+      write(*,*) "shape(xinprecd)",shape(xinprecd)
+      write(*,*) "xinprecd",xinprecd
+
 ! read daily trange
 !      aname = 'trange'
 !      filen = 'input/daily/trange.daily.nc'
