@@ -8,7 +8,7 @@ irestart   = 0        , ! irestart - 0: not a restart run  1: restart run (defau
 iyrrestart = 9999     , ! iyrrestart - year to restart model (default 9999)
 iyear0     = 2005     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
 nrun       = 2      , ! nrun - number of years in this simulation (change for restart) (default 2)
-iyrdaily   = 9999     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
+iyrdaily   = 2005     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
 iyrmon     = 9999     , ! iyrmon - year to start reading montly data (default 9999)
 dtime      = 3600     , ! dtime - time step in seconds (default 3600)
 !
@@ -51,7 +51,7 @@ elevin     = 550      , ! site elevation        (m)
 thigh      = 6        , ! tower input elevation (m)
 !
 ! simulation domain - an entry with the same name and corresponding lon/lat values must be defined in inland-grid.domains
-domain      = "uberaba2", ! domain name used to define lon/lat boundaries (default '')
+domain      = "uberaba5", ! domain name used to define lon/lat boundaries (default '')
 !
 ! subgrid tile parameters - ignore if not using subgrid tiles
 mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)

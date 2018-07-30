@@ -27,13 +27,13 @@ plats = plist(:,2)
 
 
 print(pids)
-print(lats)
+print(plats)
 
 npoi = dimsizes(pids)
 print("PID       Reference       Input")
 do i = 0,npoi-1
-    valinp = varinp(0,{indpft},{lats(i)},{lons(i)})
-    valref = varref(0,{indpft},{lats(i)},{lons(i)})
+    valinp = varinp(0,{indpft},{plats(i)},{plons(i)})
+    valref = varref(0,{indpft},{plats(i)},{plons(i)})
     ;print(valinp)
     ;print(valref)
     print(pids(i)+"        "+valref+"      "+valinp)
