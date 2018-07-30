@@ -43,7 +43,7 @@ subroutine inland_prealloc
                allconss(npft),laimx(npft),arooti(npft),arootf(npft),aleaff(npft), &
                astemf(npft),declfact(npft),fleafi(npft),hybgdd(npft),gddmin(npft),&                     
                lfemerg(npft),grnfill(npft),mxgddgf(npft),mxdgfi(npft),mxmat(npft),&
-               bfact(npft),arepr(npft),astem(npft),astemi(npft),aleafi(npft),fleaf(npft))
+               bfact(npft),arepr(npft),astemi(npft),aleafi(npft),fleaf(npft))
 
       baset(:) = 0.
       mxtmp(:) = 0.
@@ -67,7 +67,6 @@ subroutine inland_prealloc
       mxmat(:) = 0.	 
       bfact(:) = 0.
       arepr(:) = 0.
-      astem(:) = 0.
       astemi(:) = 0.   
       aleafi(:) = 0.   
       fleaf(:) = 0.

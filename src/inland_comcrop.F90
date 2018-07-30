@@ -217,8 +217,9 @@ module inland_comcrop
 !
       real*8, dimension(:,:,:), allocatable :: cropout
 !                               cropout(npoi,npft,60), ! crop output var 
+
 !
-      real*8, dimension(:), allocatable :: arepr, astem, astemi, aleafi, cfrac,       &
+      real*8, dimension(:), allocatable :: arepr, astemi, aleafi, cfrac,       &
                                            baset, mxtmp, tkill, hybgdd, gddmin,       &
                                            lfemerg, grnfill, laicons, allconsl,       &
                                            allconss, laimx, arooti, arootf, aleaff,   &
@@ -226,6 +227,8 @@ module inland_comcrop
                                            fleafi, fleaf, cgrain, convfact, maxhi,    &
                                            fyield, fnlfmx, fngrmx, sratio, rratio,    &
                                            fnopt, bfact, grainmoisture
+      real*8, dimension(:,:), allocatable :: astem
+
 !
 !            arepr(npft),           ! fraction allocation to reproductive organs (grain/fruit) in crops
 !            astem(npft),           ! fraction allocation to stem in crops (non leaf/ non grain)
