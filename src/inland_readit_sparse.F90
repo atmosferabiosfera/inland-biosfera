@@ -361,7 +361,7 @@ write(*,*) "icount",icount
       allocate(xintauwood(lbeg:lend,npft), xinawood(lbeg:lend,npft), xinaroot(lbeg:lend,npft), &
                  xinvmax(lbeg:lend,npft), xinspecla(lbeg:lend,npft),xinaleaf(lbeg:lend,npft), &
                  vmax_pft(lbeg:lend,npft), tauwood0(lbeg:lend,npft), awood(lbeg:lend,npft),    &
-                 aroot(lbeg:lend,npft),aleaf(lbeg:lend,npft),specla(lbeg:lend,npft))       
+                 aroot(lbeg:lend,npft),astem(lbeg:lend,npft),aleaf(lbeg:lend,npft),specla(lbeg:lend,npft))            
       tauwood0(:,:) = 0.
       vmax_pft(:,:) = 0.     
       awood(:,:) = 0. 

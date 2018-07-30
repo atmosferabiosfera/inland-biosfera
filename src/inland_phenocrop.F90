@@ -105,12 +105,6 @@ subroutine phenocrop (kpti,kptj)
       do 100 i = lbeg, lend
 !
 ! TODO fix other vars like these, which should be reset every grid point
-! !gabriel apagar
-! write(*,*) "shape(aleaf)",shape(aleaf)
-! write(*,*) "shape(astem)",shape(astem)
-! write(*,*) "shape(aroot)",shape(aroot)
-! write(*,*) "shape(arepr)",shape(arepr)
-! write(*,*) "shape(aerial)",shape(aerial)
 
 !         aleaf(scpft:) = 0.
 !         astem(scpft:) = 0.
@@ -340,8 +334,7 @@ subroutine phenocrop (kpti,kptj)
                   else if (leafout(i,j).ge.huileaf(j).and.j.eq.16)  then
 ! Phase 1 completed:
 ! ==================
-!gabriel apagar
-write(*,*) "===================================================================PASSEI CANA"
+
                      if(gddemerg(i).eq.0) gddemerg(i) = gddplant(i,j)
 
                         awood(i,j) = 0.0
