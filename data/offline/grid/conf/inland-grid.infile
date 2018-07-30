@@ -51,7 +51,7 @@ elevin     = 550      , ! site elevation        (m)
 thigh      = 6        , ! tower input elevation (m)
 !
 ! simulation domain - an entry with the same name and corresponding lon/lat values must be defined in inland-grid.domains
-domain      = "uberaba5", ! domain name used to define lon/lat boundaries (default '')
+domain      = "uberaba7", ! domain name used to define lon/lat boundaries (default '')
 !
 ! subgrid tile parameters - ignore if not using subgrid tiles
 mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)
