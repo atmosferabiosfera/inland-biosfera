@@ -1,5 +1,5 @@
-;Compares output crop variable (sparse) with reference
 begin
+;Compares output crop variable (sparse) with reference
 
 reffname            =   "../../input/daily/prec.daily.2005.nc"
 inpfname            =   "../../output/inland-daily-2005.nc"

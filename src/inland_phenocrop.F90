@@ -105,6 +105,13 @@ subroutine phenocrop (kpti,kptj)
       do 100 i = lbeg, lend
 !
 ! TODO fix other vars like these, which should be reset every grid point
+! !gabriel apagar
+! write(*,*) "shape(aleaf)",shape(aleaf)
+! write(*,*) "shape(astem)",shape(astem)
+! write(*,*) "shape(aroot)",shape(aroot)
+! write(*,*) "shape(arepr)",shape(arepr)
+! write(*,*) "shape(aerial)",shape(aerial)
+
 !         aleaf(scpft:) = 0.
 !         astem(scpft:) = 0.
 !         aroot(scpft:) = 0.
@@ -168,7 +175,7 @@ subroutine phenocrop (kpti,kptj)
                cropout(i,j,31) = 0 !aleaf(j)
                cropout(i,j,32) = 0 !aroot(j)
                cropout(i,j,33) = 0 !arepr(j)
-               cropout(i,j,34) = 0 !astem(j)
+               cropout(i,j,34) = 0 !astem(i,j)
 
 
                if (croplive(i,j) .eq. 1.0) then
@@ -212,10 +219,10 @@ subroutine phenocrop (kpti,kptj)
                      if (peaklai(i,j) .eq. 1) then 
                         aleaf(i,j) = 0.0
                         arepr(j) = 0.0
-                        astem(j) = 1.0 - aroot(i,j) - aleaf(i,j) - arepr(j)
+                        astem(i,j) = 1.0 - aroot(i,j) - aleaf(i,j) - arepr(j)
                      else
                         aleaf(i,j) = max(0.0,(1.0 - aroot(i,j)) * fleaf(j))
-                        astem(j) = 1.0 - aroot(i,j) - aleaf(i,j)
+                        astem(i,j) = 1.0 - aroot(i,j) - aleaf(i,j)
                         arepr(j) = 0.0
                      endif
 
@@ -227,7 +234,7 @@ subroutine phenocrop (kpti,kptj)
                            aleaf(i,j) = min(1.0 - aroot(i,j), laimx(j) - &
                                       plai(i,j)) / (specla(i,j) * adnpp(i,j))
                            aleaf(i,j) = max(0.0, aleaf(i,j))
-                           astem(j) = 1.0 - aroot(i,j) - aleaf(i,j)
+                           astem(i,j) = 1.0 - aroot(i,j) - aleaf(i,j)
 
 !
 ! CJK other possible source of over allocation
@@ -248,7 +255,7 @@ subroutine phenocrop (kpti,kptj)
 ! hold ending allocation values to stem and leaf for use by equations after shift to
 ! reproductive phenology stage begins
 !
-                     astemi(j) = astem(j)
+                     astemi(j) = astem(i,j)
                      aleafi(j) = aleaf(i,j)
 
 !
@@ -296,27 +303,27 @@ subroutine phenocrop (kpti,kptj)
 
 !
                      if (astemi(j) .gt. astemf(j)) then
-                        astem(j) = max(astem(j) * (1.0-min((hui(i,j)-         &
+                        astem(i,j) = max(astem(i,j) * (1.0-min((hui(i,j)-         &
                                 huigrain(j))/((gddmaturity(i,j)*declfact(j))- &
                                 huigrain(j)),1.0)**allconss(j)),astemf(j)) 
-                        astem(j) = max(0.0,astem(j))
+                        astem(i,j) = max(0.0,astem(i,j))
                      endif
 
 ! CJK 9-23-04
 ! ***********
-                     if (aleafi(j) .gt. aleaff(j)) then
+                     if (aleaf(i,j) .gt. aleaff(j)) then
                         aleaf(i,j) = max(aleaf(i,j) * (1.0-min((hui(i,j)-     &
                             huigrain(j))/((gddmaturity(i,j)*declfact(j))- &
                             huigrain(j)),1.0)**allconsl(j)),aleaff(j)) 
                         aleaf(i,j) = max(0.0,aleaf(i,j)) 
                      endif
-                        arepr(j) = 1.0 - aroot(i,j) - astem(j) - aleaf(i,j) - awood(i,j)
+                        arepr(j) = 1.0 - aroot(i,j) - astem(i,j) - aleaf(i,j) - awood(i,j)
                   endif
 
 !                  if((iyear.eq.2009.and.jday.gt.300).or.(iyear.eq.2010.and.jday.lt.150)) then
                   if((imetyear .ne. 9999)) then
                         write(42,422) iyear,jday, idpp(i,j),hui(i,j), aroot(i,j),aleaf(i,j), &
-                                      astem(j),arepr(j),plai(i,j)  
+                                      astem(i,j),arepr(j),plai(i,j)  
                   endif
 422  format(2(i4,1x),9(f7.2,1x))
 
@@ -326,21 +333,22 @@ subroutine phenocrop (kpti,kptj)
                      aroot(i,j) = 0.0
                      aerial(j) = 0.0
                      aleaf(i,j) = 0.0
-                     astem(j) = 0.0
+                     astem(i,j) = 0.0
                      arepr(j) = 0.0
                      rm(i) = 0.0 
 
                   else if (leafout(i,j).ge.huileaf(j).and.j.eq.16)  then
 ! Phase 1 completed:
 ! ==================
-
+!gabriel apagar
+write(*,*) "===================================================================PASSEI CANA"
                      if(gddemerg(i).eq.0) gddemerg(i) = gddplant(i,j)
 
                         awood(i,j) = 0.0
                         aroot(i,j) = 0.00001
                         aerial(j) = 0.00001
                         aleaf(i,j) = 0.00001
-                        astem(j) = 0.00001
+                        astem(i,j) = 0.00001
                         arepr(j) = 0.00001
                         rm(i)= min(100.0, 100 * (gddplant(i,j)-gddemerg(i)) / (gddmaturity(i,j)-gddemerg(i)) )
                         rm(i)=max(0.000000000000001,rm(i))
@@ -358,31 +366,31 @@ subroutine phenocrop (kpti,kptj)
                         af1 = max(0.0, rm(i)*sf1 - sf1*ipf1)
                         af2 = max(0.0, 1.0 - ( exp(ecf2*ipf2)/exp(ecf2*rm(i)) ) )
 
-                        astem(j) = aerial(j) * min(1.0, max(af1,af2))
-                        astem(j) = min( max(0.1,aerial(j)-aleaff(j)) ,astem(j) )
+                        astem(i,j) = aerial(j) * min(1.0, max(af1,af2))
+                        astem(i,j) = min( max(0.1,aerial(j)-aleaff(j)) ,astem(i,j) )
 
-                        aleaf(i,j) = aerial(j)-astem(j)
-                        astem(j) = astem(j) + min( aleaf(i,j), ldf*aleaf(i,j)* &
+                        aleaf(i,j) = aerial(j)-astem(i,j)
+                        astem(i,j) = astem(i,j) + min( aleaf(i,j), ldf*aleaf(i,j)* &
                                    min(1.0,exp(tmld*ecf7)/exp((td(i)-273.16)*ecf7) ) )
 
 
-                        astem(j) = min( max(0.0,aerial(j)-aleaff(j)) ,astem(j) )
-                        aleaf(i,j) = aerial(j)-astem(j)
+                        astem(i,j) = min( max(0.0,aerial(j)-aleaff(j)) ,astem(i,j) )
+                        aleaf(i,j) = aerial(j)-astem(i,j)
                         sipf3=ipf1+(100.-ipf1)*(ipf3/100.)
                         af3 = max(0.0, rm(i)*sf3 - sf3*sipf3)
                         sipf4=ipf1+(100.-ipf1)*(ipf4/100.)
                         af4 = max(0.0, 1.0- ( exp(ecf4*sipf4)/exp(ecf4*rm(i)) ) )
-                        arepr(j) = astem(j) * min(1.0, max(af3,af4))
+                        arepr(j) = astem(i,j) * min(1.0, max(af3,af4))
                         arepr(j) = min(aerial(j)-aleaf(i,j), arepr(j) )
-                        astem(j)= astem(j)- arepr(j)
+                        astem(i,j)= astem(i,j)- arepr(j)
                         af5= min(1., max(0., 1. -( exp((td(i)-273.16)*ecf5)/exp(tf5*ecf5) ) ) ) + &
                              min(0., min(0., ( exp(tf5*ecf5)/exp((td(i)-273.16)*ecf5) ) -1 ) )
                         sipf6=sipf4+(100.-sipf4)*(ipf6/100.)
                         af6 = max(0.0, 1.0- ( exp(ecf6*sipf6)/exp(ecf6*rm(i)) ) )
                         ccf5=arepr(j)
-                        arepr(j) = arepr(j)+ astem(j)*wf5*af5*af6
+                        arepr(j) = arepr(j)+ astem(i,j)*wf5*af5*af6
                         arepr(j) = min(aerial(j)-aleaf(i,j), arepr(j) )
-                        astem(j)= astem(j) - (arepr(j) - ccf5)       
+                        astem(i,j)= astem(i,j) - (arepr(j) - ccf5)       
                         leaftemp=aleaf(i,j)
                         tlai(i,j) = plai(i,j) + (specla(i,j) * aleaf(i,j) * &
                                     max(0.0, adnpp(i,j)))
@@ -391,13 +399,13 @@ subroutine phenocrop (kpti,kptj)
                            aleaf(i,j) = min( aleaf(i,j),(laimx(j)-plai(i,j)) / &
                                       (specla(i,j) * adnpp(i,j)))
                            aleaf(i,j) = max(0.0, aleaf(i,j))
-                           aroot(i,j) = aroot(i,j) + ( (leaftemp-aleaf(i,j)) * aroot(i,j)/(astem(j)+arepr(j)+aroot(i,j)) )
-                           astem(j) = astem(j) + ( (leaftemp-aleaf(i,j)) * astem(j)/(astem(j)+arepr(j)+aroot(i,j)) )
-                           arepr(j) = arepr(j) + ( (leaftemp-aleaf(i,j)) * arepr(j)/(astem(j)+arepr(j)+aroot(i,j)) )
+                           aroot(i,j) = aroot(i,j) + ( (leaftemp-aleaf(i,j)) * aroot(i,j)/(astem(i,j)+arepr(j)+aroot(i,j)) )
+                           astem(i,j) = astem(i,j) + ( (leaftemp-aleaf(i,j)) * astem(i,j)/(astem(i,j)+arepr(j)+aroot(i,j)) )
+                           arepr(j) = arepr(j) + ( (leaftemp-aleaf(i,j)) * arepr(j)/(astem(i,j)+arepr(j)+aroot(i,j)) )
                         endif  
                      aroot(i,j) = max(0.0, aroot(i,j))
                      aleaf(i,j) = max(0.0, aleaf(i,j))
-                     astem(j) = max(0.0, astem(j))
+                     astem(i,j) = max(0.0, astem(i,j))
                      arepr(j) = max(0.0, arepr(j))
 
                      if (arepr(j) .gt. 0.001 .and. grainday(i,j) .gt. 999) grainday(i,j) = min(grainday(i,j), &
@@ -418,14 +426,14 @@ subroutine phenocrop (kpti,kptj)
 
                   aybprod(i,j) = aybprod(i,j)                    &
                                + aleaf(i,j) * max(0.0,adnpp(i,j))  &
-                               + astem(j) * max(0.0,adnpp(i,j))  &
+                               + astem(i,j) * max(0.0,adnpp(i,j))  &
                                + aroot(i,j) * max(0.0,adnpp(i,j))  &
                                + awood(i,j) * max(0.0,adnpp(i,j))  &
                                + arepr(j) * max(0.0,adnpp(i,j))
 !-above
                   ayabprod(i,j) = ayabprod(i,j)                  & 
                                 + aleaf(i,j) * max(0.0,adnpp(i,j)) &
-                                + astem(j) * max(0.0,adnpp(i,j)) &
+                                + astem(i,j) * max(0.0,adnpp(i,j)) &
                                 + arepr(j) * max(0.0,adnpp(i,j)) &
                                 + awood(i,j) * max(0.0,adnpp(i,j))
 
@@ -445,7 +453,8 @@ subroutine phenocrop (kpti,kptj)
                   cbiol(i,j) = cbiol(i,j) + aleaf(i,j) * max (0.0, adnpp(i,j)) - &
                                (laidecl(i,j)/specla(i,j))
                   cbiog(i,j) = cbiog(i,j) + arepr(j) * max (0.0, adnpp(i,j))
-                  cbios(i,j) = cbios(i,j) + astem(j) * max (0.0, adnpp(i,j))
+
+                  cbios(i,j) = cbios(i,j) + astem(i,j) * max (0.0, adnpp(i,j))
 
                   fallrsgc(i,3) = cbior(i,j) + aroot(i,j) * max(0.0,adnpp(i,j))
                   cbior(i,j) = cbior(i,j) * exp(-1.0/tauroot(j)) +             &
@@ -476,7 +485,7 @@ subroutine phenocrop (kpti,kptj)
 !
 ! keep track of aboveground annual npp 
 !
-                  ayanpp(i,j) = (aleaf(i,j) + arepr(j) + astem(j) + &
+                  ayanpp(i,j) = (aleaf(i,j) + arepr(j) + astem(i,j) + &
                                 awood(i,j)) * adnpp(i,j) + ayanpp(i,j)
 
        if(imetyear .ne. 9999) then        
