@@ -79,8 +79,12 @@ subroutine setsoi(kpti, kptj)
                         * ((2.24*100.)**powice)
           endif
 
+
+!
+
 110      continue
 100   continue
+
 
 ! set qglif - the fraction of soil sfc evaporation from soil
 ! liquid (relative to total from liquid and ice)

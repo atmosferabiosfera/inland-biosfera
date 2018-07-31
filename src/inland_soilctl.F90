@@ -59,6 +59,7 @@ subroutine soilctl(kpti, kptj)
          end do
       end do
 
+
 ! for soil, set soil infiltration rate fwtop (for 
 ! soilh2o) and upper heat flux fhtop (for soilheat)
 !

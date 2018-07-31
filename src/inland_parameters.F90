@@ -9,6 +9,7 @@ module inland_parameters
       save
 
       integer rddaydims  !Gabriel Abrahao: added in the namelist declaration in main_offline and used in rdday. 0 for reading daily data in 4d, 1 in 3d
+      integer isparse  !Gabriel Abrahao: added in the namelist declaration in main_offline and used to choose IO subroutines 0: Normal 3d/4d inputs 1: All inputs are one-dimensional vectors represeting a sparse matrix
 
       integer myid       ! mpi process (same as iam in ccm)
       integer nproc      ! number of mpi processes (same as npes in ccm)

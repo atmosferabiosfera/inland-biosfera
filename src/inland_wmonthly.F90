@@ -279,6 +279,14 @@ subroutine wmonthly(nday)
             dimnames(3:) = 'time'
             if ( mlpt .gt. 1 ) dimnames(3) = 'tile'
 
+            !gabriel abrahao: Initialize auxlongitude and pids in the output file for reference. 
+            if (isparse.eq.1) then
+               call inivar(idies,'auxpid','Point ids for sparse mode', &
+                       'id',2,dimnames(1:2),istat)
+               call inivar(idies,'auxlongitude','Longitudes for sparse mode', &
+                       'degrees',2,dimnames(1:2),istat)               
+            end if
+
             call inivar(idies,'aet','average evapotranspiration','mm/day',ndims, &
                         dimnames,istat)
             call inivar(idies,'transu','monthly upper canopy transpiration', &
@@ -353,6 +361,13 @@ subroutine wmonthly(nday)
             if ( mlpt .gt. 1 ) dimnames(4) = 'tile'
             call inivar(idiespft,'burnpft','area burned in each pft','km^2',&
                         ndims+1,dimnames,istat)
+            !gabriel abrahao: Initialize auxlongitude and pids in the output file for reference. 
+            if (isparse.eq.1) then
+               call inivar(idiespft,'auxpid','Point ids for sparse mode', &
+                       'id',2,dimnames(1:2),istat)
+               call inivar(idiespft,'auxlongitude','Longitudes for sparse mode', &
+                       'degrees',2,dimnames(1:2),istat)               
+            end if            
 
             call closefile(idies,istat)
             call closefile(idiespft,istat)
@@ -373,6 +388,13 @@ subroutine wmonthly(nday)
       end if
       istart(ndims) = mstep
       icount(ndims) = 1
+
+
+      !gabriel abrahao: Write the pids in the output file for reference.
+      if (isparse.eq.1) then
+         call writevar(filen,idies,'auxpid',auxpid,istart(1:2),icount(1:2),ftime,istat)
+         call writevar(filen,idies,'auxlongitude',auxlonscale,istart(1:2),icount(1:2),ftime,istat)
+      end if
 
       call writevar(filen,idies,'aet',amaet,istart,icount,ftime,istat)
       call writevar(filen,idies,'transu',amtransu,istart,icount,ftime,istat)
@@ -438,6 +460,12 @@ subroutine wmonthly(nday)
       istart(ndims+1) = mstep
       icount(ndims+1) = 1
       
+      !gabriel abrahao: Write the pids in the output file for reference.
+      if (isparse.eq.1) then
+         call writevar(filenpft,idiespft,'auxpid',auxpid,istart(1:2),icount(1:2),ftime,istat)
+         call writevar(filenpft,idiespft,'auxlongitude',auxlonscale,istart(1:2),icount(1:2),ftime,istat)
+      end if
+
       call writevar(filenpft,idiespft,'burnpft',amburnpft,istart,icount,ftime,istat)
 
       call closefile(idies,istat)

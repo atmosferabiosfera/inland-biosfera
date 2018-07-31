@@ -36,6 +36,11 @@ module inland_comwork
       integer, allocatable :: lonindex(:), latindex(:)     
       real*8, dimension(:), allocatable :: lonscale(:), latscale(:)
 
+! auxlonscale(nlon): sparse longitude of nth point in degrees east [nlat], not sorted so not a coordinate variable
+! auxpid(nlon): sparse point id of nth point, read from the first (surta) input [nlat], not sorted so not a coordinate variable
+      real*8, dimension(:), allocatable :: auxlonscale(:)
+      real*8, dimension(:), allocatable :: auxpid(:)
+
 ! work(ndim2): work space big enough for one full grid [ndim2]
 ! cdummy(ndim3): work space big enough for npft grids [ndim3]
 ! cdummyint(ndim3): work space big enough for npft grids [ndim3] (integer)

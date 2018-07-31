@@ -9,11 +9,11 @@
 
 #ifndef SINGLE_POINT_MODEL
 /* Definitions for the Grid model (2D) */
-#define PLON 360 /* nlon */
-#define PLAT 180 /* nlat */
+#define PLON 1 /* nlon */
+#define PLAT 3 /* nlat */
 /* LPT (npoi) not used anymore */
-#define XRES 1.0 /* xres */
-#define YRES 1.0 /* yres */
+#define XRES 0.25 /* xres */
+#define YRES 0.25 /* yres */
 
 #else /* SINGLE_POINT_MODEL */
 /* Default definitions for the Single Point model (0D) */
@@ -27,7 +27,7 @@
 
 /* General definitions */
 #define NUMBANDS 2 /* nband */
-#define NUMSOILLAYERS 11 /* nsoilay */
+#define NUMSOILLAYERS 12 /* nsoilay */
 #define NUMSNOWLAYERS 3 /* nsnolay */
 #ifndef SINGLE_POINT_MODEL
 #define NUMPFT 16 /* npft */

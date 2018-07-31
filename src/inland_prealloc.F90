@@ -183,6 +183,12 @@ subroutine inland_prealloc
       ndim3=nlon*nlat*max(nband,nsoilay,nsnolay,npft)
       if ( mlpt .gt. 1 ) ndim3 = ndim3*(mlpt+1)
 
+!gabriel.abrahao in sparse allocate auxlonscale and auxpid with nlat,as lat controls the number of points
+      if (isparse.eq.1) then
+         allocate(auxlonscale(nlat))
+         allocate(auxpid(nlat))
+      end if
+
       allocate(lonscale(nlon),latscale(nlat))
       allocate(work(ndim2))
       allocate(cdummy(ndim3),cdummyint(ndim3))

@@ -105,6 +105,7 @@ subroutine phenocrop (kpti,kptj)
       do 100 i = lbeg, lend
 !
 ! TODO fix other vars like these, which should be reset every grid point
+
 !         aleaf(scpft:) = 0.
 !         astem(scpft:) = 0.
 !         aroot(scpft:) = 0.

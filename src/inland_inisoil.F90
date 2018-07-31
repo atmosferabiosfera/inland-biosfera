@@ -148,7 +148,8 @@ subroutine inisoil (irestart)
 #endif /* SINGLE_POINT_MODEL */
 200 continue
     endif ! check for crop existence
-!
+
+
 ! create soil properties look-up table
 !
 ! set soil parameters at each layer for the global domain
@@ -158,22 +159,31 @@ subroutine inisoil (irestart)
 ! last layer (layer 6)
 ! analysis of the current WISE-IGBP soil textural dataset
 ! reveals very little information below 4 m.
+
+! gabriel abrahao: in order to make natural and agro more compatible, 
+! the default input files now have 11 layers, ending at 240cm. 
+! The information for the 240cm layer is the same as the 400cm layer
+! in the old default. Also, both parameter files have 12 layers
+! Its just a matter of repeating the 11th one for layers below it,
+! and the natural vegetation will be using essentially the same information
+! as before but solving the equations with more layers. 
       do 310 i = lbeg, lend 
          do 300 k = 1, nsoilay
 
 ! Convert input sand and clay percents to fractions
-            if (k.le.6) then
+            if (k.le.11) then
                msand = nint(sand(i,k))
                mclay = nint(clay(i,k)) 
             else
-               msand = nint(sand(i,6)) 
-               mclay = nint(clay(i,6)) 
+               msand = nint(sand(i,11)) 
+               mclay = nint(clay(i,11)) 
           endif
       if(isimagro .eq. 0) then
           fsand    = 0.01 * msand
           fclay    = 0.01 * mclay
           fsilt    = 0.01 * (100 - msand - mclay)
      endif
+
 
 ! for now, we assume that all soils have a 1% organic content -- 
 ! this is just a place holder until we couple the soil carbon
@@ -199,6 +209,8 @@ subroutine inisoil (irestart)
 ! no silt in IBIS so set CONUS silt equal to silt loam
 !
           lmin = textcls (msand,mclay)  !class from the global file.
+
+
 
           fracsand(i,k) = texdat(1,lmin)
           fracsilt(i,k) = texdat(2,lmin)

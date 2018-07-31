@@ -199,7 +199,7 @@ program main !main_offline!
 
 ! namelist declaration
 #ifndef SINGLE_POINT_MODEL
-      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims
+      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims, isparse
 #else
       namelist/INLAND_SINGLE_POINT/ iyear0, nrun, dtime, soilcspin, isimveg, isimfire, isoilforc, isimco2, co2init, o2init, isinfilt, isimrwu, snorth, ssouth, swest, seast
 #endif /* SINGLE_POINT_MODEL */
@@ -514,7 +514,12 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       o2conc  = o2init
 
 ! read global boundary condition datasets
-      call readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
+! gabriel abrahao: call readit_sparse instead if we are reading sparse matrices
+      if (isparse.eq.0) then
+        call readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
+      else
+        call readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)        
+      end if
 #ifndef SINGLE_POINT_MODEL
       if(npoi .eq. 1) then
          call build_file
