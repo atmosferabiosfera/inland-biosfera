@@ -72,7 +72,7 @@ am__inland_grid_SOURCES_DIST = inland_main_offline.F90 \
 	inland_lenchrib.F90 inland_linsolve.F90 inland_lsmmapib.F90 \
 	inland_lsxmain.F90 inland_mix.F90 inland_netcdfutils.F90 \
 	inland_noveg.F90 inland_pheno.F90 inland_prealloc.F90 \
-	inland_random.F90 inland_rdday.F90 inland_rdlndtrans.F90 \
+	inland_random.F90 inland_rdday.F90 inland_rdlndtrans.F90 inland_rdcropparmaps.F90 \
 	inland_rdmon.F90 inland_rdparam.F90 inland_rdenv.F90 \
 	inland_readit.F90 inland_readit_sparse.F90 inland_readitem.F90 inland_readitems.F90 \
 	inland_readvar.F90 inland_restartib.F90 inland_scopya.F90 \
@@ -170,6 +170,7 @@ am__inland_grid_SOURCES_DIST = inland_main_offline.F90 \
 @SINGLE_POINT_FALSE@	inland_random.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_rdday.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_rdlndtrans.$(OBJEXT) \
+@SINGLE_POINT_FALSE@	inland_rdcropparmaps.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_rdmon.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_rdparam.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_rdenv.$(OBJEXT) \
@@ -607,7 +608,7 @@ top_srcdir = @top_srcdir@
 @SINGLE_POINT_FALSE@	inland_netcdfutils.F90 inland_noveg.F90 \
 @SINGLE_POINT_FALSE@	inland_pheno.F90 inland_prealloc.F90 \
 @SINGLE_POINT_FALSE@	inland_random.F90 inland_rdday.F90 \
-@SINGLE_POINT_FALSE@	inland_rdlndtrans.F90 inland_rdmon.F90 \
+@SINGLE_POINT_FALSE@	inland_rdlndtrans.F90 inland_rdcropparmaps.F90 inland_rdmon.F90 \
 @SINGLE_POINT_FALSE@	inland_rdparam.F90 inland_rdenv.F90 \
 @SINGLE_POINT_FALSE@	inland_readit.F90 inland_readit_sparse.F90 inland_readitem.F90 \
 @SINGLE_POINT_FALSE@	inland_readitems.F90 inland_readvar.F90 \
@@ -1061,6 +1062,7 @@ inland_initsw.o:  inland_delta_sw.F90 inland_parameters.o inland_comatm.o inland
 @SINGLE_POINT_FALSE@inland_netcdfutils.o: inland_netcdfutils.F90
 @SINGLE_POINT_FALSE@inland_rdday.o: inland_rdday.F90 inland_parameters.o inland_combcs.o inland_comwork.o inland_control.o
 @SINGLE_POINT_FALSE@inland_rdlndtrans.o: inland_rdlndtrans.F90 inland_parameters.o inland_combcs.o inland_control.o inland_comveg.o inland_comwork.o
+@SINGLE_POINT_FALSE@inland_rdcropparmaps.o: inland_rdcropparmaps.F90 inland_parameters.o inland_combcs.o inland_control.o inland_comveg.o inland_comwork.o inland_comcrop.o
 @SINGLE_POINT_FALSE@inland_rdmon.o: inland_rdmon.F90 inland_parameters.o inland_combcs.o inland_comwork.o inland_control.o
 @SINGLE_POINT_FALSE@inland_readit.o: inland_readit.F90 inland_parameters.o inland_combcs.o inland_comsoi.o inland_comveg.o inland_comwork.o inland_subgrid.o inland_control.o inland_rdhrvegmap.o
 @SINGLE_POINT_FALSE@inland_readit_sparse.o: inland_readit_sparse.F90 inland_parameters.o inland_combcs.o inland_comsoi.o inland_comveg.o inland_comwork.o inland_subgrid.o inland_control.o inland_rdhrvegmap.o
