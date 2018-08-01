@@ -15,7 +15,7 @@ dtime      = 3600     , ! dtime - time step in seconds (default 3600)
 ! simulation parameters
 rddaydims  = 1        , ! rddaydims - 0: Read daily data in 4d (lat,lon,lev,time); 1: Read daily data in 3d (lat,lon,time)
 isparse    = 0        , ! isparse - 0: Normal 3d/4d inputs 1: All inputs are one-dimensional vectors represeting a sparse matrix
-irdcropparmaps = 0    , ! irdcropparmaps - 0: Use all crop parameters from parameter file; 1: Read some crop parameters from yearly NCs
+irdcropparmaps = 1    , ! irdcropparmaps - 0: Use all crop parameters from parameter file; 1: Read some crop parameters from yearly NCs
 soilcspin  = 0        , ! soilcspin - 0: no soil spinup, 1: acceleration procedure used (default 0)
 isimveg    = 1        , ! isimveg - 0: static veg, 1: dynamic veg, 2: dynamic veg-cold start (default 0)
 isimfire   = 2        , ! 0: no fire disturbance (0%/yr), 1: natural const (0.5%/yr), 2: CTEM, 3: IBIS (default 1, ignored if isimveg=0)

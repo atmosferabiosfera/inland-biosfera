@@ -527,6 +527,7 @@ subroutine rd_param(irestart)
                         grnfill(j), bfact(j), dummyvar, dummyvar) 
       end do
 
+        !gabriel abrahao
         !TODO: FIXME: this sugarcane-specific part should be calculated somewhere else in order to have explicit planting date maps.
         !Here we simply get pmmin and pdmin for the first point, as they will all be the same if not using explicit maps
         !pcm(16)=mod(pmmin(16)+(mxmat(16)/30),12.)+1
@@ -534,6 +535,7 @@ subroutine rd_param(irestart)
         pcm(16)=mod(pmmin_temp(16)+(mxmat(16)/30),12.)+1
         pcd(16)=pdmin_temp(16)
         write(*,*) "WARNING: sugarcane (PFT 16) does not work with explicit planting date maps yet. FIXME in inland_rdparam.F90"
+        write(*,*) irdcropparmaps
 
       
       do j = 1, 2 ! number of wheat crop types 

@@ -685,6 +685,15 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 ! get new o2 and co2 concentrations for this year
          if (isimco2.eq.1) call co2(co2init)
 
+
+          if (isimagro.gt.0) then         
+           !gabriel abrahao: Read yearly crop parameter maps here. TODO: Put a setting in namelist and call this in an if
+           if (irdcropparmaps.eq.1) then
+              call rdcropparmaps(iwest,jnorth)
+           end if
+          end if
+
+
 !---------------------- MONTH MONTH MONTH ----------------------------------
 ! start of monthly loop
 !---------------------- MONTH MONTH MONTH ----------------------------------
@@ -831,11 +840,6 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       if (isimagro .gt. 0) then
 
           if (irotation .gt. 0 .and. jday .eq. 1) call rotation(irestart, iyrrestart)
-
-          !gabriel abrahao: Read yearly crop parameter maps here. TODO: Put a setting in namelist and call this in an if
-          if (irdcropparmaps.eq.1) then
-             call rdcropparmaps(iwest,jnorth)
-          end if
 
          call planting(irestart,iyrrestart,jday,ffact)
 !
