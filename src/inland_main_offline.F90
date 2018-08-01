@@ -520,6 +520,10 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       else
         call readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)        
       end if
+
+!gabriel abrahao: Read yearly crop parameter maps here. TODO: Put a setting in namelist and call this in an if
+        call rdcropparmaps(iwest,jnorth)
+
 #ifndef SINGLE_POINT_MODEL
       if(npoi .eq. 1) then
          call build_file
