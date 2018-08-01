@@ -10,6 +10,7 @@ subroutine rdcropparmaps(iwest,jnorth)
       use inland_control, only: iyear, env_debug
       use inland_comveg,  only: disturbl
       use inland_comwork
+      use inland_comcrop
 
       implicit none
 
@@ -31,7 +32,8 @@ subroutine rdcropparmaps(iwest,jnorth)
 
       !gabriel apagar
       write(*,*) "======================================================================================== PASSEI inland_rdcropparmaps.F90"
-     
+      write(*,*) "shape(pdmin) = ",shape(pdmin)
+      write(*,*) "pdmin = ",pdmin
 !       istart(1) = iwest
 !       istart(2) = jnorth
 !       icount(1) = nlonsub
