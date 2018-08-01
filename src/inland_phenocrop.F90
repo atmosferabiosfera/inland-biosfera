@@ -528,10 +528,10 @@ subroutine phenocrop (kpti,kptj)
                   if (j .eq. 16) then   
                      if (cropy(i) .eq. 1) then
                         if (((hui(i,j) .ge. gddmaturity(i,j)) .and. (idpp(i,j) .ge.        &
-                           mxmat(j)-60) .and. (iday .ge. pdmin(j) .and. imonth .ge.        &
-                           (mod(pmmin(16)+(mxmat(16)/30)-3,12.0)+1))) .or. ((idpp(i,j) .ge. &
-                           mxmat(j)-30) .and. (iday .eq. pdmin(j) .and. imonth .eq.        &
-                           (mod(pmmin(16)+(mxmat(16)/30)-1,12.0) + 1)))) then
+                           mxmat(j)-60) .and. (iday .ge. pdmin(i,j) .and. imonth .ge.        &
+                           (mod(pmmin(i,16)+(mxmat(16)/30)-3,12.0)+1))) .or. ((idpp(i,j) .ge. &
+                           mxmat(j)-30) .and. (iday .eq. pdmin(i,j) .and. imonth .eq.        &
+                           (mod(pmmin(i,16)+(mxmat(16)/30)-1,12.0) + 1)))) then
                               croplive(i,j) = 0.0
                               grnfraccrop(i,j) = 0.0           
                               if (harvdate(i,j) .eq. 999) harvdate(i,j) = jday 
@@ -540,7 +540,7 @@ subroutine phenocrop (kpti,kptj)
                      else
                         if (((hui(i,j) .ge. gddmaturity(i,j)) .and. (idpp(i,j) .ge. 335))  &
                             .or. idpp(i,j) .ge. 395 .or. ((idpp(i,j) .ge. 335) .and.       &
-                           (iday .eq. pdmin(j) .and. imonth .eq. (mod(pmmin(16) +          &
+                           (iday .eq. pdmin(i,j) .and. imonth .eq. (mod(pmmin(i,16) +          &
                            (mxmat(16)/30)-1,12.0)+1)))) then             !maximum expected harvest date
                               croplive(i,j) = 0.0
                               grnfraccrop(i,j) = 0.0           

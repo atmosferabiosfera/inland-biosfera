@@ -103,7 +103,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 
             if ((j .eq. 13 .or. j .eq. 14 .or. j .eq. 16) .or. (j .eq. 15 .and. iwheattype .eq. 1)) then
 !
-               if (iday .eq. pdmin(j) .and. imonth .eq. pmmin(j) .and. croplive(i,j) .ne. 1.0 .and. &
+               if (iday .eq. pdmin(i,j) .and. imonth .eq. pmmin(i,j) .and. croplive(i,j) .ne. 1.0 .and. &
                   exist(i,j) .eq. 1 .and. ncyears(i) .ge. 1) pstart(i,j)=cdays(i)
 
                if(iyear .gt. iyear0 .and. j .lt. 16 .and. pstart(i,j) .ne. 999 .and. &
@@ -340,8 +340,8 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 !
 
                   if (iyear .eq. iyear0) then
-                     if (a5tmin(i) .le. pmintemp(j) .and. imonth .ge. pmmin(j) .and. &
-                        iday .ge. pdmin(j) .and. (harvdate(i,13) .ne. 999 .or.       &
+                     if (a5tmin(i) .le. pmintemp(j) .and. imonth .ge. pmmin(i,j) .and. &
+                        iday .ge. pdmin(i,j) .and. (harvdate(i,13) .ne. 999 .or.       &
                         harvdate(i,14) .ne. 999 .or. irotation .eq. 0) .and.         &
                         gdd0c(i) .ge. gddmin(j)) then
 !
@@ -367,8 +367,8 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 !
                   elseif (iyear .gt. iyear0 .and. iyear .lt. iyear0+5) then       ! after initial spinup for crop average planting dates
 !
-                     if (a5tmin(i) .le. pmintemp(j) .and. imonth .ge. pmmin(j) .and. &
-                        iday .ge. pdmin(j) .and. (harvdate(i,13) .ne. 999 .or.       &
+                     if (a5tmin(i) .le. pmintemp(j) .and. imonth .ge. pmmin(i,j) .and. &
+                        iday .ge. pdmin(i,j) .and. (harvdate(i,13) .ne. 999 .or.       &
                         harvdate(i,14) .ne. 999 .or. irotation  .eq. 0) .and.        &
                         gdd0c(i) .ge. gddmin(j)) then
 !
@@ -411,8 +411,8 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                      avehybrid(i,j) = sumhy(i,j) / yc
                      iavepdate(i,j) = int(sumdp(i,j)/yc)
 
-                     if (a5tmin(i) .le. pmintemp(j) .and. imonth .ge. pmmin(j) .and. &
-                        iday .ge. pdmin(j) .and. (harvdate(i,13) .ne. 999 .or.       &
+                     if (a5tmin(i) .le. pmintemp(j) .and. imonth .ge. pmmin(i,j) .and. &
+                        iday .ge. pdmin(i,j) .and. (harvdate(i,13) .ne. 999 .or.       &
                         harvdate(i,14) .ne. 999 .or. irotation .eq. 0) .and.         &
                         gdd0c(i) .ge. gddmin(j)) then
 !

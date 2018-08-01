@@ -33,7 +33,8 @@ subroutine rdcropparmaps(iwest,jnorth)
       !gabriel apagar
       write(*,*) "======================================================================================== PASSEI inland_rdcropparmaps.F90"
       write(*,*) "shape(pdmin) = ",shape(pdmin)
-      write(*,*) "pdmin = ",pdmin
+      write(*,*) "pdmin(1,:) = ",pdmin(1,:)
+      write(*,*) "pdmin(2,:) = ",pdmin(2,:)
 !       istart(1) = iwest
 !       istart(2) = jnorth
 !       icount(1) = nlonsub

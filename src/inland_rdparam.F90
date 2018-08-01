@@ -74,9 +74,14 @@ subroutine rd_param(irestart)
                          ! non-existent variables in subroutine ReadItems
       real*8    dummyvars(10)
 
+      real*8, dimension(:), allocatable :: dummypft1,dummypft2 !gabriel abrahao: For reading npft-sized arrays, allocated below
+
       character*1024 parm_file
       
       parameter (parm_unit = 9)
+
+      !gabriel abrahao: Allocating dummypft
+      allocate(dummypft1(npft),dummypft2(npft))
 
 #ifdef SINGLE_POINT_MODEL
 ! Thiago on Set/12: Code below loops over all lines of the input file to
@@ -507,9 +512,13 @@ subroutine rd_param(irestart)
       end do
 
       do j = scpft, ecpft 
+         ! call readitems(parm_unit, parm_file, 6, ptemp(j), pmintemp(j), &
+         !                pmmin(j), pdmin(j), pcm(j), pcd(j), dummyvar,   &
+         !                dummyvar, dummyvar, dummyvar)
+         !gabriel abrahao: To be able to also have pdmin as a map, we have to first read it in temporary files, and distribute those in readit later
          call readitems(parm_unit, parm_file, 6, ptemp(j), pmintemp(j), &
-                        pmmin(j), pdmin(j), pcm(j), pcd(j), dummyvar,   &
-                        dummyvar, dummyvar, dummyvar)
+                        pmmin_temp(j), pdmin_temp(j), pcm(j), pcd(j), dummyvar,   &
+                        dummyvar, dummyvar, dummyvar)         
       end do
 
       do j = scpft, ecpft 
@@ -518,8 +527,14 @@ subroutine rd_param(irestart)
                         grnfill(j), bfact(j), dummyvar, dummyvar) 
       end do
 
-        pcm(16)=mod(pmmin(16)+(mxmat(16)/30),12.)+1
-        pcd(16)=pdmin(16)
+        !TODO: FIXME: this sugarcane-specific part should be calculated somewhere else in order to have explicit planting date maps.
+        !Here we simply get pmmin and pdmin for the first point, as they will all be the same if not using explicit maps
+        !pcm(16)=mod(pmmin(16)+(mxmat(16)/30),12.)+1
+        !pcd(16)=pdmin(16)
+        pcm(16)=mod(pmmin_temp(16)+(mxmat(16)/30),12.)+1
+        pcd(16)=pdmin_temp(16)
+        write(*,*) "WARNING: sugarcane (PFT 16) does not work with explicit planting date maps yet. FIXME in inland_rdparam.F90"
+
       
       do j = 1, 2 ! number of wheat crop types 
          call readitems(parm_unit, parm_file, 7, grnwht(j), fleafiwht(j), &

@@ -79,16 +79,16 @@ subroutine climanl
 
 	
 
-	    if(pmmin(16).lt.pcm(16)-2) then
+	    if(pmmin(i,16).lt.pcm(16)-2) then
 
-	       if(k.ge.pmmin(16).and.k.lt.pcm(16)-2) then  
+	       if(k.ge.pmmin(i,16).and.k.lt.pcm(16)-2) then  
            gddsgcp(i,1)= gddsgcp(i,1) + max(0.0, min(dtemp+273.16-baset(16),30.0))
            endif
 
 
-	    else if(pmmin(16).gt.pcm(16)-2) then
+	    else if(pmmin(i,16).gt.pcm(16)-2) then
 
-	        if(k.ge.pmmin(16).and.k.le.12) then
+	        if(k.ge.pmmin(i,16).and.k.le.12) then
                gddsgcp(i,1)= gddsgcp(i,1) + max(0.0, min(dtemp+273.16-baset(16),30.0))
             endif
 
