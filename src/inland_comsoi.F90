@@ -127,6 +127,9 @@ module inland_comsoi
 !      nloss          ! fraction of immobile inorganic nitrogen that is lost annually to volatilization/denitrification 
 
 
+      integer infilensoilayer    ! number of soil layers in the input files soita.sand.nc and soita.clay.nc
+
+
 
 !
 end module inland_comsoi

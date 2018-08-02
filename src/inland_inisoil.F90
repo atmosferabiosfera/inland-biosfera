@@ -171,12 +171,12 @@ subroutine inisoil (irestart)
          do 300 k = 1, nsoilay
 
 ! Convert input sand and clay percents to fractions
-            if (k.le.11) then
+            if (k.le.infilensoilayer) then
                msand = nint(sand(i,k))
                mclay = nint(clay(i,k)) 
             else
-               msand = nint(sand(i,11)) 
-               mclay = nint(clay(i,11)) 
+               msand = nint(sand(i,infilensoilayer)) 
+               mclay = nint(clay(i,infilensoilayer)) 
           endif
       if(isimagro .eq. 0) then
           fsand    = 0.01 * msand

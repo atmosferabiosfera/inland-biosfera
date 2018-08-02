@@ -117,6 +117,34 @@ subroutine netcdf_error (message,code)
 end subroutine netcdf_error
 
 
+subroutine netcdf_getdimsize (filen,dimname,dimsize,ierror)
+
+  character(*) filen, dimname
+  integer dimsize, ierror, ncid, dimid
+
+#ifdef GFORTRAN
+#include <netcdf.inc>
+#else /* GFORTRAN */
+    include 'netcdf.inc'
+#endif
+
+  call openfile(ncid, filen, ierror)
+
+  ierror = NF_INQ_DIMID(ncid, dimname, dimid)
+  if (ierror .ne. NF_NOERR) then
+      call netcdf_error("Error getting dimid "//filen, ierror)
+  endif
+
+  ierror = NF_INQ_DIMLEN(ncid, dimid, dimsize)
+  if (ierror .ne. NF_NOERR) then
+      call netcdf_error("error getting dimlen "//filen,ierr)
+  endif
+
+  call closefile(ncid, ierror)
+
+end subroutine netcdf_getdimsize
+
+
 ! this subroutine copies variable or global attributes from one ds to another
 subroutine netcdf_copyattrs(varname,natts,ids,ivarid,ods,ovarid)
   
