@@ -25,10 +25,8 @@
 #         program (though not irreparably).
 # Rule 3: THERE IS NO RULE 3!!!
 
-#   nsoilay is now specified in compar.h
-#   12   ! nsoilay : number of soil layers (actually a constant in comsoi.h)
-#        !           could be read in here, if a new constant, maxsoilay,
-#        !           was introduced to dimension the soil layer arrays  
+
+  12    ! nsoilay : number of soil layers   
 
 #------------------------------------------------------
 # Soil layer thicknesses (m) 

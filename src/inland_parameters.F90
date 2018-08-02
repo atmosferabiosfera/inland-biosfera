@@ -71,7 +71,7 @@ module inland_parameters
       integer nvegtype!number of vegetation types - read in params/vegetation
       integer nlandusetype!number of land use types - read in params/vegetation
 
-      parameter (nband=NUMBANDS, nsoilay=NUMSOILLAYERS, nsnolay=NUMSNOWLAYERS, &
+      parameter (nband=NUMBANDS, nsnolay=NUMSNOWLAYERS, &
                  npft=NUMPFT, scpft=SCPFT, ecpft=ECPFT, npftu=NUMPFT_UPPERCANOPY, ndat=NUMSOILTYPES)
 
 ! copies of atm variables

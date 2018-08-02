@@ -400,6 +400,9 @@ subroutine rd_param(irestart)
      endif
       open(UNIT=parm_unit, FILE=parm_file, STATUS='OLD', ERR=9001)
 
+      call readitem(parm_unit, parm_file, dummyvar)
+      nsoilay = nint(dummyvar)
+
       call inland_inneralloc
 
       do j = 1, nsoilay
