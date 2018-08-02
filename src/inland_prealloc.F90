@@ -5,7 +5,7 @@
 ! and readit subroutines.
 subroutine inland_prealloc
       use inland_parameters, only: npft,nband,ndat,plona,plata,nlonsub, &
-                                 nlatsub
+                                 nlatsub, npoi
       use inland_compft, only: vmax_pft,tauleaf,tauroot,tauwood0,TminL,TminU, &
                                Twarm,GDD,lotemp,hitemp,drought,f1,f2, tauwood0p,vmax_pftp
 !ver depois
@@ -71,12 +71,16 @@ subroutine inland_prealloc
       aleafi(:) = 0.   
       fleaf(:) = 0.
 
-      allocate(ptemp(npft),pmintemp(npft),pmmin(npft),pdmin(npft),pcm(npft),pcd(npft))
+      allocate(ptemp(npft),pmintemp(npft),pcm(npft),pcd(npft))
+      !gabriel abrahao: pdmin and pmmin are now maps, and are allocated in readit. Here we use temporary 1D versions that we replicate or read later when they are allocated
+      allocate(pmmin_temp(npft),pdmin_temp(npft))
 
       ptemp(:) = 0.
       pmintemp(:) = 0.
-      pmmin(:) = 0.
-      pdmin(:) = 0.
+!      pmmin(:) = 0.
+!      pdmin(:) = 0.
+      pmmin_temp(:) = 0.
+      pdmin_temp(:) = 0.
       pcm(:) = 0.
       pcd(:) = 0.
 

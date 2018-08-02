@@ -199,7 +199,7 @@ program main !main_offline!
 
 ! namelist declaration
 #ifndef SINGLE_POINT_MODEL
-      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims, isparse
+      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims, isparse, irdcropparmaps
 #else
       namelist/INLAND_SINGLE_POINT/ iyear0, nrun, dtime, soilcspin, isimveg, isimfire, isoilforc, isimco2, co2init, o2init, isinfilt, isimrwu, snorth, ssouth, swest, seast
 #endif /* SINGLE_POINT_MODEL */
@@ -520,6 +520,9 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       else
         call readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)        
       end if
+
+
+
 #ifndef SINGLE_POINT_MODEL
       if(npoi .eq. 1) then
          call build_file
@@ -681,6 +684,15 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 !        just by not setting isimco2=1 on the infile.
 ! get new o2 and co2 concentrations for this year
          if (isimco2.eq.1) call co2(co2init)
+
+
+          if (isimagro.gt.0) then         
+           !gabriel abrahao: Read yearly crop parameter maps here. TODO: Put a setting in namelist and call this in an if
+           if (irdcropparmaps.eq.1) then
+              call rdcropparmaps(iwest,jnorth)
+           end if
+          end if
+
 
 !---------------------- MONTH MONTH MONTH ----------------------------------
 ! start of monthly loop

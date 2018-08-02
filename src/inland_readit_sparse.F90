@@ -61,7 +61,7 @@ subroutine readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 
 !gabriel apagar
 write(*,*) 'Reading sparse matrices...'
-write(*,*) nlon,nlat
+write(*,*) 'Dummy lat/lon: ',nlon,nlat
 
 ! 2-d surface and vegetation arrays
 
@@ -361,11 +361,12 @@ write(*,*) "icount",icount
       allocate(xintauwood(lbeg:lend,npft), xinawood(lbeg:lend,npft), xinaroot(lbeg:lend,npft), &
                  xinvmax(lbeg:lend,npft), xinspecla(lbeg:lend,npft),xinaleaf(lbeg:lend,npft), &
                  vmax_pft(lbeg:lend,npft), tauwood0(lbeg:lend,npft), awood(lbeg:lend,npft),    &
-                 aroot(lbeg:lend,npft),astem(lbeg:lend,npft),aleaf(lbeg:lend,npft),specla(lbeg:lend,npft))            
+                 aroot(lbeg:lend,npft),astem(lbeg:lend,npft),aleaf(lbeg:lend,npft),specla(lbeg:lend,npft))       
       tauwood0(:,:) = 0.
       vmax_pft(:,:) = 0.     
       awood(:,:) = 0. 
       aroot(:,:) = 0. 
+      astem(:,:) = 0. 
       aleaf(:,:) = 0. 
       specla(:,:) = 0.     
 
@@ -376,6 +377,17 @@ write(*,*) "icount",icount
 
       allocate(garea(lbeg:lend))
       garea(:) = 0.
+
+! gabriel abrahao: Allocate the crop parameters that can also be read as maps (rdcropparmaps) here, and replicate their temporary values to all points. If rdcropparmaps is called later, those will be overriden
+      if (isimagro.gt.0) then
+         allocate(pmmin(lbeg:lend,npft),pdmin(lbeg:lend,npft))
+         do j = scpft, ecpft 
+            pdmin(:,j) = pdmin_temp(j)
+            pmmin(:,j) = pmmin_temp(j)
+         end do
+      !gabriel apagar
+      write(*,*) shape(pmmin)
+      end if
 
 ! ---------------------------------------------------------------------
 

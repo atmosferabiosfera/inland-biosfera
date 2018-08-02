@@ -322,7 +322,17 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       allocate(garea(lbeg:lend))
       garea(:) = 0.
 
+! gabriel abrahao: Allocate the crop parameters that can also be read as maps (rdcropparmaps) here, and replicate their temporary values to all points. If rdcropparmaps is called later, those will be overriden
+      if (isimagro.gt.0) then
+         allocate(pmmin(lbeg:lend,npft),pdmin(lbeg:lend,npft))
+         do j = scpft, ecpft 
+            pdmin(:,j) = pdmin_temp(j)
+            pmmin(:,j) = pmmin_temp(j)
+         end do
+      end if
+
 ! ---------------------------------------------------------------------
+
 
 ! Now we write data to the structures.
 ! initialize lonindex, latindex for use in arr2vec, vec2arr, etc.

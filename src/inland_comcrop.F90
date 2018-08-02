@@ -102,14 +102,21 @@ module inland_comcrop
                 ztopmxwht,      &   ! maximum height of wheat canopy
                 ztopmxmze           ! maximum height of maize canopy
 
-!
-      real*8, dimension(:), allocatable ::  ptemp, pmintemp, pmmin, pdmin, pcm, pcd,  &
-                                            aerial, huileaf, huigrain
+
+!      real*8, dimension(:), allocatable ::  ptemp, pmintemp, pmmin, pdmin, pcm, pcd,  &
+!                                            aerial, huileaf, huigrain
+      real*8, dimension(:), allocatable ::  ptemp, pmintemp, pcm, pcd,  &
+                                            aerial, huileaf, huigrain                                            
+      real*8, dimension(:), allocatable ::  pmmin_temp, pdmin_temp !gabriel abrahao: Those also have a npoi dimension now, the temp ones are just for reading
+      real*8, dimension(:,:), allocatable ::  pmmin, pdmin !gabriel abrahao: Those also have a npoi dimension now
+
 !
 !            ptemp(npft),           ! minimum 10 day average temperature for planting (K)
 !            pmintemp(npft),        ! minimum 10 day average min temp for planting (K) 
-!            pmmin(npft),           ! earliest month to plant (month)
-!            pdmin(npft),           ! earliest day in earliest month to plant (day)
+!!            pmmin(npft),           ! earliest month to plant (month) DEPRECATED
+!!            pdmin(npft),           ! earliest day in earliest month to plant (day) DEPRECATED
+!            pmmin(npoi,npft),           ! earliest month to plant (month)
+!            pdmin(npoi,npft),           ! earliest day in earliest month to plant (day)
 !            pcm(npft),             ! Planting Calendar month (month)
 !            pcd(npft)              ! Planting Calendar day  (day)
 !            aerial(npft),          ! allocation of carbon to the aerial components (leaf, stem, and reprod)
