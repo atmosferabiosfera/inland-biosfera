@@ -4,7 +4,7 @@
 !   This subroutine Allocates variables as they are needed by rd_param
 ! and readit subroutines.
 subroutine inland_prealloc
-      use inland_parameters, only: npft,nband,nsoilay,ndat,plona,plata,nlonsub, &
+      use inland_parameters, only: npft,nband,ndat,plona,plata,nlonsub, &
                                  nlatsub
       use inland_compft, only: vmax_pft,tauleaf,tauroot,tauwood0,TminL,TminU, &
                                Twarm,GDD,lotemp,hitemp,drought,f1,f2, tauwood0p,vmax_pftp
@@ -16,7 +16,7 @@ subroutine inland_prealloc
                                arootp, aleafp
       use inland_comtex ! only: all!
       use inland_combgc, only: cnr
-      use inland_comsoi, only: hsoi !, sand, clay, wsoi
+      !use inland_comsoi, only: hsoi !, sand, clay, wsoi
       use inland_comwork ! only: all!
       use inland_combcs, only: xintopo,xinveg,deltat,xint,clmwet, &
                                clmtrng,clmt,clmprec,clmcld,clmq,clmwind, &
@@ -150,9 +150,6 @@ subroutine inland_prealloc
       dleaf(:) = 0.
       dstem(:) = 0.
 
-! Allocate variables in comsoi
-      allocate(hsoi(nsoilay+1))! FIXME: really needed to allocate nsoilay+1?
-      hsoi(:) = 0.
 
 ! Allocate variables in comtex
       allocate(texdat(3,ndat),porosdat(ndat),sfielddat(ndat),swiltdat(ndat), &
@@ -175,14 +172,6 @@ subroutine inland_prealloc
 ! Allocate variables in comwork
 !--------------------------------
 
-! Get comwork's ndim4 size
-!    The base values are now in inland_parameters.F90 module; 
-!    in the future they will be read from inland.infile
-      ndim2 = nlon*nlat
-      ndim4 = max(nlon,nlat,nband,nsoilay,nsnolay,npft)
-      ndim3=nlon*nlat*max(nband,nsoilay,nsnolay,npft)
-      if ( mlpt .gt. 1 ) ndim3 = ndim3*(mlpt+1)
-
 !gabriel.abrahao in sparse allocate auxlonscale and auxpid with nlat,as lat controls the number of points
       if (isparse.eq.1) then
          allocate(auxlonscale(nlat))
@@ -190,13 +179,8 @@ subroutine inland_prealloc
       end if
 
       allocate(lonscale(nlon),latscale(nlat))
-      allocate(work(ndim2))
-      allocate(cdummy(ndim3),cdummyint(ndim3))
       lonscale(:) = 0.
       latscale(:) = 0.
-      work(:) = 0.
-      cdummy(:) = 0.
-      cdummyint(:) = 0
 
 ! removed allocation of variables with npoi dimension, now in readit
 

@@ -71,7 +71,7 @@ am__inland_grid_SOURCES_DIST = inland_main_offline.F90 \
 	inland_iniveg.F90 inland_inpoly.F90 inland_irrad.F90 \
 	inland_lenchrib.F90 inland_linsolve.F90 inland_lsmmapib.F90 \
 	inland_lsxmain.F90 inland_mix.F90 inland_netcdfutils.F90 \
-	inland_noveg.F90 inland_pheno.F90 inland_prealloc.F90 \
+	inland_noveg.F90 inland_pheno.F90 inland_prealloc.F90 inland_inneralloc.F90 \
 	inland_random.F90 inland_rdday.F90 inland_rdlndtrans.F90 \
 	inland_rdmon.F90 inland_rdparam.F90 inland_rdenv.F90 \
 	inland_readit.F90 inland_readit_sparse.F90 inland_readitem.F90 inland_readitems.F90 \
@@ -167,6 +167,7 @@ am__inland_grid_SOURCES_DIST = inland_main_offline.F90 \
 @SINGLE_POINT_FALSE@	inland_noveg.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_pheno.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_prealloc.$(OBJEXT) \
+@SINGLE_POINT_FALSE@	inland_inneralloc.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_random.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_rdday.$(OBJEXT) \
 @SINGLE_POINT_FALSE@	inland_rdlndtrans.$(OBJEXT) \
@@ -266,7 +267,7 @@ am__inland_single_point_SOURCES_DIST = inland_main_offline.F90 \
 	inland_initialib.F90 inland_iniveg.F90 inland_inpoly.F90 \
 	inland_irrad.F90 inland_lenchrib.F90 inland_linsolve.F90 \
 	inland_lsmmapib.F90 inland_lsxmain.F90 inland_mix.F90 \
-	inland_noveg.F90 inland_pheno.F90 inland_prealloc.F90 \
+	inland_noveg.F90 inland_pheno.F90 inland_prealloc.F90 inland_inneralloc.F90 \
 	inland_random.F90 inland_rdparam.F90 inland_rdenv.F90 \
 	inland_readforc.F90 inland_readit.F90 inland_readit_sparse.F90 inland_readitem.F90 \
 	inland_readitems.F90 inland_scopya.F90 inland_setarrib.F90 \
@@ -350,6 +351,7 @@ am__inland_single_point_SOURCES_DIST = inland_main_offline.F90 \
 @SINGLE_POINT_TRUE@	inland_mix.$(OBJEXT) inland_noveg.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_pheno.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_prealloc.$(OBJEXT) \
+@SINGLE_POINT_TRUE@	inland_inneralloc.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_random.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_rdparam.$(OBJEXT) \
 @SINGLE_POINT_TRUE@	inland_rdenv.$(OBJEXT) \
@@ -538,7 +540,7 @@ top_srcdir = @top_srcdir@
 @SINGLE_POINT_TRUE@	inland_lenchrib.F90 inland_linsolve.F90 \
 @SINGLE_POINT_TRUE@	inland_lsmmapib.F90 inland_lsxmain.F90 \
 @SINGLE_POINT_TRUE@	inland_mix.F90 inland_noveg.F90 \
-@SINGLE_POINT_TRUE@	inland_pheno.F90 inland_prealloc.F90 \
+@SINGLE_POINT_TRUE@	inland_pheno.F90 inland_prealloc.F90 inland_inneralloc.F90 \
 @SINGLE_POINT_TRUE@	inland_random.F90 inland_rdparam.F90 \
 @SINGLE_POINT_TRUE@	inland_rdenv.F90 inland_readforc.F90 \
 @SINGLE_POINT_TRUE@	inland_readit.F90 inland_readit_sparse.F90 inland_readitem.F90 \
@@ -605,7 +607,7 @@ top_srcdir = @top_srcdir@
 @SINGLE_POINT_FALSE@	inland_linsolve.F90 inland_lsmmapib.F90 \
 @SINGLE_POINT_FALSE@	inland_lsxmain.F90 inland_mix.F90 \
 @SINGLE_POINT_FALSE@	inland_netcdfutils.F90 inland_noveg.F90 \
-@SINGLE_POINT_FALSE@	inland_pheno.F90 inland_prealloc.F90 \
+@SINGLE_POINT_FALSE@	inland_pheno.F90 inland_prealloc.F90 inland_inneralloc.F90 \
 @SINGLE_POINT_FALSE@	inland_random.F90 inland_rdday.F90 \
 @SINGLE_POINT_FALSE@	inland_rdlndtrans.F90 inland_rdmon.F90 \
 @SINGLE_POINT_FALSE@	inland_rdparam.F90 inland_rdenv.F90 \
@@ -996,6 +998,7 @@ inland_mix.o: inland_mix.F90 inland_parameters.o
 inland_noveg.o: inland_noveg.F90 inland_parameters.o inland_comsno.o inland_comsoi.o inland_comveg.o 
 inland_pheno.o: inland_pheno.F90 inland_parameters.o inland_comatm.o inland_comsoi.o inland_comsum.o inland_comveg.o inland_comcrop.o
 inland_prealloc.o: inland_prealloc.F90 inland_parameters.o inland_compft.o inland_comveg.o inland_comtex.o inland_combgc.o inland_comsoi.o inland_comwork.o
+inland_inneralloc.o: inland_inneralloc.F90 inland_parameters.o inland_comsoi.o inland_comwork.o
 inland_random.o: inland_random.F90 inland_control.o
 inland_rdparam.o: inland_rdparam.F90 inland_parameters.o inland_comveg.o inland_comsoi.o inland_compft.o inland_comtex.o inland_combgc.o 
 inland_rdenv.o: inland_rdenv.F90 inland_parameters.o inland_control.o
