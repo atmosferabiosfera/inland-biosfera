@@ -38,20 +38,6 @@ subroutine rdcropparmaps(iwest,jnorth)
       allocate(plantdoy(lbeg:lend))
       plantdoy = 0.0d0
 
-      !gabriel apagar
-      write(*,*) "======================================================================================== PASSEI inland_rdcropparmaps.F90"
-      write(*,*) "shape(pdmin) = ",shape(pdmin)
-      write(*,*) "pmmin(1,:) = ",pmmin(1,:)
-      write(*,*) "pmmin(3,:) = ",pmmin(3,:)
-      write(*,*) "datadir = ",datadir
-
-      write(*,*) "shape(plantdoy) = ",shape(plantdoy)
-      write(*,*) "plantdoy(1) = ",plantdoy(1)
-      write(*,*) "ndaypm(2) = ",ndaypm(2)
-      write(*,*) "mon_from_doy(274.0d0) = ",mon_from_doy(274.0d0)
-      write(*,*) "mon_from_doy(293.17d0) = ",mon_from_doy(293.17d0)
-      ! write(*,*) "mon_from_doy(182) = ",mon_from_doy(182)
-
 
       istart(1) = iwest
       istart(2) = jnorth
@@ -68,8 +54,6 @@ subroutine rdcropparmaps(iwest,jnorth)
 
       if ( env_debug .gt. 0 ) print *,'reading planting doy from '//trim(filen)
 
-      !gabriel apagar
-      write(*,*)"trim(filen) = ",trim(filen)
 
       ! make sure this file exists, if not print error and exit
       inquire( file=trim(filen), exist=file_e )
@@ -87,23 +71,11 @@ subroutine rdcropparmaps(iwest,jnorth)
          stop 1
       end if
 
-      !gabriel apagar
-      write(*,*) "shape(plantdoy) = ",shape(plantdoy)
-      write(*,*) "plantdoy(1) = ",plantdoy(1)
-      write(*,*) "plantdoy(3) = ",plantdoy(3)
-      write(*,*) "icroptype = ",icroptype
-
       !Replace pdmin and pmmin from icroptype with the read data, converted to day and month
       do i = lbeg,lend
         pdmin(i,icroptype) = day_from_doy(plantdoy(i))
         pmmin(i,icroptype) = mon_from_doy(plantdoy(i))       
       end do
-
-      !gabriel apagar
-      write(*,*) "======================================================================================== LEU"
-      write(*,*) "shape(pdmin) = ",shape(pdmin)
-      write(*,*) "pmmin(1,:) = ",pmmin(1,:)
-      write(*,*) "pmmin(3,:) = ",pmmin(3,:)
 
 
 ! return to main program

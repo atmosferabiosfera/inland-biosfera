@@ -61,7 +61,7 @@ subroutine readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 
 !gabriel apagar
 write(*,*) 'Reading sparse matrices...'
-write(*,*) nlon,nlat
+write(*,*) 'Dummy lat/lon: ',nlon,nlat
 
 ! 2-d surface and vegetation arrays
 

@@ -329,8 +329,6 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
             pdmin(:,j) = pdmin_temp(j)
             pmmin(:,j) = pmmin_temp(j)
          end do
-      !gabriel apagar
-      write(*,*) shape(pmmin)
       end if
 
 ! ---------------------------------------------------------------------
