@@ -6,7 +6,7 @@
 ! temporal parameters
 irestart   = 0        , ! irestart - 0: not a restart run  1: restart run (default 0)
 iyrrestart = 9999     , ! iyrrestart - year to restart model (default 9999)
-iyear0     = 2005     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
+iyear0     = 1990     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
 nrun       = 2      , ! nrun - number of years in this simulation (change for restart) (default 2)
 iyrdaily   = 9999     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
 iyrmon     = 9999     , ! iyrmon - year to start reading montly data (default 9999)
@@ -31,8 +31,8 @@ isimrwu    = 0        , ! isimrwu - Root water uptake module - 0: according to F
 !
 ! output parameters
 iyearout   = 1        , ! iyearout - 0: no yearly output, 1: yearly output (default 1)
-imonthout  = 1        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
-idailyout  = 1        , ! idailyout - 0: no daily output, 1: daily output (default 0)
+imonthout  = 0        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
+idailyout  = 0        , ! idailyout - 0: no daily output, 1: daily output (default 0)
 idiag      = 0        , ! idiag - 0: no diagnostic output, 1-10 # of files to output (default 0)
 !
 ! crops simulation paramters
@@ -53,7 +53,7 @@ elevin     = 550      , ! site elevation        (m)
 thigh      = 6        , ! tower input elevation (m)
 !
 ! simulation domain - an entry with the same name and corresponding lon/lat values must be defined in inland-grid.domains
-domain      = "uberaba5", ! domain name used to define lon/lat boundaries (default '')
+domain      = "aiba", ! domain name used to define lon/lat boundaries (default '')
 !
 ! subgrid tile parameters - ignore if not using subgrid tiles
 mlpt       = 1        , ! mlpt - multiplicity of land points (subgrid tiles) (default 1, no tiles)

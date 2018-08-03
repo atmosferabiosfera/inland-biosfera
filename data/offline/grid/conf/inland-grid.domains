@@ -4,6 +4,7 @@ global,    90.0    -90.0  -180.0   180.0     ! global
 cutglobal,    60.0    -60.0  -180.0   180.0     ! global
 br,        0       -35    -65      -35
 toc,       -3.0   -12.0   -56.0    -42.0     ! Tocantins area
+aiba,      -10.05  -15.45  -46.8  -43.05      ! aiba
 small1,    -7.75   -9.25  -50.25   -48.75    ! small test areas
 small2,   -14.25  -14.74  -57.75   -57.25    ! 4 points
 testamaz,   -2.25  -2.74  -57.75   -57.25    ! 4 points
