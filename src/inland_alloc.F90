@@ -1234,6 +1234,7 @@ subroutine alloc(irestart)
                ayaet(lbeg:lend),&
                aytrans(lbeg:lend),&
                aytrunoff(lbeg:lend),&
+               aytrunoff2(lbeg:lend),&
                aysrunoff(lbeg:lend),&
                aydrainage(lbeg:lend),&
                aywsoi(lbeg:lend),&
@@ -1369,6 +1370,7 @@ subroutine alloc(irestart)
       ayaet(:) = 0.
       aytrans(:) = 0.
       aytrunoff(:) = 0.
+      aytrunoff2(:) = 0.
       aysrunoff(:) = 0.
       aydrainage(:) = 0.
       aywsoi(:) = 0.

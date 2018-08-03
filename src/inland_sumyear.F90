@@ -106,6 +106,9 @@ subroutine sumyear(mcsec, loopi, kpti, kptj)
         else
            aytrunoff(i)  = ((nytimes-1) * aytrunoff(i) + (grunof(i) + gdrain(i)) * rwork2) * rwork
         endif
+
+        aytrunoff2(i)  = ((nytimes-1) * aytrunoff2(i) + (grunof(i) + gdrain(i)) * 86400) * rwork
+
 ! estimate the change in total surface water content (intercepted
 ! water and snow, soil water and ice, snow).
          wtotp(i) = wtot(i)
