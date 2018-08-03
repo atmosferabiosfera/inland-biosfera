@@ -280,6 +280,8 @@ subroutine wyearly (nday)
                         dimnames,istat)
             call inivar(idies,'trunoff','total runoff','mm/year',ndims,dimnames,  &
                         istat)
+            call inivar(idies,'trunoff2','total runoff','mm/day',ndims,dimnames,  &
+                        istat)
             call inivar(idies,'srunoff','surface runoff','mm/year',ndims,dimnames, &
                         istat)
             call inivar(idies,'drainage','drainage','mm/year',ndims,dimnames,&
@@ -501,6 +503,7 @@ subroutine wyearly (nday)
 
 ! trunoff, srunoff, drainage, rratio, tratio
       call writevar(filen,idies,'trunoff',aytrunoff,istart,icount,ftime,istat)
+      call writevar(filen,idies,'trunoff2',aytrunoff2,istart,icount,ftime,istat)
       call writevar(filen,idies,'srunoff',aysrunoff,istart,icount,ftime,istat)
       call writevar(filen,idies,'drainage',aydrainage,istart,icount,ftime,istat)
 

@@ -180,7 +180,7 @@ module inland_comsum
 !
 ! annual average fields
 !
-      real*8, dimension(:), allocatable :: ayprcp, ayaet, aytrans, aytrunoff, aysrunoff, aydrainage, aywsoi,      &
+      real*8, dimension(:), allocatable :: ayprcp, ayaet, aytrans, aytrunoff, aytrunoff2, aysrunoff, aydrainage, aywsoi,      &
                                            aywisoi, ayvwc, ayawc, aytsoi, ayrratio, aytratio, aysolar, ayreflect, &
                                            ayirdown, ayirup, aysens, aylatent, aystresstu, aystresstl, ayanpptot, &
                                            aynpptot, aygpptot, ayalit, ayblit, aycsoi, aycmic, ayanlit, aybnlit,  &
