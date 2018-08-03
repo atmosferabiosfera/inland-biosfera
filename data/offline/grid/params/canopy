@@ -46,7 +46,7 @@ c cimax : maximum value for ci (for model stability)
  8    ! Number of upper canopy (tree) PFTs in this set
 
 #------------------------------------------------------------------------
-# PFTs (top to bottom)
+# PFTs (Plant functional types) 
 #------------------------------------------------------------------------
 c  1: tropical broadleaf evergreen trees
 c  2: tropical broadleaf drought-deciduous trees
@@ -73,8 +73,7 @@ c 16: sugarcane
   0.950    ! theta3 - C3 photosynthesis coupling coefficient
   0.990    ! beta3  - C3 photosynthesis coupling coefficient
   0.990    ! betac3 - C3 photosynthesis coupling coefficient for C3 crops
-  0.050    ! alpha4 - C4 intrinsic quantum efficiency (dimensionless)
-c 0.050    ! alpha4 - C4 original value
+  0.067    ! alpha4 - C4 intrinsic quantum efficiency (dimensionless)
   0.970    ! theta4 - C4 photosynthesis coupling coefficient
   0.800    ! beta4  - C4 photosynthesis coupling coefficient 
   0.970    ! thetac4- C4 photosynthesis coupling coefficient for C4 crops
@@ -92,7 +91,7 @@ c 0.050    ! alpha4 - C4 original value
 #-------------------------------------------------
 # gamma  coefm  coefb    gsmin   Physiol. Class
 #-------------------------------------------------
-  0.015   11.0   0.01  0.00001  ! Broadleaf trees
+  0.015   10.0   0.01  0.00001  ! Broadleaf trees
   0.015    6.0   0.01  0.00001  ! Conifer trees 
   0.015    9.0   0.01  0.00001  ! Shrubs
   0.030    4.0   0.04  0.00001  ! C4 grasses
@@ -131,7 +130,7 @@ c 0.050    ! alpha4 - C4 original value
   27.5e-06   12.5    1.50      1.0      5.0    0.45   0.40   0.15  !   9 
   27.5e-06   25.0    1.00      1.0      5.0    0.45   0.35   0.20  !  10 
   15.0e-06   20.0    1.25      1.0    999.0    0.45   0.55   0.00  !  11 
-  25.0e-06   20.0    1.50      1.0    999.0    0.45   0.55   0.00  !  12 
+  25.0e-06   25.0    1.50      1.0    999.0    0.45   0.55   0.00  !  12 
   45.0e-06   27.4    1.0     200.0    999.0  999.0  999.0  999.0   !  13  soybean (50 geovane)  52.5
   25.0e-06   32.5    1.0     200.0    999.0  999.0  999.0  999.0   !  14  maize
   50.0e-06   50.0    1.0     200.0    999.0  999.0  999.0  999.0   !  15  wheat
@@ -143,7 +142,26 @@ c 0.050    ! alpha4 - C4 original value
 #---------------------------------------------------------------------------------
     7.5 !  woodnorm 
 #================================================================================= 
-
+# Assign leaf optical properties (taken from Sellers et al., 1996
+# and Bonan, 1995)
+# These are reflectance and transmission parameters depending on what part
+# of the spectrum is used, what part of the canopy is used (lower or upper),
+# and whether the leaves are green or brown
+# Parameters used only in agro version (isimagro > 0 at inland-grid.infile)
+#
+ 0.10    !  rhovegvlg  # vis leaf reflectance, lower story, green leaves
+ 0.36    !  rhovegvlb  # vis leaf reflectance, lower story, brown leaves
+ 0.10    !  rhovegvu   # vis leaf reflectance, upper story, green leaves
+ 0.48    !  rhovegirlg # nir leaf reflectance, lower story, green leaves
+ 0.58    !  rhovegirlb # nir leaf reflectance, lower story, brown leaves
+ 0.40    !  rhovegiru  # nir leaf reflectance, upper story, green leaves
+ 0.07    !  tauvegvlg  # vis leaf transmittance, lower story, green leaves
+ 0.22    !  tauvegvlb  # vis leaf transmittance, lower story, brown leaves
+ 0.05    !  tauvegvu   # vis leaf transmittance, upper story, green leaves
+ 0.25    !  tauvegirlg # nir leaf transmittance, lower story, green leaves
+ 0.38    !  tauvegirlb # nir leaf transmittance, lower story, brown leaves
+ 0.20    !  tauvegiru  # nir leaf transmittance, upper story, green leaves
+#
 # leaf optical properties from Sellers et al., 1996 and Bonan, 1995
 
 #-----------------------------------------------------------------------------------------
@@ -151,7 +169,7 @@ c 0.050    ! alpha4 - C4 original value
 #-----------------------------------------------------------------------------------------
 #   lower        upper  
 #---------------------------------------------------------
-     0.062       0.062   ! rhoveg(1,1); rhoveg(1,2) vis   
+     0.10        0.10    ! rhoveg(1,1); rhoveg(1,2) vis   
      0.60        0.40    ! rhoveg(2,1); rhoveg(2,2) NIR
      0.07        0.05    ! tauveg(1,1); tauveg(1,2) vis
      0.25        0.20    ! tauveg(2,1); tauveg(2,2) NIR  
@@ -161,12 +179,13 @@ c 0.050    ! alpha4 - C4 original value
 #     0.07        0.25    ! tauveg(1,1); tauveg(1,2) vis
 #     0.05        0.20    ! tauveg(2,1); tauveg(2,2) NIR  
 #========================================================= 
-
+#
 #-----------------------------------------------------------------
 # leaf orientation factors (-1 vertical, 0 random, 1 horizontal)
 #-----------------------------------------------------------------
 # chifuz : upper canopy leaf orientation
 # chiflz : lower canopy leaf orientation
+# Parameters not used in agro version (isimagro > 0 at inland-grid.infile)
 #-----------------------------------------
        0.0           ! chifuz 
       -0.5           ! chiflz           
@@ -177,13 +196,13 @@ c 0.050    ! alpha4 - C4 original value
 #-----------------------------------------------------------------------
 #    upper?     lower?
 #-----------------------------------------
-      0.10       0.10       ! dleaf
+      0.10       0.05       ! dleaf
       0.10       0.10       ! dstem
 #=========================================
 
 #--------------------------------------------------------------------
 # normalization constants for canopy drag coefficients (m2 m-2)
-#---------------------------------------------------------------------
+#--------------------------------------------------------------------
       8.0   ! alaimu : upper canopy leaf & stem area (2 sided)
       8.0   ! alaiml : lower canopy leaf & stem maximum area (2 sided)
 #======================================================================
