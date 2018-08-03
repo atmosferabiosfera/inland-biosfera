@@ -214,8 +214,8 @@ c
 c however, these values could be (and should be) further refined
 c when using the model for specific regions
 c 
-      0.975  ! beta1: for lower layer herbaceous plants 0.967
-      0.930  ! beta2: for upper layer trees   0.975
+      0.975  ! beta1: for lower layer herbaceous plants 0.975
+      0.997  ! beta2: for upper layer trees   0.997
 
 # Additional parameters identified by optis calibration tool
 #   This first block is for initial values of these variables.
