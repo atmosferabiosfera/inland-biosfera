@@ -244,6 +244,8 @@ subroutine wdaily (jday,nday)
 !    ----------
       call closefile(idies,istat)
 
+!gabriel apagar
+write(*,*) 'plai(1,13)',plai(1,13)
 
 !*********************************
 ! only do if crops are growing
@@ -309,6 +311,9 @@ subroutine wdaily (jday,nday)
             call inivar(idies,'lp','leaf biomass production for each crop (kg_C m-2)', &
                  '%',ndims+1,dimnames,istat)
 
+            call inivar(idies,'lai','leaf area index of each crop (m2_leaf m-2)', &
+                 '%',ndims+1,dimnames,istat)            
+
             call closefile(idies,istat)
          endif
 
@@ -339,6 +344,9 @@ subroutine wdaily (jday,nday)
         call writevar(filen,idies,'bp',aybprod(:,scpft:),istart,icount,ftime,istat)
         call writevar(filen,idies,'rp',ayrprod(:,scpft:),istart,icount,ftime,istat)
         call writevar(filen,idies,'lp',aylprod(:,scpft:),istart,icount,ftime,istat)
+
+        call writevar(filen,idies,'lai',plai(:,scpft:),istart,icount,ftime,istat)
+
 
       endif
 

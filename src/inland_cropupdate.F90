@@ -52,6 +52,11 @@ subroutine cropupdate(jday)
             fl(i) = totlail(i) / 1.0
             fl(i) = max(0.025, min(0.975, fl(i)))
 
+            ! !gabriel apagar
+            ! if (i.eq.1) then
+            !    write(*,*) "jday,totlail(1),plai(1,13),fl(1)",jday,totlail(1),plai(1,13),fl(1)
+            ! end if
+
 ! calculate the crop canopy leaf area index using the fractional vegetation cover
 
             lai(i,1) = avglail / fl(i)
