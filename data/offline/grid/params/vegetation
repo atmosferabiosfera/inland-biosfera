@@ -45,7 +45,6 @@ c 14: maize
 c 15: wheat
 c 16: sugarcane
 c
-
 #--------------------------------------------------------------------------
 # PFT climatic constraint definitions (left to right)
 #--------------------------------------------------------------------------
@@ -215,8 +214,8 @@ c
 c however, these values could be (and should be) further refined
 c when using the model for specific regions
 c 
-      0.950  ! beta1: for lower layer herbaceous plants
-      0.997  ! beta2: for upper layer trees
+      0.975  ! beta1: for lower layer herbaceous plants 0.967
+      0.930  ! beta2: for upper layer trees   0.975
 
 # Additional parameters identified by optis calibration tool
 #   This first block is for initial values of these variables.

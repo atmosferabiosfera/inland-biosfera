@@ -119,12 +119,9 @@ subroutine rd_param(irestart)
 
 ! ******************************************************************************
 ! open the parameter file 'params.can' for input; read in canopy parameters...
-     if(isimagro .eq. 0)then
-      parm_file = trim(indir)//'/'//'params/canopy'
-     else
-      parm_file = trim(indir)//'/'//'params/canopy_crop'
-     endif
-      open(UNIT=parm_unit, FILE=parm_file, STATUS='OLD', ERR=9001)
+     parm_file = trim(indir)//'/'//'params/canopy'
+
+     open(UNIT=parm_unit, FILE=parm_file, STATUS='OLD', ERR=9001)
 
       call readitem(parm_unit, parm_file, tau15)
       call readitem(parm_unit, parm_file, kc15)
@@ -229,22 +226,20 @@ subroutine rd_param(irestart)
 
       call readitem(parm_unit, parm_file, woodnorm)
 
-      if(isimagro.gt.0) then
 
-         call readitem(parm_unit, parm_file, rhovegvlg)
-         call readitem(parm_unit, parm_file, rhovegvlb)
-         call readitem(parm_unit, parm_file, rhovegvu)
-         call readitem(parm_unit, parm_file, rhovegirlg)
-         call readitem(parm_unit, parm_file, rhovegirlb)
-         call readitem(parm_unit, parm_file, rhovegiru)
-         call readitem(parm_unit, parm_file, tauvegvlg)
-         call readitem(parm_unit, parm_file, tauvegvlb)
-         call readitem(parm_unit, parm_file, tauvegvu)
-         call readitem(parm_unit, parm_file, tauvegirlg)
-         call readitem(parm_unit, parm_file, tauvegirlb)
-         call readitem(parm_unit, parm_file, tauvegiru)
+      call readitem(parm_unit, parm_file, rhovegvlg)
+      call readitem(parm_unit, parm_file, rhovegvlb)
+      call readitem(parm_unit, parm_file, rhovegvu)
+      call readitem(parm_unit, parm_file, rhovegirlg)
+      call readitem(parm_unit, parm_file, rhovegirlb)
+      call readitem(parm_unit, parm_file, rhovegiru)
+      call readitem(parm_unit, parm_file, tauvegvlg)
+      call readitem(parm_unit, parm_file, tauvegvlb)
+      call readitem(parm_unit, parm_file, tauvegvu)
+      call readitem(parm_unit, parm_file, tauvegirlg)
+      call readitem(parm_unit, parm_file, tauvegirlb)
+      call readitem(parm_unit, parm_file, tauvegiru)
       
-      endif
 
       do j = 1, nband
          call readitems(parm_unit, parm_file, 2, rhoveg(j,1), rhoveg(j,2), &
@@ -258,13 +253,8 @@ subroutine rd_param(irestart)
                         dummyvar, dummyvar, dummyvar)   
       end do
       
-      if(isimagro .gt. 0)then
-!         call readitem(parm_unit, parm_file, chifuz)
-!         call readitem(parm_unit, parm_file, chiflz)
-      else 
-         call readitem(parm_unit, parm_file, chifuz)
-         call readitem(parm_unit, parm_file, chiflz)
-      endif
+      call readitem(parm_unit, parm_file, chifuz)
+      call readitem(parm_unit, parm_file, chiflz)
 
       call readitems(parm_unit, parm_file, 2, dleaf(1), dleaf(2), dummyvar,    &
                      dummyvar, dummyvar, dummyvar,dummyvar, dummyvar, dummyvar,&
@@ -321,11 +311,8 @@ subroutine rd_param(irestart)
 ! ******************************************************************************
 ! open the parameter file 'params.veg' for input; read in vegetation PFT
 ! parameters...
-     if(isimagro .eq. 0)then
       parm_file = trim(indir)//'/'//'params/vegetation'
-     else
-      parm_file = trim(indir)//'/'//'params/vegetation_crop'
-     endif
+
       open(UNIT=parm_unit, FILE=parm_file, STATUS='OLD', ERR=9001)
 
       do j = 1, npft
@@ -393,11 +380,8 @@ subroutine rd_param(irestart)
 
 ! ******************************************************************************
 ! open the parameter file 'params.soi' for input; read in soil parameters...
-     if(isimagro .eq. 0)then
       parm_file = trim(indir)//'/'//'params/soil'
-     else
-      parm_file = trim(indir)//'/'//'params/soil_crop'
-     endif
+
       open(UNIT=parm_unit, FILE=parm_file, STATUS='OLD', ERR=9001)
 
       call readitem(parm_unit, parm_file, dummyvar)
