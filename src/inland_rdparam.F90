@@ -41,7 +41,7 @@ subroutine rd_param(irestart)
       use inland_combgc    ! Soil biogeochemistry parameters
       use inland_comcrop   ! Crop parameters
       use inland_comnitr   ! N cycling parameters
-#ifdef SINGLE_POINT_MODE
+#ifdef SINGLE_POINT_MODEL
       use inland_comveg!,   only: fu,fl
 #endif /* SINGLE_POINT_MODEL */
       use inland_comfire, only: blow, bup, betae, Ph, g0, alpha, umax, reparea,&
@@ -307,7 +307,7 @@ subroutine rd_param(irestart)
       call readitem(parm_unit, parm_file, ialoglhf)
       call readitem(parm_unit, parm_file, ialoguhf)
       call readitem(parm_unit, parm_file, avmuir)
-#ifdef SINGLE_POINT_MODE
+#ifdef SINGLE_POINT_MODEL
       call readitem(parm_unit, parm_file, fu)
       call readitem(parm_unit, parm_file, fl)
 #endif /* SINGLE_POINT_MODEL */

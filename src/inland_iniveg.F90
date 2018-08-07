@@ -394,7 +394,7 @@ subroutine iniveg (isimveg, irestart)
 #endif /* SINGLE_POINT_MODEL */
 
 ! fractional cover
-#ifndef SINGLE_POINT_MODE
+#ifndef SINGLE_POINT_MODEL
             fu(i) = (1.0 - exp(-wood)) / (1.0 - exp(-woodnorm))
             fl(i) = totlail(i) / 1.0
 #endif /* SINGLE_POINT_MODEL */
