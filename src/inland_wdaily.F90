@@ -244,9 +244,6 @@ subroutine wdaily (jday,nday)
 !    ----------
       call closefile(idies,istat)
 
-!gabriel apagar
-write(*,*) 'plai(1,13)',plai(1,13)
-
 !*********************************
 ! only do if crops are growing
 !
