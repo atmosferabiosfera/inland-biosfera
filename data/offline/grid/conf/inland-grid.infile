@@ -18,6 +18,7 @@ isparse    = 0        , ! isparse - 0: Normal 3d/4d inputs 1: All inputs are one
 irdcropparmaps = 0    , ! irdcropparmaps - 0: Use all crop parameters from parameter file; 1: Read some crop parameters from yearly NCs
 soilcspin  = 0        , ! soilcspin - 0: no soil spinup, 1: acceleration procedure used (default 0)
 isimveg    = 1        , ! isimveg - 0: static veg, 1: dynamic veg, 2: dynamic veg-cold start (default 0)
+overveg    = 1        , ! overveg - 0: no override vegetation, 1: override vegetation, only pfts defined in vegetation params can exist for each vegtype (default 0)
 isimfire   = 2        , ! 0: no fire disturbance (0%/yr), 1: natural const (0.5%/yr), 2: CTEM, 3: IBIS (default 1, ignored if isimveg=0)
 isimco2    = 0        , ! isimco2 - 0: fixed co2,  1: ramped co2 (default 0)
 co2init    = 0.000380 , ! co2init - initial co2 concentration in mol/mol (real) (default 0.000350)

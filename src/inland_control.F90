@@ -16,6 +16,8 @@ module inland_control
       integer isimveg   ! 0: static veg 
 !                       ! 1: dynam veg initialized w/ fixed
 !                       ! 2: dynam veg initialized w/ cold start
+      integer overveg   ! 0: no override pft
+                        ! 1: override pft
       integer isimfire  ! 0: no fire disturbance (0%/yr), 1: natural const (0.5%/yr), 2: CTEM, 3: IBIS (default 1, ignored if isimveg=0)
       integer isimland  ! 0: fixed land  1: dynamic land
       integer isimco2   ! 0: fixed co2   1: changing co2
@@ -53,8 +55,7 @@ module inland_control
               iyear,  & ! current year of simulation
               imonth, & ! current month of simulation
               iday,   & ! current day of simulation
-              jday,   &  ! julian day of the simulation
-              overveg
+              jday      ! julian day of the simulation
 !
 ! Castanho HP included flags in ibisinfile to read Heterogeneous Parameterization
 

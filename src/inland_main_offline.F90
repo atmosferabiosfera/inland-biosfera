@@ -15,7 +15,7 @@ program main !main_offline!
 #ifndef SINGLE_POINT_MODEL
       use inland_parameters
       use inland_control, only: jday, iday, imonth, iyear, iyear0, idailyout, &
-                                imonthout, iyearout, isimveg, isimfire,       &
+                                imonthout, iyearout, isimveg, overveg, isimfire,       &
                                 isimco2, nspinsoil, spinmax, eqyears, istep,  &
                                 spincons, spinfrac, ipointout, ccmexist, & 
                                 nluc, iyrluc, isimland, &
@@ -199,7 +199,7 @@ program main !main_offline!
 
 ! namelist declaration
 #ifndef SINGLE_POINT_MODEL
-      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims, isparse, irdcropparmaps
+      namelist/INLAND_GRID/ irestart, iyrrestart, iyear0, nrun, iyrdaily, iyrmon, dtime, soilcspin, isimveg, overveg, isimfire, isimco2, co2init, o2init, isinfilt, isimrwu, isimland, iyrluc, nluc, mlpt, vegtypefile, hrmapfile, cropsfile, iyearout, imonthout, idailyout, idiag, imetyear, dmetyear, imetend, dmetend, irrigate, isimagro, icroptype, iwheattype, cropsfile, irotation, iholdsoiln, ffact, isoilay, elevin, thigh, domain, itauw, ivmax, isla,ica, rddaydims, isparse, irdcropparmaps
 #else
       namelist/INLAND_SINGLE_POINT/ iyear0, nrun, dtime, soilcspin, isimveg, isimfire, isoilforc, isimco2, co2init, o2init, isinfilt, isimrwu, snorth, ssouth, swest, seast
 #endif /* SINGLE_POINT_MODEL */
@@ -265,6 +265,7 @@ program main !main_offline!
       isimrwu    = 0        ! isimrwu - Root water uptake module - 0: according to Foley et al., 1996; 1 according to Li et al. (2006) (default 0)
       mlpt       = 1        ! multiplicity of land points (subgrid tiles) (default 1, no tiles)
 #ifndef SINGLE_POINT_MODEL
+      overveg    = 0        ! 0: no override vegetation, 1: override vegetation, only pfts defined in vegetation params can exist for each vegtype (default 0)
       isimland   = 0        ! 0: fixed land use,  1: dynamic land use
       iyrluc     = 999      ! year to start reading land transition data
       nluc       = 50       ! number of years to read land transition data
