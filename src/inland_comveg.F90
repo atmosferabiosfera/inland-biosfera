@@ -306,10 +306,13 @@ module inland_comveg
 !     froot(nsoilay,2)    ! fraction of root in soil layer 
 !
       real*8, dimension(:,:), allocatable :: exist
+      !     exist(npoi,npft)    ! rule of existence of each plant functional type in a gridcell
+      
+      integer, dimension(:,:), allocatable :: existvegtypemap
+      !existvegtypemap(nvegtype,npft)     ! Existence of each plant functional type for each input vegtype
 
       real*8 use(5,24)
 !
-!     exist(npoi,npft)    ! rule of existence of each plant functional type in a gridcell
 ! Castanho HP, 2013 included dimensions npoi (i) in aleaf, awood, aroot, tauwood, specla, vmax when appropriate bellow
 
       real*8, dimension(:,:), allocatable :: specla, aleaf, aroot, awood          ! Castanho HP, 2013

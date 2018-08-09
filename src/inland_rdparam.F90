@@ -32,7 +32,7 @@ subroutine rd_param(irestart)
                                rhovegvlg, rhovegvlb,      &
                                rhovegvu, rhovegirlg, rhovegirlb, rhovegiru,    &
                                tauvegvlg, tauvegvlb, tauvegvu, tauvegirlg,     &
-                               tauvegirlb, tauvegiru
+                               tauvegirlb, tauvegiru, existvegtypemap
 
       use inland_comsoi    ! wpudmax
       use inland_parameters
@@ -72,7 +72,7 @@ subroutine rd_param(irestart)
       real*8    dummyvar ! use this to read in integers that might be pretending
                          ! to be reals. Also use it as a filler when reading 
                          ! non-existent variables in subroutine ReadItems
-      real*8    dummyvars(10)
+      real*8    dummyvars(12)
 
       real*8, dimension(:), allocatable :: dummypft1,dummypft2 !gabriel abrahao: For reading npft-sized arrays, allocated below
 
@@ -378,7 +378,19 @@ subroutine rd_param(irestart)
             landusepftmap(i,j) = nint(dummyvars(i))
          end do
       end do
-
+      
+      allocate(existvegtypemap(nvegtype,12))
+      existvegtypemap(:,:) = 0
+      do i = 1, nvegtype
+         call readitems(parm_unit, parm_file, 12,dummyvars(1),dummyvars(2), &
+                        dummyvars(3),dummyvars(4),dummyvars(5),dummyvars(6), &
+                        dummyvars(7),dummyvars(8),dummyvars(9),dummyvars(10),&
+                        dummyvars(11),dummyvars(12))
+         do j = 1, 12
+            existvegtypemap(i,j) = nint(dummyvars(j))
+         end do
+      end do
+      
 #endif  /* SINGLE_POINT_MODEL */
       close (parm_unit)
       

@@ -1,7 +1,7 @@
 #include "inland_config.h"
 !*******************************************************************************
 subroutine readitems (funit, fname, N, item1, item2, item3, item4, &
-                      item5, item6, item7, item8, item9, item10)
+                      item5, item6, item7, item8, item9, item10, item11, item12)
 !-----------------------------------------------------------------------
 ! Hokey routine to read in up to N data items in free format, with a built-in 
 ! error-handler designed to locate and skip over comment strings buried in the
@@ -18,17 +18,17 @@ subroutine readitems (funit, fname, N, item1, item2, item3, item4, &
                 iocode, &   ! dummy variable required by system for error handling?
                 N
 
-      real*8 item1, item2, item3, item4, item5, item6, item7, item8, item9, item10
+      real*8 item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12
       character*(*) fname
 
 ! Check to see that N is within acceptable range. Stop if not.
-      if ((N.gt.10).or.(N.lt.0)) then
+      if ((N.gt.12).or.(N.lt.0)) then
          write (*,3)
 3        format ('READITEMS: Invalid number of items specified.')
          stop
       end if
 
-100   goto (101,102,103,104,105,106,107,108,109,110) N
+100   goto (101,102,103,104,105,106,107,108,109,110,111,112) N
   
 101   read (funit, *, end=999, err=911, iostat=iocode) item1
       return
@@ -58,6 +58,12 @@ subroutine readitems (funit, fname, N, item1, item2, item3, item4, &
       return
 
 110   read (funit, *, end=999, err=911, iostat=iocode) item1, item2, item3, item4, item5, item6, item7, item8, item9, item10
+      return
+      
+111   read (funit, *, end=999, err=911, iostat=iocode) item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11
+      return
+
+112   read (funit, *, end=999, err=911, iostat=iocode) item1, item2, item3, item4, item5, item6, item7, item8, item9, item10, item11, item12
       return
 
 911   call commenthandler (funit, fname)
