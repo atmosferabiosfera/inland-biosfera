@@ -29,7 +29,7 @@ subroutine existence
 
 
       use inland_parameters
-      use inland_control, only: overveg
+      use inland_control, only: overveg, isimveg
       use inland_comcrop
       use inland_compft
       use inland_comveg
@@ -178,183 +178,182 @@ subroutine existence
 ! climate change scenarios, overveg should be set to 0 so full 
 ! vegetation dynamics are used, if desired. 
 !
-         if(isimagro .gt. 0)then
-            overveg=1
-         else
-            overveg=0
-         endif
-
-         if (overveg .eq. 1) then
+         if ((isimveg.eq.0).and.(overveg .eq. 1).and.(isimagro.eq.0)) then
 !
             inveg = nint(xinveg(i))
-
+            
+            do j=1,12
+                exist(i,j) = exist(i,j) * existvegtypemap(inveg,j)
+            end do
+            
 !          
 ! wherever vegetation is allowed to exist, check the rules from above 
 !
 ! tropical deciduous
 !
-            if (inveg .eq. 2) then
-               exist(i,2) = 1.0
-!
-               exist(i,1) = 0.0
-               do 70 j = 3,16
-                  exist(i,j) = 0.0
- 70            continue
-
-!
-! temperate conifers
-!
-            else if (inveg .eq. 4) then
-               exist(i,4) = 1.0
-!
-               do 71 j = 1,3
-                  exist(i,j) = 0.0
- 71            continue
-!
-               do 72 j = 5,16
-                  exist(i,j) = 0.0
- 72            continue
-!
-! temperate deciduous
-!
-            else if (inveg .eq. 5) then
-               exist(i,5) = 1.0
-!
-               do 73 j = 1,4
-                  exist(i,j) = 0.0
- 73            continue
-!
-               do 74 j = 6,16
-                  exist(i,j) = 0.0
- 74            continue
-!
-! boreal conifers
-!
-            else if (inveg .eq. 6) then
-               exist(i,6) = 1.0
-!
-               do 75 j = 1,5
-                  exist(i,j) = 0.0
- 75            continue
-!
-               do 76 j = 7,16
-                  exist(i,j) = 0.0
- 76            continue
-!
-! boreal deciduous 
-!
-            else if (inveg .eq. 7) then
-               do 77 j = 7, 8
-                  exist(i,j) = 1.0
- 77            continue
-!
-               do 78 j = 1,6
-                  exist(i,j) = 0.0
- 78            continue
-!
-               do 79 j = 9,16
-                  exist(i,j) = 0.0
- 79            continue
-!
-! mixed forest exception:
-!
-! let existence rules determine whether temperate or boreal species
-! can exist at this location
+!             if (inveg .eq. 2) then
+!                exist(i,2) = 1.0
+! !
+!                exist(i,1) = 0.0
+!                do 70 j = 3,16
+!                   exist(i,j) = 0.0
+!  70            continue
 ! 
-            else if (inveg .eq. 8) then
-!              do 69 j = 4, 8
-!                 exist(i,j) = 1.0
-! 69           continue
-!
-               do 81 j = 1,3
-                  exist(i,j) = 0.0
- 81            continue
-!
-               do 82 j = 9,16
-                  exist(i,j) = 0.0
- 82            continue
-!
-! savanna
-!
-            else if (inveg .eq. 9) then
-               exist(i,5) = 1.0
-               exist(i,11) = 1.0
-               exist(i,12) = 1.0
-!
-               do 83 j = 1, 4
-                  exist(i,j) = 0.0
- 83            continue
-!
-               do 84 j = 6, 10 
-                  exist(i,j) = 0.0
- 84            continue
-!
-               do 85 j = 13,16
-                  exist(i,j) = 0.0
- 85            continue
-!
-! grassland
-!
-            else if (inveg .eq. 10) then
-               exist(i,11) = 1.0
-               exist(i,12) = 1.0
-!
-               do 86 j = 1, 10 
-                  exist(i,j) = 0.0
- 86            continue
-!
-               do 87 j = 13, 16 
-                  exist(i,j) = 0.0
- 87            continue
-!
-! dense shrubland 
-!
-            else if (inveg .eq. 11) then
-               exist(i,9)  = 1.0
-               exist(i,10) = 1.0
-               exist(i,11) = 1.0
-               exist(i,12) = 1.0
-!
-               do 88 j = 1, 8 
-                  exist(i,j) = 0.0
- 88            continue
-!
-               do 89 j = 13, 16 
-                  exist(i,j) = 0.0
- 89            continue
-!
-! open shrubland
-!
-            else if (inveg .eq. 12) then
-!
-               do 90 j = 9, 12 
-                  exist(i,j) = 1.0
- 90            continue
-!
-               do 91 j = 1, 8 
-                  exist(i,j) = 0.0
- 91            continue
-!
-               do 92 j = 13, 16 
-                  exist(i,j) = 0.0
- 92            continue
-!
-! tundra 
-!
-            else if (inveg .eq. 13) then
-!
-               do 93 j = 9, 12 
-                  exist(i,j) = 1.0
- 93            continue
-!
-               do 94 j = 1, 8
-                  exist(i,j) = 0.0
- 94            continue
-!
-               do 95 j = 13, 16 
-                  exist(i,j) = 0.0
- 95            continue
-            endif
+! !
+! ! temperate conifers
+! !
+!             else if (inveg .eq. 4) then
+!                exist(i,4) = 1.0
+! !
+!                do 71 j = 1,3
+!                   exist(i,j) = 0.0
+!  71            continue
+! !
+!                do 72 j = 5,16
+!                   exist(i,j) = 0.0
+!  72            continue
+! !
+! ! temperate deciduous
+! !
+!             else if (inveg .eq. 5) then
+!                exist(i,5) = 1.0
+! !
+!                do 73 j = 1,4
+!                   exist(i,j) = 0.0
+!  73            continue
+! !
+!                do 74 j = 6,16
+!                   exist(i,j) = 0.0
+!  74            continue
+! !
+! ! boreal conifers
+! !
+!             else if (inveg .eq. 6) then
+!                exist(i,6) = 1.0
+! !
+!                do 75 j = 1,5
+!                   exist(i,j) = 0.0
+!  75            continue
+! !
+!                do 76 j = 7,16
+!                   exist(i,j) = 0.0
+!  76            continue
+! !
+! ! boreal deciduous 
+! !
+!             else if (inveg .eq. 7) then
+!                do 77 j = 7, 8
+!                   exist(i,j) = 1.0
+!  77            continue
+! !
+!                do 78 j = 1,6
+!                   exist(i,j) = 0.0
+!  78            continue
+! !
+!                do 79 j = 9,16
+!                   exist(i,j) = 0.0
+!  79            continue
+! !
+! ! mixed forest exception:
+! !
+! ! let existence rules determine whether temperate or boreal species
+! ! can exist at this location
+! ! 
+!             else if (inveg .eq. 8) then
+! !              do 69 j = 4, 8
+! !                 exist(i,j) = 1.0
+! ! 69           continue
+! !
+!                do 81 j = 1,3
+!                   exist(i,j) = 0.0
+!  81            continue
+! !
+!                do 82 j = 9,16
+!                   exist(i,j) = 0.0
+!  82            continue
+! !
+! ! savanna
+! !
+!             else if (inveg .eq. 9) then
+!                exist(i,5) = 1.0
+!                exist(i,11) = 1.0
+!                exist(i,12) = 1.0
+! !
+!                do 83 j = 1, 4
+!                   exist(i,j) = 0.0
+!  83            continue
+! !
+!                do 84 j = 6, 10 
+!                   exist(i,j) = 0.0
+!  84            continue
+! !
+!                do 85 j = 13,16
+!                   exist(i,j) = 0.0
+!  85            continue
+! !
+! ! grassland
+! !
+!             else if (inveg .eq. 10) then
+!                exist(i,11) = 1.0
+!                exist(i,12) = 1.0
+! !
+!                do 86 j = 1, 10 
+!                   exist(i,j) = 0.0
+!  86            continue
+! !
+!                do 87 j = 13, 16 
+!                   exist(i,j) = 0.0
+!  87            continue
+! !
+! ! dense shrubland 
+! !
+!             else if (inveg .eq. 11) then
+!                exist(i,9)  = 1.0
+!                exist(i,10) = 1.0
+!                exist(i,11) = 1.0
+!                exist(i,12) = 1.0
+! !
+!                do 88 j = 1, 8 
+!                   exist(i,j) = 0.0
+!  88            continue
+! !
+!                do 89 j = 13, 16 
+!                   exist(i,j) = 0.0
+!  89            continue
+! !
+! ! open shrubland
+! !
+!             else if (inveg .eq. 12) then
+! !
+!                do 90 j = 9, 12 
+!                   exist(i,j) = 1.0
+!  90            continue
+! !
+!                do 91 j = 1, 8 
+!                   exist(i,j) = 0.0
+!  91            continue
+! !
+!                do 92 j = 13, 16 
+!                   exist(i,j) = 0.0
+!  92            continue
+! !
+! ! tundra 
+! !
+!             else if (inveg .eq. 13) then
+! !
+!                do 93 j = 9, 12 
+!                   exist(i,j) = 1.0
+!  93            continue
+! !
+!                do 94 j = 1, 8
+!                   exist(i,j) = 0.0
+!  94            continue
+! !
+!                do 95 j = 13, 16 
+!                   exist(i,j) = 0.0
+!  95            continue
+!             endif
+
          endif ! override original natural vegetation competition
 !
 ! == C. Kucharik ==
