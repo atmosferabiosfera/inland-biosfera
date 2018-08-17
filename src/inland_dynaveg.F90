@@ -400,8 +400,8 @@ if (i.eq.4 .and. j.eq.11 .and. nit.eq.10) then
 	write(*,*) "disturbo:        ",disturbo(i)
 	!write(*,*) "cbiolmin:   ",cbiolmin(i,j)
 
-open(1991,file="/home/gabriel/doutorado/inlands/testes/pastagem_12AGO_mother_rd3d_teste/yearly_cbiol.csv",access="APPEND")
-write(1991,*) iyear,cbiol(4,11)
+!open(1991,file="/home/gabriel/doutorado/inlands/testes/pastagem_12AGO_mother_rd3d_teste/yearly_cbiol.csv",access="APPEND")
+!write(1991,*) iyear,cbiol(4,11)
 end if
 
 !!end gabriel apagar
