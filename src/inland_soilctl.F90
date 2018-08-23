@@ -29,25 +29,25 @@ subroutine soilctl(kpti, kptj)
              zmax,  & ! maximum value of zrunf
              zmin,  & ! minimum value of zrunf
              grun1, & ! temporary storage for grunof
-             rwork, & ! 
+             rwork, & !
              wipre, & ! storing variable
              zdpud, & ! used to compute transfer from puddle to infiltration
              cx,    & ! average specific heat for soil, water and ice
              chav,  & ! average specific heat for water and ice
-             zwsoi      
+             zwsoi
 
       real*8 owsoi(lbeg:lend,nsoilay), & ! old value of wsoi
              otsoi(lbeg:lend,nsoilay), & ! old value of tsoi
              c0pud(lbeg:lend,nsoilay), &  ! layer heat capacity due to puddles (=0 except for top)
              c1pud(lbeg:lend,nsoilay), &  ! updated av. specifilayer heat capacity due to  puddle
              fhtop(lbeg:lend),   &  ! heat flux through soil surface (for soilheat)
-             fsqueez(lbeg:lend), &  ! excess amount of water (soilh2o) 
+             fsqueez(lbeg:lend), &  ! excess amount of water (soilh2o)
              dh(lbeg:lend),      &  ! correction if water at tsoi < tmelt or ice at temp > tmelt
              dw(lbeg:lend),      &  ! correction if water at tsoi < tmelt or ice at temp > tmelt
              zporos(lbeg:lend),  &
-             dtsw                   ! Kaiyuan Li for Green-Ampt, delta volumatirc water content 
+             dtsw                   ! Kaiyuan Li for Green-Ampt, delta volumatirc water content
 
-      integer layerno  ! Kaiyuan Li for Green-Ampt, layer number of wetting front           
+      integer layerno  ! Kaiyuan Li for Green-Ampt, layer number of wetting front
 !-----------------------------------------------------------------------
 !     call setarrib (c0pud(kpti,1), npt*nsoilay, 0.0)
 !     call setarrib (c1pud(kpti,1), npt*nsoilay, 0.0)
@@ -60,7 +60,7 @@ subroutine soilctl(kpti, kptj)
       end do
 
 
-! for soil, set soil infiltration rate fwtop (for 
+! for soil, set soil infiltration rate fwtop (for
 ! soilh2o) and upper heat flux fhtop (for soilheat)
 !
 ! also step puddle model wpud, wipud
@@ -88,19 +88,23 @@ subroutine soilctl(kpti, kptj)
 ! the following runoff formulation could give rise to very
 ! small amounts of negative runoff
      if (isimagro .eq. 0) then
+       !gabriel apagar
+       ! if (i.eq.85) write(*,*) 'grunof(i)',grunof(i),'wpud(i)',wpud(i),1
+
          grunof(i) = min(wpud(i), max(dble(0.), wpud(i) + wipud(i) - wpudmax)) / dtime
+         ! if (i.eq.85) write(*,*) 'grunof(i)',grunof(i),'wpud(i)',wpud(i),2
          wpud(i) = wpud(i) - grunof(i) * dtime
      endif
 ! (1) apportion sfc-level rain between puddle liquid and runoff
 !
 ! linear dependence of runoff fraction on wpud+wipud assumes
-! uniform statistical distribution of sub-grid puddle 
-! capacities between 0 and wpudmax. runoff fraction is 
+! uniform statistical distribution of sub-grid puddle
+! capacities between 0 and wpudmax. runoff fraction is
 ! reduced linearly for tsoi < tmelt (by zfrez) in which case
 ! any rain will increase wpud which will be frozen to wipud
 ! below
          zfrez = max (dble(0.), min (dble(1.), (tsoi(i,1) - tmelt + .5) * 2.))
-! always have some minimal amount of runoff (3%) even if 
+! always have some minimal amount of runoff (3%) even if
 ! puddles are dry or soil is cold, but don't allow more than
 ! a specified maximum (30%), since the rain must also be allowed
 ! to infiltrate (and more surface runoff is generated later in
@@ -116,19 +120,22 @@ subroutine soilctl(kpti, kptj)
 
          zmin = 0.03
 !        CJK 1-16-03      zmax = 1.00
-         zmax = 0.30   ! zmax change according to TET on 1-16-03 
+         zmax = 0.30   ! zmax change according to TET on 1-16-03
          zrunf = zmin + (zmax - zmin) * zfrez * max (dble(0.), min (dble(1.), (wpud(i) + wipud(i)) / wpudmax))
          wpud(i) = wpud(i) + (1. - zrunf) * raing(i) * dtime
          grunof(i) = zrunf * raing(i)
 
       else
 
-!        always have some minimal amount of runoff (0.10) even if 
+!        always have some minimal amount of runoff (0.10) even if
 !        puddles are dry or soil is cold
 
          zrunf = zfrez * max (dble(0.), min (dble(1.), (wpud(i) + wipud(i)) / wpudmax))
          wpud(i) = wpud(i) + (1. - zrunf) * raing(i) * dtime
+
+
          grunof(i) = grunof(i) + zrunf * raing(i)
+
       endif
 
 ! (2) apportion evaporation or condensation between 4 h2o stores:
@@ -137,7 +144,10 @@ subroutine soilctl(kpti, kptj)
 
 ! evaporation: split according to qglif
             fwtop(i) =          - qglif(i,1)*fvapg(i)
+            ! !gabriel apagar
+            ! if (i.eq.85) write(*,*) 'fvapg(i)',fvapg(i),'rwork',rwork,'wpud(i)',wpud(i),1
             wpud(i)  = wpud(i)  - qglif(i,3)*rwork
+            ! if (i.eq.85) write(*,*) 'fvapg(i)',fvapg(i),'rwork',rwork,'wpud(i)',wpud(i),2
             wipud(i) = wipud(i) - qglif(i,4)*rwork
             wipre = wisoi(i,1)
             wisoi(i,1) = max(dble(0.),wipre-qglif(i,2)*rwork/(rhow*poros(i,1) * &
@@ -163,13 +173,13 @@ subroutine soilctl(kpti, kptj)
        if (isinfilt.eq.0) then
 
           zdpud = rhow * dtime * max (dble(0.), 1.-wisoi(i,1))**2 * hydraul(i,1)
- 
+
        else
 
 ! Added by Kaiyuan Li for incorporation of Green-ampt infiltration calculate potential infiltration (actual infiltration is fwpud)
 ! The Green-Ampt equation adopted bolow is from Julien et al. 1995
 ! Water resources buttetin vol. 31, No. 3: 523 - 536, 1995
- 
+
          call delta_sw(fwpudtot(i), dtsw, layerno, i)   ! calculate delta soil water content
 
 ! calculate potential infiltration zdpud
@@ -177,8 +187,8 @@ subroutine soilctl(kpti, kptj)
                   +  sqrt((max (dble(0.), 1.-wisoi(i,1))**2*hydraul(i, 1) * 1000.0 * dtime - 2.0 * fwpudtot(i)) ** 2        &
                   +  8.0 * max (dble(0.), 1.-wisoi(i,1))**2*hydraul(i, 1) * 1000.0 * dtime * (cpwf(i, layerno) * 1000 *     &
                   dtsw + fwpudtot(i))))
-       endif 
-      endif !end of isimagro           
+       endif
+      endif !end of isimagro
 
 
          fwpud(i) = max (dble(0.), min (wpud(i), zdpud)) / dtime
@@ -195,7 +205,7 @@ subroutine soilctl(kpti, kptj)
 100   continue
 
 ! reduce soil moisture due to transpiration (upsoi[u,l], from
-! turvap).need to do that before other time stepping below since 
+! turvap).need to do that before other time stepping below since
 ! specific heat of this transport is neglected
 !
 ! first set porosflo, reduced porosity due to ice content, used
@@ -206,7 +216,7 @@ subroutine soilctl(kpti, kptj)
 ! also increment soil temperature to balance transpired water
 ! differential between temps of soil and leaf. physically
 ! should apply this to the tree, but would be awkward in turvap.
-! 
+!
 ! also, save old soil moisture owsoi and temperatures otsoi so
 ! implicit soilh2o and soilheat can aposteriori deduce fluxes.
 
@@ -241,7 +251,7 @@ subroutine soilctl(kpti, kptj)
 ! Kai
 ! isinfilt - Infiltration Function - 0: according to Darcy (1856); 1: according to Green-Ampt (1911) (default 0)
 !
-        if (isinfilt.eq.1) then    
+        if (isinfilt.eq.1) then
        	   if ( raing(i) .lt. 0.00000001/3600.0)  then  !it was 0.0001/3600.0
        	      fwpudtot(i) = 0
            else
@@ -254,7 +264,7 @@ subroutine soilctl(kpti, kptj)
 ! step temperatures due to conductive heat transport
       call soilheat (otsoi, owsoi, c0pud, fhtop, c1pud, kpti, kptj)
 
-! set wsoi, wisoi to exactly 0 or 1 if differ by negligible 
+! set wsoi, wisoi to exactly 0 or 1 if differ by negligible
 ! amount (needed to avoid epsilon errors in loop 400 below)
       call wadjust(kpti, kptj)
 
@@ -262,7 +272,7 @@ subroutine soilctl(kpti, kptj)
 ! point. uses exactly the same logic as for intercepted veg h2o
 ! in steph2o2. we employ the fiction here that soil liquid and
 ! soil ice both have density rhow, to avoid "pot-hole"
-! difficulties of expansion on freezing. this is done by 
+! difficulties of expansion on freezing. this is done by
 ! dividing all eqns through by rhow(*hsoi).
 !
 ! the factor (1-wsoi(old))/(1-wisoi(new)) in the wsoi increments
@@ -316,15 +326,15 @@ subroutine soilctl(kpti, kptj)
          porosflo(i,k) = zporos(i) * max (epsilon, 1.-wisoi(i,k))
 410      continue
 400   continue
- 
-! set wsoi, wisoi to exactly 0 or 1 if differ by negligible 
+
+! set wsoi, wisoi to exactly 0 or 1 if differ by negligible
 ! amount (roundoff error in loop 400 above can produce very
 ! small negative amounts)
       call wadjust(kpti, kptj)
 
-! repeat ice/liquid adjustment for upper-layer puddles (don't 
+! repeat ice/liquid adjustment for upper-layer puddles (don't
 ! divide through by rhow*hsoi). upper-layer moistures wsoi,wisoi
-! are already consistent with tsoi(i,1) > or < tmelt, and will 
+! are already consistent with tsoi(i,1) > or < tmelt, and will
 ! remain consistent here since tsoi(i,1) will not cross tmelt
       k = 1
       do 500 i = kpti, kptj
@@ -421,5 +431,5 @@ subroutine soilctl(kpti, kptj)
          end if
       endif
      endif !end of isimagro
-      return 
+      return
 end subroutine soilctl

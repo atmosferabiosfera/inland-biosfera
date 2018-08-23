@@ -30,8 +30,8 @@ subroutine sumyear(mcsec, loopi, kpti, kptj)
              solartot, &! total incoming radiation (direct + diffuse, visible + nearIR)
              reflectot,&! total incoming radiation (direct + diffuse, visible + nearIR)
              soiltemp, &! average soil temp for 4 1st layers
-             soilmois, &! average soil moisture for 4 1st layers 
-             soilice,  &! average soil ice for 4 1st layers 
+             soilmois, &! average soil moisture for 4 1st layers
+             soilice,  &! average soil ice for 4 1st layers
              vwc,      &! total liquid + ice content of 4 1st layers
              awc,      &! total available water (+ ice) content of 4 1st layer
              water,    &! fire factor: total water content of 1st layer (liquid+ice)
@@ -58,7 +58,7 @@ subroutine sumyear(mcsec, loopi, kpti, kptj)
 
       lastts = .false.
       if ( ( mcsec .eq. (86400 - dtime) ) .and. (iday .eq. ndaypm(imonth) ) ) lastts = .true.
-      
+
 ! accumulate yearly output
       nytime(loopi) = nytime(loopi) + 1
 
@@ -102,13 +102,14 @@ subroutine sumyear(mcsec, loopi, kpti, kptj)
         aysrunoff(i)=((nytimes-1) * aysrunoff(i) + grunof(i) * rwork2) * rwork
         aydrainage(i)=((nytimes-1)*aydrainage(i) + gdrain(i)*rwork2)*rwork
         if(isimagro .eq. 0) then
-           aytrunoff(i) = aysrunoff(i) + aydrainage(i) 
+           aytrunoff(i) = aysrunoff(i) + aydrainage(i)
         else
            aytrunoff(i)  = ((nytimes-1) * aytrunoff(i) + (grunof(i) + gdrain(i)) * rwork2) * rwork
         endif
 
         aytrunoff2(i)  = ((nytimes-1) * aytrunoff2(i) + (grunof(i) + gdrain(i)) * 86400) * rwork
-
+!gabriel apagar
+!if (i.eq.85) write(*,*) 'grunof(i)',grunof(i),mcsec
 ! estimate the change in total surface water content (intercepted
 ! water and snow, soil water and ice, snow).
          wtotp(i) = wtot(i)
@@ -304,13 +305,13 @@ end if
 ! immobilization (gross)
 !
         ayimmtot(i)  = ((nytimes-1) * ayimmtot(i) + &
-                     totimm(i) * rwork4) * rwork 
+                     totimm(i) * rwork4) * rwork
 !
 ! other mineralization/immobilization
 ! from non-microbial transformations
 !
         aynreltot(i) = ((nytimes-1) * aynreltot(i) + &
-                     totnrel(i) * rwork4) * rwork 
+                     totnrel(i) * rwork4) * rwork
 !
      endif ! check for crop existence
 ! other biogeochemistry variables

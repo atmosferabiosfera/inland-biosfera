@@ -6,9 +6,9 @@
 ! temporal parameters
 irestart   = 0        , ! irestart - 0: not a restart run  1: restart run (default 0)
 iyrrestart = 9999     , ! iyrrestart - year to restart model (default 9999)
-iyear0     = 1990     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
-nrun       = 2      , ! nrun - number of years in this simulation (change for restart) (default 2)
-iyrdaily   = 9999     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
+iyear0     = 1988     , ! iyear0 - initial year of simulation (don't change for restart) (default 1981)
+nrun       = 5      , ! nrun - number of years in this simulation (change for restart) (default 2)
+iyrdaily   = 1990     , ! iyrdaily - year to start reading daily data (ditto) (default 9999)
 iyrmon     = 9999     , ! iyrmon - year to start reading montly data (default 9999)
 dtime      = 3600     , ! dtime - time step in seconds (default 3600)
 !
@@ -18,7 +18,7 @@ isparse    = 0        , ! isparse - 0: Normal 3d/4d inputs 1: All inputs are one
 irdcropparmaps = 0    , ! irdcropparmaps - 0: Use all crop parameters from parameter file; 1: Read some crop parameters from yearly NCs
 soilcspin  = 0        , ! soilcspin - 0: no soil spinup, 1: acceleration procedure used (default 0)
 isimveg    = 0        , ! isimveg - 0: static veg, 1: dynamic veg, 2: dynamic veg-cold start (default 0)
-overveg    = 0        , ! overveg - 0: no override vegetation, 1: override vegetation, only pfts defined in vegetation params can exist for each vegtype (default 0)
+overveg    = 1        , ! overveg - 0: no override vegetation, 1: override vegetation, only pfts defined in vegetation params can exist for each vegtype (default 0)
 isimfire   = 2        , ! 0: no fire disturbance (0%/yr), 1: natural const (0.5%/yr), 2: CTEM, 3: IBIS (default 1, ignored if isimveg=0)
 isimco2    = 0        , ! isimco2 - 0: fixed co2,  1: ramped co2 (default 0)
 co2init    = 0.000380 , ! co2init - initial co2 concentration in mol/mol (real) (default 0.000350)
@@ -31,8 +31,8 @@ isimrwu    = 0        , ! isimrwu - Root water uptake module - 0: according to F
 !
 ! output parameters
 iyearout   = 1        , ! iyearout - 0: no yearly output, 1: yearly output (default 1)
-imonthout  = 0        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
-idailyout  = 0        , ! idailyout - 0: no daily output, 1: daily output (default 0)
+imonthout  = 1        , ! imonthout - 0: no monthly output, 1: monthly output (default 1)
+idailyout  = 1        , ! idailyout - 0: no daily output, 1: daily output (default 0)
 idiag      = 0        , ! idiag - 0: no diagnostic output, 1-10 # of files to output (default 0)
 !
 ! crops simulation paramters
@@ -41,14 +41,14 @@ dmetyear   = 1        , ! day to start using hourly met data (17 geovane)
 imetend    = 9999     , ! year to end reading in hourly met data
 dmetend    = 119      , ! day to end reading in hourly met data (39 geovane)
 irrigate   = 0        , ! 0: no irrigation 1: irrigation strategy used
-isimagro   = 1        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
-icroptype  = 13       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc 
+isimagro   = 0        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
+icroptype  = 13       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc
 iwheattype = 0        , ! 1: spring wheat 2: winter wheat - only used if icroptype = wheat
 cropsfile  = "crops_livia_2010.nc" , ! cropsfile - read crop data to produce crop veg map (use mlpt>1)
 irotation  = 0        , ! 0: none 1: winter wheat/fallow 2: 2 corn/soy 3: corn/soy/spring wheat 4: soy/winter wheat/corn
-iholdsoiln = 1        , ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N  
+iholdsoiln = 1        , ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N
 ffact      = 1.0      , ! numeric multiplying factor applied to N fertilizer after 2000 (for all crops)
-isoilay    = 9        , ! soil layer for which nitrate leaching/drainage is output  
+isoilay    = 9        , ! soil layer for which nitrate leaching/drainage is output
 elevin     = 550      , ! site elevation        (m)
 thigh      = 6        , ! tower input elevation (m)
 !
