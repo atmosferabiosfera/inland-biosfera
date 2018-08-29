@@ -232,6 +232,10 @@ subroutine soilctl(kpti, kptj)
 
 ! step soil moisture calculations
       call soilh2o (owsoi, fsqueez, kpti, kptj)
+      
+! set wsoi, wisoi to exactly 0 or 1 if differ by negligible 
+! amount (needed to avoid epsilon errors in loop 400 below)
+      call wadjust(kpti, kptj)
 
 ! update drainage and puddle
       do 200 i = kpti, kptj
@@ -253,10 +257,6 @@ subroutine soilctl(kpti, kptj)
 
 ! step temperatures due to conductive heat transport
       call soilheat (otsoi, owsoi, c0pud, fhtop, c1pud, kpti, kptj)
-
-! set wsoi, wisoi to exactly 0 or 1 if differ by negligible 
-! amount (needed to avoid epsilon errors in loop 400 below)
-      call wadjust(kpti, kptj)
 
 ! heat-conserving adjustment for liquid/ice below/above melt
 ! point. uses exactly the same logic as for intercepted veg h2o
