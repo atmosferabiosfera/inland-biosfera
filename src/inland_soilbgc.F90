@@ -320,12 +320,12 @@ subroutine soilbgc (spin,kpti,kptj)
          texfact  = 0.0 
 
         do k = 1, nslaym
-          if (k.le.6) then
+          if (k.le.infilensoilayer) then
             msand = nint(sand(i,k))
             mclay = nint(clay(i,k))
           else
-            msand = nint(sand(i,6))
-            mclay = nint(clay(i,6))
+            msand = nint(sand(i,infilensoilayer))
+            mclay = nint(clay(i,infilensoilayer))
           endif
 	enddo
 
