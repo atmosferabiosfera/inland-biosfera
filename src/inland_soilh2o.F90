@@ -96,7 +96,7 @@ subroutine soilh2o(owsoi,fsqueez,kpti,kptj)
       do 110 k = 2, nsoilay
          do 120 i = kpti, kptj
             hsoim(k) = 0.5 * (hsoi(k-1) + hsoi(k))
-            weim(i,k) = 0.5 * hsoi(k) / hsoim(k)
+            weim(i,k) = 0.5 * hsoi(k-1) / hsoim(k)
             weip(i,k) = 1.0 - weim(i,k)
             wsoim(i,k) = weim(i,k) * wsoi(i,k-1) + weip(i,k) * wsoi(i,k)
             wsoia(i,k) = min (wsoim(i,k), dble(1.0))
