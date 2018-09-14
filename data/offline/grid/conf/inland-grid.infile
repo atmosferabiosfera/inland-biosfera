@@ -44,6 +44,7 @@ irrigate   = 0        , ! 0: no irrigation 1: irrigation strategy used
 isimagro   = 1        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
 icroptype  = 13       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc / 17: oil palm
 iwheattype = 0        , ! 1: spring wheat 2: winter wheat - only used if icroptype = wheat
+itranspplm = 1        , ! 0: sowing oil palm seed on field 1: transplanting from nursery - only used if icroptype = oil palm (default 1)
 cropsfile  = "crops_livia_2010.nc" , ! cropsfile - read crop data to produce crop veg map (use mlpt>1)
 irotation  = 0        , ! 0: none 1: winter wheat/fallow 2: 2 corn/soy 3: corn/soy/spring wheat 4: soy/winter wheat/corn
 iholdsoiln = 1        , ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N
