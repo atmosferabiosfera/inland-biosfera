@@ -37,18 +37,18 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                     header
 
       fertdata = 'hist.fert.1945.1996'   ! data file that contains historical
-                                         ! changes in fertilizer usage across upper Midwest US  
+                                         ! changes in fertilizer usage across upper Midwest US
 
 ! read in historical fertilizer data one time into array
 ! file has quantities in kg/ha, so these are changed to
-! kg/m2 
+! kg/m2
 !
 ! ** read in restart scenario also **
 !      if ((iyear .eq. 1945 .or. iyear .eq. iyrrestart) .and. imonth .eq. 1 .and. iday .eq. 1) then
 !         npts = 55
-!         open(15, file = fertdata) 
+!         open(15, file = fertdata)
 !         read(15, *) header
-!         do n = 1, npts 
+!         do n = 1, npts
 !            read(15, *, end=20) iy, cfertmaize(iy),cfertsoy(iy)
 !            cfertsgc(iy)=cfertmaize(iy)
 !            cfertmaize(iy) = cfertmaize(iy) * 1e-04
@@ -59,7 +59,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 ! soybeans
 !            cfertwheat(iy) = cfertsoy(iy) * 3.0
 !         enddo
-!20       continue 
+!20       continue
 !         close(15)
 !      endif
 
@@ -101,7 +101,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 ! initialize other variables that are calculated for crops
 ! on an annual basis in cropresidue subroutine
 
-            if ((j .eq. 13 .or. j .eq. 14 .or. j .eq. 16) .or. (j .eq. 15 .and. iwheattype .eq. 1)) then
+            if ((j .eq. 13 .or. j .eq. 14 .or. j .eq. 16 .or. j .eq. 17) .or. (j .eq. 15 .and. iwheattype .eq. 1)) then
 !
                if (iday .eq. pdmin(i,j) .and. imonth .eq. pmmin(i,j) .and. croplive(i,j) .ne. 1.0 .and. &
                   exist(i,j) .eq. 1 .and. ncyears(i) .ge. 1) pstart(i,j)=cdays(i)
@@ -120,7 +120,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 
                   if (croplive(i,j) .eq. 0) then
                      cropplant(i,j) = 0.0
-                     if(j.eq.16) cropy(i) = 0
+                     if(j.eq.16 .or. j.eq.17) cropy(i) = 0
                   elseif (croplive(i,j) .eq. 1 .and. j .eq. 15 .and. iwheattype .eq. 2) then
                      cropplant(i,j) = 0.0
                   endif
@@ -171,7 +171,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                   cropout(i,j,50)=0
                   cropout(i,j,24)=crmclim(i,j)
                   cropout(i,j,25)=crmact(i,j)
-                  cropout(i,j,26)=crmplant(i,j) 
+                  cropout(i,j,26)=crmplant(i,j)
                   cropout(i,j,27)=cropout(i,j,52)
                   cropout(i,j,52)=0
                   cropout(i,j,28)=idppout(i,j)
@@ -179,138 +179,134 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                   cropout(i,j,29)=cropy(i)
                   cropout(i,j,30)=cropout(i,j,51)
                   cropout(i,j,51)=0
-               endif 
+               endif
             endif
 
-            if (exist(i,j) .eq. 1. .and. croplive(i,j) .ne. 1.0 .and. cropplant(i,j) .eq. 0.0) then 
-               if ((j.eq.13 .or. j.eq.14) .or. (j .eq. 15 .and. iwheattype .eq. 1)) then 
+            if (exist(i,j) .eq. 1. .and. croplive(i,j) .ne. 1.0 .and. cropplant(i,j) .eq. 0.0) then
+               if ((j.eq.13 .or. j.eq.14) .or. (j .eq. 15 .and. iwheattype .eq. 1)) then
                   if (iyear .le. iyear0 + 1) then
 
-                     if (a10td(i)  .gt. ptemp(j)    .and. &     ! 10-day average soil temperature
-                        a10tmin(i) .gt. pmintemp(j) .and. &
-                        cdays(i)   .ge. pstart(i,j)) then    ! impose earliest planting date
-                        croplive(i,j)  = 1.0         
-                        cropplant(i,j) = 1.0         
-                        idop(i,j) = jday     
-                       
+                     if (a10td(i)   .gt. ptemp(j)    .and. &     ! 10-day average soil temperature
+                         a10tmin(i) .gt. pmintemp(j) .and. &
+                         cdays(i)   .ge. pstart(i,j)) then       ! impose earliest planting date
+                         croplive(i,j)  = 1.0
+                         cropplant(i,j) = 1.0
+                         idop(i,j) = jday
+
                         if (j .eq. 13) soydop(1,iyear-iyear0+5) = jday
                         if (j .eq. 14) corndop(1,iyear-iyear0+5) = jday
                         if (j .eq. 15) whtdop(1,iyear-iyear0+5) = jday
 
                         gddmaturity(i,13) = max(950., min (gdd10(i), hybgdd(j)))
-                        gddmaturity(i,14) = max(950., min (gdd8(i)  * 0.90, hybgdd(j))) 
+                        gddmaturity(i,14) = max(950., min (gdd8(i)  * 0.90, hybgdd(j)))
                         gddmaturity(i,15) = max(950., min (gdd0c(i), hybgdd(j)))
 
-                     endif 
-                  elseif (iyear .ge. iyear0 + 2 .and. iyear .le. iyear0 + 5) then      
+                     endif
+                  elseif (iyear .ge. iyear0 + 2 .and. iyear .le. iyear0 + 5) then
                      if (a10td(i) .gt. ptemp(j) .and.     &     ! 10-day average soil temperature
                         a10tmin(i) .gt. pmintemp(j) .and. &
-                        cdays(i) .ge. pstart(i,j)) then 
+                        cdays(i) .ge. pstart(i,j)) then
                         croplive(i,j) = 1.0
-                        cropplant(i,j) = 1.0         
+                        cropplant(i,j) = 1.0
                         idop(i,j) = jday
-                        
+
                         if (j .eq. 13) soydop(1,iyear-iyear0+5) = jday
                         if (j .eq. 14) corndop(1,iyear-iyear0+5) = jday
                         if (j .eq. 15) whtdop(1,iyear-iyear0+5) = jday
-                        gddmaturity(i,13) = max(950., min (gddsoy(i,iyear-iyear0+5-1) *0.80, hybgdd(j)))   
-                        gddmaturity(i,14) = max(950., min (gddcorn(i,iyear-iyear0+5-1) *0.90, hybgdd(j)))  
+                        gddmaturity(i,13) = max(950., min (gddsoy(i,iyear-iyear0+5-1)  *0.80, hybgdd(j)))
+                        gddmaturity(i,14) = max(950., min (gddcorn(i,iyear-iyear0+5-1) *0.90, hybgdd(j)))
                         gddmaturity(i,15) = max(950., min (gddcorn(i,iyear-iyear0+5-1) *1.2,  hybgdd(j)))
                      endif
-                  else 
-                  sumdp(i,j) = 0
-                  sumhy(i,j) = 0
+                  else
+                    sumdp(i,j) = 0
+                    sumhy(i,j) = 0
+
 ! insert here - do iy from iyear-5 to iyear-1 --> previous 5 year mean of hybrids planted
 !FIXME: gabriel abrahao: This is already implemented, but causes problems in tropical regions and is overriden right below it. See below for more information.
 ! keep planting date flexible for that year's weather conditions
 
-                     yc = 5.0
-                     do iy = iyear-5,iyear-1     ! hybrid based on previous 5 year average - farm management 
-                        if (j .eq. 13) then 
-                           sumhy(i,j) = sumhy(i,j) + gddsoy(i,iy-iyear0+5+1) * 0.8
-                           sumdp(i,j) = sumdp(i,j) + (soydop(1,iy-iyear0+5+1))
-                        elseif (j .eq. 14) then 
-                           sumhy(i,j) = sumhy(i,j) + gddcorn(i,iy-iyear0+5+1) * 0.9
-                           sumdp(i,j) = sumdp(i,j) + (corndop(1,iy-iyear0+5+1))
-                        elseif (j .eq. 15) then
-                           sumhy(i,j) = sumhy(i,j) + gddcorn(i,iy-iyear0+5+1) * 1.2
-                           sumdp(i,j) = sumdp(i,j) + (whtdop(1,iy-iyear0+5+1))
-                        endif
-                     enddo
-                     avehybrid(i,j) = sumhy(i,j) / yc
-                     iavepdate(i,j) = int(sumdp(i,j)/yc)
- 
-                     if (a10td(i) .gt. ptemp(j) .and.     &  ! 10-day average soil temperature
-                        a10tmin(i) .gt. pmintemp(j) .and. &
-                        cdays(i) .ge. pstart(i,j)) then      ! impose earliest planting date 
-                        
-                           croplive(i,j) = 1.0
-                           cropplant(i,j) = 1.0
-                           idop(i,j)  = jday
-                           gddmaturity(i,j) = max(950.,min(avehybrid(i,j), hybgdd(j)))
+                    yc = 5.0
+                    do iy = iyear-5,iyear-1     ! hybrid based on previous 5 year average - farm management
+                      if (j .eq. 13) then
+                         sumhy(i,j) = sumhy(i,j) + gddsoy(i,iy-iyear0+5+1) * 0.8
+                         sumdp(i,j) = sumdp(i,j) + (soydop(1,iy-iyear0+5+1))
+                      elseif (j .eq. 14) then
+                         sumhy(i,j) = sumhy(i,j) + gddcorn(i,iy-iyear0+5+1) * 0.9
+                         sumdp(i,j) = sumdp(i,j) + (corndop(1,iy-iyear0+5+1))
+                      elseif (j .eq. 15) then
+                         sumhy(i,j) = sumhy(i,j) + gddcorn(i,iy-iyear0+5+1) * 1.2
+                         sumdp(i,j) = sumdp(i,j) + (whtdop(1,iy-iyear0+5+1))
+                      endif
+                    enddo
+                    avehybrid(i,j) = sumhy(i,j) / yc
+                    iavepdate(i,j) = int(sumdp(i,j)/yc)
 
+                    if (a10td(i) .gt. ptemp(j) .and.     &  ! 10-day average soil temperature
+                      a10tmin(i) .gt. pmintemp(j) .and. &
+                      cdays(i) .ge. pstart(i,j)) then      ! impose earliest planting date
+
+                         croplive(i,j) = 1.0
+                         cropplant(i,j) = 1.0
+                         idop(i,j)  = jday
+                         gddmaturity(i,j) = max(950.,min(avehybrid(i,j), hybgdd(j)))
                      endif
-                  endif  
+                  endif
 !FIXME: gabriel abrahao: this basically overrides the last lines of code that change the hybrid's GDD in an adaptation strategy based on the distance between freeze events. The reason is that this obviously doesnt make sense in tropical regions where there's no freezing, and the last lines of code will basically set the hybrid to a 950 GDD one. It would be interesting to implement a different strategy here for when there is no freeze, though, probably based on the length of the rainy season on that pixel.
 !override gddmaturity
                   gddmaturity(i,j) = hybgdd(j)
- 
+
                endif
 
-		if (cropy(i).eq.0) then
-          if  (j.eq.16)  then 
-             if (iyear .le. iyear0+1) then         
-               if (a10td(i)         .gt. ptemp(j)     .and.    &     ! 10-day average soil temperature
-                  a10tmin(i)       .gt. pmintemp(j)  .and. &
-                  cdays(i).ge.pstart(i,j).and.cdays(i).le.(pstart(i,j)+180) )then     ! impose earliest planting date 
-                  croplive(i,j)   = 1.0         
-                  cropplant(i,j)  = 1.0         
-                  idop(i,j)       = jday    
-		  cropy(i)=1
-                  sgcdop(1,iyear-iyear0+5)   = jday
-                  if(gdd12(i) .eq. 0) gdd12(i)=0.000000000000001
-                  if(gddsgcp(i,1) .eq. 0) gddsgcp(i,1)=0.000000000000001
-                  if(gddsgcp(i,2) .eq. 0) gddsgcp(i,2)=0.000000000000001
-                  gddmaturity(i,16) = max(gdd12(i)*0.8, min (gdd12(i) , hybgdd(j)))
-                  gddmaturity(i,j) = gddmaturity(i,j)*(gddsgcp(i,1)/gddsgcp(i,2))
-
-               endif 
-             elseif (iyear .ge. iyear0+2 .and. iyear .le. iyear0+5) then       ! after initial spinup for crop average planting dates
-               if (a10td(i)         .gt. ptemp(j)     .and.      &        ! 10-day average soil temperature
-                  a10tmin(i)       .gt. pmintemp(j)  .and. &
-      cdays(i).ge.pstart(i,j).and.cdays(i).le.(pstart(i,j)+180) )then     ! impose earliest planting date 
-                     croplive(i,j)   = 1.0        
-                     cropplant(i,j)  = 1.0         
-                     idop(i,j)         = jday  
-		     cropy(i)=1
-                     sgcdop(1,iyear-iyear0+5)  = jday
-                     if(gdd12(i) .eq. 0) gdd12(i)=0.000000000000001
-                     if(gddsgcp(i,1) .eq. 0) gddsgcp(i,1)=0.000000000000001
-                     if(gddsgcp(i,2) .eq. 0) gddsgcp(i,2)=0.000000000000001
-                           gddmaturity(i,16) = max(gdd12(i)*0.8, min (gddsgc(i,iyear-iyear0+5-1), hybgdd(j))) ! assign hybrid based on last year
-
-                           gddmaturity(i,j) = gddmaturity(i,j)*(gddsgcp(i,1)/gddsgcp(i,2))
- 
-                        endif
-                     else 
-                        sumdp(i,j) = 0
-                        sumhy(i,j) = 0
-
+		           if (cropy(i).eq.0) then
+                 if  (j.eq.16)  then
+                   if (iyear .le. iyear0+1) then
+                     if (a10td(i)         .gt. ptemp(j)     .and.    &     ! 10-day average soil temperature
+                     a10tmin(i)       .gt. pmintemp(j)  .and. &
+                     cdays(i).ge.pstart(i,j).and.cdays(i).le.(pstart(i,j)+180) )then     ! impose earliest planting date
+                        croplive(i,j)   = 1.0
+                        cropplant(i,j)  = 1.0
+                        idop(i,j)       = jday
+		                    cropy(i)=1
+                        sgcdop(1,iyear-iyear0+5)   = jday
+                        if(gdd12(i) .eq. 0) gdd12(i)=0.000000000000001
+                        if(gddsgcp(i,1) .eq. 0) gddsgcp(i,1)=0.000000000000001
+                        if(gddsgcp(i,2) .eq. 0) gddsgcp(i,2)=0.000000000000001
+                        gddmaturity(i,16) = max(gdd12(i)*0.8, min (gdd12(i) , hybgdd(j)))
+                        gddmaturity(i,j) = gddmaturity(i,j)*(gddsgcp(i,1)/gddsgcp(i,2))
+                     endif
+                   elseif (iyear .ge. iyear0+2 .and. iyear .le. iyear0+5) then       ! after initial spinup for crop average planting dates
+                     if (a10td(i)   .gt. ptemp(j)    .and. &        ! 10-day average soil temperature
+                         a10tmin(i) .gt. pmintemp(j) .and. &
+                         cdays(i)   .ge.pstart(i,j)  .and. cdays(i).le.(pstart(i,j)+180))then     ! impose earliest planting date
+                        croplive(i,j)   = 1.0
+                        cropplant(i,j)  = 1.0
+                        idop(i,j)         = jday
+		                    cropy(i)=1
+                        sgcdop(1,iyear-iyear0+5)  = jday
+                        if(gdd12(i) .eq. 0) gdd12(i)=0.000000000000001
+                        if(gddsgcp(i,1) .eq. 0) gddsgcp(i,1)=0.000000000000001
+                        if(gddsgcp(i,2) .eq. 0) gddsgcp(i,2)=0.000000000000001
+                        gddmaturity(i,j) = max(gdd12(i)*0.8, min (gddsgc(i,iyear-iyear0+5-1), hybgdd(j))) ! assign hybrid based on last year
+                        gddmaturity(i,j) = gddmaturity(i,j)*(gddsgcp(i,1)/gddsgcp(i,2))
+                     endif
+                   else
+                     sumdp(i,j) = 0
+                     sumhy(i,j) = 0
 !
 ! insert here - do iy from iyear-5 to  iyear-1 --> previous 5 year mean of hybrids planted
-! keep planting date flexible for that year's weather conditions 
-!
-                        yc = 5.0
-                        do iy = iyear-5,iyear-1     ! hybrid based on previous 5 year average - farm management 
-                           if (j .eq. 16) then 
-                              sumhy(i,j) = sumhy(i,j) + gddsgc(i,iy-iyear0+5+1)
-                              sumdp(i,j) = sumdp(i,j) + (sgcdop(1,iy-iyear0+5+1))
-                           endif
-                        enddo
-                        avehybrid(i,j) = sumhy(i,j) / yc
-                        iavepdate(i,j) = int(sumdp(i,j)/yc)
-                        if (a10td(i) .gt. ptemp(j) .and. a10tmin(i) .gt. pmintemp(j) .and.   &       ! 10-day average soil temperature
-                           cdays(i) .ge. pstart(i,j) .and. cdays(i) .le. (pstart(i,j)+180)) then     ! impose earliest planting date 
+! keep planting date flexible for that year's weather conditions
+!if (iyear .le. iyear0+1) then
+                     yc = 5.0
+                     do iy = iyear-5,iyear-1     ! hybrid based on previous 5 year average - farm management
+                       if (j .eq. 16) then
+                         sumhy(i,j) = sumhy(i,j) + gddsgc(i,iy-iyear0+5+1)
+                         sumdp(i,j) = sumdp(i,j) + (sgcdop(1,iy-iyear0+5+1))
+                       endif
+                     enddo
+                     avehybrid(i,j) = sumhy(i,j) / yc
+                     iavepdate(i,j) = int(sumdp(i,j)/yc)
+                     if (a10td(i) .gt. ptemp(j) .and. a10tmin(i) .gt. pmintemp(j) .and.   &       ! 10-day average soil temperature
+                         cdays(i) .ge. pstart(i,j) .and. cdays(i) .le. (pstart(i,j)+180)) then     ! impose earliest planting date
                            croplive(i,j) = 1.0
                            cropplant(i,j) = 1.0
                            cropy(i) = 1
@@ -320,23 +316,75 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                            if(gddsgcp(i,2) .eq. 0) gddsgcp(i,2)=0.000000000000001
                            gddmaturity(i,j) = max(gdd12(i)*0.8,min(avehybrid(i,j), hybgdd(j)))
                            gddmaturity(i,j) = gddmaturity(i,j)*(gddsgcp(i,1)/gddsgcp(i,2))
-
-                        endif
                      endif
-                  endif
-               endif
+                   endif
+                 endif  ! end sugarcane plthenanting
+
+                 if  (j.eq.17)  then
+                   if (iyear .le. iyear0+1) then
+                     if (a10td(i)   .gt. ptemp(j)    .and. &     ! 10-day average soil temperature
+                        a10tmin(i) .gt. pmintemp(j) .and. &
+                        cdays(i)   .ge. pstart(i,j) .and. cdays(i).le.(pstart(i,j)+180))then     ! impose earliest planting date
+                          croplive(i,j)  = 1.0
+                          cropplant(i,j) = 1.0
+                          idop(i,j)      = jday
+                          cropy(i)       =1
+                          plmdop(1,iyear-iyear0+5) = jday
+                          gddmaturity(i,j) = max(gdd11(i)*0.8, min (gdd11(i) , hybgdd(j)))
+                          gddmaturity(i,j) = gddmaturity(i,j)*(gddplmp(i,1)/gddplmp(i,2))
+                     endif
+                   elseif (iyear .ge. iyear0+2 .and. iyear .le. iyear0+5) then
+                     if (a10td(i)   .gt. ptemp(j)    .and. &        ! 10-day average soil temperature
+                         a10tmin(i) .gt. pmintemp(j) .and. &
+                         cdays(i)   .ge.pstart(i,j)  .and. cdays(i).le.(pstart(i,j)+180))then     ! impose earliest planting date
+                        croplive(i,j)   = 1.0
+                        cropplant(i,j)  = 1.0
+                        idop(i,j)       = jday
+		                    cropy(i)        = 1
+                        plmdop(1,iyear-iyear0+5)  = jday
+                        gddmaturity(i,j) = max(gdd11(i)*0.8, min (gddplm(i,iyear-iyear0+5-1), hybgdd(j))) ! assign hybrid based on last year
+                        gddmaturity(i,j) = gddmaturity(i,j)*(gddplmp(i,1)/gddplmp(i,2))
+                     endif
+                   else
+                     sumdp(i,j) = 0
+                     sumhy(i,j) = 0
+!
+! insert here - do iy from iyear-5 to  iyear-1 --> previous 5 year mean of hybrids planted
+! keep planting date flexible for that year's weather conditions
+!if (iyear .le. iyear0+1) then
+                     yc = 5.0
+                     do iy = iyear-5,iyear-1     ! hybrid based on previous 5 year average - farm management
+                       if (j .eq. 17) then
+                         sumhy(i,j) = sumhy(i,j) + gddplm(i,iy-iyear0+5+1)
+                         sumdp(i,j) = sumdp(i,j) + (plmdop(1,iy-iyear0+5+1))
+                       endif
+                     enddo
+                     avehybrid(i,j) = sumhy(i,j) / yc
+                     iavepdate(i,j) = int(sumdp(i,j)/yc)
+                     if (a10td(i) .gt. ptemp(j) .and. a10tmin(i) .gt. pmintemp(j) .and.   &       ! 10-day average soil temperature
+                         cdays(i) .ge. pstart(i,j) .and. cdays(i) .le. (pstart(i,j)+180)) then     ! impose earliest planting date
+                        croplive(i,j)  = 1.0
+                        cropplant(i,j) = 1.0
+                        cropy(i)       = 1
+                        idop(i,j)      = jday
+                        gddmaturity(i,j) = max(gdd11(i)*0.8,min(avehybrid(i,j), hybgdd(j)))
+                        gddmaturity(i,j) = gddmaturity(i,j)*(gddplmp(i,1)/gddplmp(i,2))
+                     endif
+                   endif
+                 endif  ! end oil palm planting
+               endif  ! end cropy(i).eq.0
 !
                if (j .eq. 15 .and. iwheattype .eq. 2) then   ! plant winter wheat
 !
 ! add check to only plant winter wheat after other crops (soybean, maize)
-! have been harvested 
+! have been harvested
 !
 ! *** remember order of planting is crucial - in terms of which crops you want
-! to be grown in what order ***    
+! to be grown in what order ***
 !
 ! in this case, corn or soybeans are assumed to be planted before
 ! wheat would be in any particular year that both pfts are allowed
-! to grow in the same grid cell (e.g., double-cropping)  
+! to grow in the same grid cell (e.g., double-cropping)
 !
 
                   if (iyear .eq. iyear0) then
@@ -345,21 +393,21 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                         harvdate(i,14) .ne. 999 .or. irotation .eq. 0) .and.         &
                         gdd0c(i) .ge. gddmin(j)) then
 !
-                        croplive(i,j) = 1.0     
-                        cropplant(i,j) = 1.0     
+                        croplive(i,j) = 1.0
+                        cropplant(i,j) = 1.0
                         idop(i,j) = jday
                         whtdop(1,iyear-iyear0+5) = jday
                         gddmaturity(i,15) = max(950., min (gdd0c(i) * 0.90, hybgdd(j)))
 
 !
-! plant winter wheat at latest possible date 
+! plant winter wheat at latest possible date
 ! and after all other crops were harvested for that year
 !
                      elseif (imonth .ge. pmmax(j) .and. iday .ge. pdmax(j) .and.       &
                             (harvdate(i,13) .ne. 999 .or. harvdate(i,14) .ne. 999 .or. &
                             irotation .eq. 0) .and. gdd0c(i) .ge. gddmin(j)) then
-                        croplive(i,j) = 1.0     
-                        cropplant(i,j) = 1.0     
+                        croplive(i,j) = 1.0
+                        cropplant(i,j) = 1.0
                         idop(i,j) = jday
 !                       gddmaturity(i,15) = hybgdd(j)
                         gddmaturity(i,15) = max(950., min (gdd0c(i), hybgdd(j)))
@@ -372,24 +420,24 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                         harvdate(i,14) .ne. 999 .or. irotation  .eq. 0) .and.        &
                         gdd0c(i) .ge. gddmin(j)) then
 !
-                        croplive(i,j) = 1.0     
-                        cropplant(i,j) = 1.0     
+                        croplive(i,j) = 1.0
+                        cropplant(i,j) = 1.0
                         idop(i,j) = jday
                         whtdop(1,iyear-iyear0+5)  = jday
                         gddmaturity(i,15) = max(950., min (gddcorn(i,iyear-iyear0+5-1) * 1.20, hybgdd(j)))  ! assign hybrid based on last year
 
 !
-! plant winter wheat at latest possible date 
+! plant winter wheat at latest possible date
 ! and after all other crops were harvested for that year
 !
                      elseif (imonth .ge. pmmax(j) .and. iday .ge. pdmax(j) .and.        &
                             (harvdate(i,13) .ne. 999 .or. harvdate(i,14) .ne. 999 .or.  &
                             irotation .eq. 0) .and. gdd0c(i).ge. gddmin(j)) then
 !
-                        croplive(i,j)     = 1.0     
-                        cropplant(i,j)    = 1.0     
+                        croplive(i,j)     = 1.0
+                        cropplant(i,j)    = 1.0
                         idop(i,j)         = jday
-                        gddmaturity(i,15) = max(950., min (gddcorn(i,iyear-iyear0+5-1) * 1.20, hybgdd(j)))  ! assign hybrid based on last year 
+                        gddmaturity(i,15) = max(950., min (gddcorn(i,iyear-iyear0+5-1) * 1.20, hybgdd(j)))  ! assign hybrid based on last year
 
                      endif
 !
@@ -398,12 +446,12 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                      sumhy(i,j) = 0
 !
 ! insert here - do iy from iyear-5 to  iyear-1 --> previous 5 year mean of hybrids planted
-! keep planting date flexible for that year's weather conditions 
+! keep planting date flexible for that year's weather conditions
 !
                      yc = 5.0
 !                    yc = 11.0
 !                    do iy = 1949, 1959          ! 11 year averaging spinup for crops
-                     do iy = iyear-5,iyear-1     ! hybrid based on previous 5 year average - farm management 
+                     do iy = iyear-5,iyear-1     ! hybrid based on previous 5 year average - farm management
                         sumhy(i,j) = sumhy(i,j) + gddcorn(i,iy-iyear0+5+1) * 1.2
                         sumdp(i,j) = sumdp(i,j) + (whtdop(1,iy-iyear0+5+1))
                      enddo
@@ -416,24 +464,24 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                         harvdate(i,14) .ne. 999 .or. irotation .eq. 0) .and.         &
                         gdd0c(i) .ge. gddmin(j)) then
 !
-                        croplive(i,j) = 1.0     
-                        cropplant(i,j) = 1.0     
+                        croplive(i,j) = 1.0
+                        cropplant(i,j) = 1.0
                         idop(i,j) = jday
-                        gddmaturity(i,15) = max(950., min (avehybrid(i,j), hybgdd(j)))  ! assign hybrid based on last year 
+                        gddmaturity(i,15) = max(950., min (avehybrid(i,j), hybgdd(j)))  ! assign hybrid based on last year
 
 !
-! plant winter wheat at latest possible date 
+! plant winter wheat at latest possible date
 ! and after all other crops were harvested for that year
 !
                      elseif (imonth .ge. pmmax(j) .and. iday .ge. pdmax(j) .and.       &
                             (harvdate(i,13) .ne. 999 .or. harvdate(i,14) .ne. 999 .or. &
-                            irotation .eq. 0) .and. gdd0c(i).ge. gddmin(j)) then  
+                             irotation .eq. 0) .and. gdd0c(i).ge. gddmin(j)) then
 !
-                        croplive(i,j)     = 1.0     
-                        cropplant(i,j)    = 1.0     
+                        croplive(i,j)     = 1.0
+                        cropplant(i,j)    = 1.0
                         idop(i,j)         = jday
-!                       idop(i,j)         = iavepdate(i,j) 
-                        gddmaturity(i,15) = max(950., min (avehybrid(i,j), hybgdd(j)))  ! assign hybrid based on last year 
+!                       idop(i,j)         = iavepdate(i,j)
+                        gddmaturity(i,15) = max(950., min (avehybrid(i,j), hybgdd(j)))  ! assign hybrid based on last year
 
                      endif
                   endif  ! (year check)
@@ -447,14 +495,14 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 ! of NH4/NO3
 !
 ! define amount of fertilizer added when crop is planted
-! use historical changes for years between 1945-1996 (Alexander et al.,) 
+! use historical changes for years between 1945-1996 (Alexander et al.,)
 ! only add fertilizer on day of planting - use croplive funtion to
 ! make sure that in successive years, idop from previous year doesn't
 ! get applied here.
 !
 ! also, don't cycle through all crop types - only the one that
 ! is planted this year...otherwise it will zero out the fertilizer
-! values for pfts 13, 14 if going through all pfts through 15 
+! values for pfts 13, 14 if going through all pfts through 15
 !
             if (jday .eq. idop(i,j) .and. croplive(i,j) .eq. 1.0 .and. exist(i,j) .eq. 1.) then
 !
@@ -466,8 +514,8 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                fertnitro(i,15) = 0.0080      ! wheat    - kg_n m-2 y-1
                fertnitro(i,15) = 0.0160      ! wheat    - kg_n m-2 y-1
                fertinput(i,j) = fertnitro(i,j) * 1.e+04
-            elseif (exist(i,j) .eq. 1.0) then 
-               fertnitro(i,j) = 0.0    
+            elseif (exist(i,j) .eq. 1.0) then
+               fertnitro(i,j) = 0.0
             endif                            ! planting date
             if(idpp(i,j).eq.1.and.j.eq.16) then
                fertnitro(i,16)= 0.025        !kg_n m-2 y-1 or 100 Kg/ha
@@ -483,7 +531,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 100   continue
 !
 ! return to main program
-! 
+!
 return
-!      
+!
 end subroutine planting

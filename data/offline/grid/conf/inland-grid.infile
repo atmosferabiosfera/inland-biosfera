@@ -23,7 +23,7 @@ isimfire   = 2        , ! 0: no fire disturbance (0%/yr), 1: natural const (0.5%
 isimco2    = 0        , ! isimco2 - 0: fixed co2,  1: ramped co2 (default 0)
 co2init    = 0.000380 , ! co2init - initial co2 concentration in mol/mol (real) (default 0.000350)
 o2init     = 0.209000 , ! o2init - initial o2 concentration in mol/mol (real) (default 0.209000)
-isimland   = 0        ! 0: fixed land use,  1: dynamic land use
+isimland   = 0        , ! 0: fixed land use,  1: dynamic land use
 iyrluc     = 9999     , ! year to start reading land transition data
 nluc       = 100      , ! number of years to read land transition data
 isinfilt   = 0        , ! isinfilt - Infiltration Function - 0: according to Darcy (1856); 1: according to Green-Ampt (1911) (default 0)
@@ -42,13 +42,13 @@ imetend    = 9999     , ! year to end reading in hourly met data
 dmetend    = 119      , ! day to end reading in hourly met data (39 geovane)
 irrigate   = 0        , ! 0: no irrigation 1: irrigation strategy used
 isimagro   = 1        , ! isimagro - 0: no agro crops, 1: unique crop defined by icroptype, 2: crops defined by data in cropsfile
-icroptype  = 13       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc 
+icroptype  = 13       , ! define crop type to use in all grid points - 13: soybean / 14: maize / 15: wheat / 16: sgc / 17: oil palm
 iwheattype = 0        , ! 1: spring wheat 2: winter wheat - only used if icroptype = wheat
 cropsfile  = "crops_livia_2010.nc" , ! cropsfile - read crop data to produce crop veg map (use mlpt>1)
 irotation  = 0        , ! 0: none 1: winter wheat/fallow 2: 2 corn/soy 3: corn/soy/spring wheat 4: soy/winter wheat/corn
-iholdsoiln = 1        , ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N  
+iholdsoiln = 1        , ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N
 ffact      = 1.0      , ! numeric multiplying factor applied to N fertilizer after 2000 (for all crops)
-isoilay    = 9        , ! soil layer for which nitrate leaching/drainage is output  
+isoilay    = 9        , ! soil layer for which nitrate leaching/drainage is output
 elevin     = 550      , ! site elevation        (m)
 thigh      = 6        , ! tower input elevation (m)
 !

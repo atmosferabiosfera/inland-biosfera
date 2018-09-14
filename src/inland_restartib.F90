@@ -226,7 +226,7 @@ subroutine restartib (iyearp, imonthp)
 ! TODO what about if (myid .eq. 0) ???
 
       filen = trim(outdir)//'/inland-restart-'//chyear//'_'//chmonth//'.nc'
-      
+
 ! ===== xstore
 
       ! loop for all xstorelevel - write each var, one layer at a time
@@ -277,7 +277,7 @@ subroutine restartib (iyearp, imonthp)
          call readvar(filen,'smsoln',smsoln(:,nlevel),istart,icount,mlpt,istat)
        endif
       end do ! nsoilay
- 
+
 
 
 ! ===== Carbon pools and fluxes per pft
@@ -397,6 +397,7 @@ subroutine restartib (iyearp, imonthp)
     if(isimagro .gt. 0) then
       call readvar(filen,'gdd8',gdd8,istart,icount,ftime,istat)
       call readvar(filen,'gdd10',gdd10,istart,icount,ftime,istat)
+      call readvar(filen,'gdd11',gdd11,istart,icount,ftime,istat)
       call readvar(filen,'gdd12',gdd12,istart,icount,ftime,istat)
       call readvar(filen,'gdd0c',gdd0c,istart,icount,ftime,istat)
       call readvar(filen,'gdd0clim',gdd0,istart,icount,ftime,istat)
@@ -411,9 +412,9 @@ subroutine restartib (iyearp, imonthp)
       call readvar(filen,'dtnleach',dtnleach,istart,icount,mlpt,istat)
     endif
 
-!   read only in the case of dynamic vegetation restart or fixed vegetation 
+!   read only in the case of dynamic vegetation restart or fixed vegetation
 ! using the ccm3 climate
-!   In the other cases,  climanl in inland_main_offline calculates gdd0, gdd5, tc, tw, 
+!   In the other cases,  climanl in inland_main_offline calculates gdd0, gdd5, tc, tw,
 ! tcmin from climatology
 ! TODO what about tcmin???
 
@@ -421,7 +422,7 @@ subroutine restartib (iyearp, imonthp)
 ! - fzm
 !#ifdef COUPLED
 !      if ((isimveg .gt. 0) .or. (ccmexist .gt. 0)) then
-!   Modified because of read in restartib subroutine 
+!   Modified because of read in restartib subroutine
       if (isimveg .ge. 1) then
 
          call readvar(filen,'gdd0',gdd0,istart,icount,mlpt,istat)
@@ -434,7 +435,7 @@ subroutine restartib (iyearp, imonthp)
 
       call readvar(filen,'gdd0this',gdd0this,istart,icount,mlpt,istat)
       call readvar(filen,'gdd5this',gdd5this,istart,icount,mlpt,istat)
-      call readvar(filen,'tcthis',tcthis,istart,icount,mlpt,istat) 
+      call readvar(filen,'tcthis',tcthis,istart,icount,mlpt,istat)
       call readvar(filen,'twthis',twthis,istart,icount,mlpt,istat)
       call readvar(filen,'wipud',wipud,istart,icount,mlpt,istat)
       call readvar(filen,'wpud',wpud,istart,icount,mlpt,istat)

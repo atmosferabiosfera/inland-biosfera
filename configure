@@ -601,7 +601,6 @@ FCFLAGS_F90
 OBJEXT
 EXEEXT
 ac_ct_FC
-LD_RUN_PATH
 LDFLAGS
 FCFLAGS
 FC
@@ -3493,7 +3492,7 @@ fi
 
 # Check whether --with-netcdf was given.
 if test "${with_netcdf+set}" = set; then :
-  withval=$with_netcdf; FCFLAGS="$FCFLAGS -I$withval/include"; LD_RUN_PATH="$withval/lib"; PATH="$withval/bin:$PATH";LDFLAGS="$LDFLAGS -LLIBDIR -L$withval/lib"
+  withval=$with_netcdf; FCFLAGS="$FCFLAGS -I$withval/include"; LDFLAGS="$LDFLAGS -L$withval/lib"
 fi
 
 

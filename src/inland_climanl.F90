@@ -42,10 +42,10 @@ subroutine climanl
                       xint(i,10), xint(i,11), xint(i,12))
 
          tcmin(i) = tc(i) + deltat(i)
-100   continue 
+100   continue
 
 ! interpolating climatological monthly input values to daily
-      do 200 i = lbeg, lend 
+      do 200 i = lbeg, lend
          gdd0(i) = 0.
          gdd5(i) = 0.
          do 210 k = 1, 12
@@ -76,12 +76,13 @@ subroutine climanl
         gdd8(i)  = gdd8(i)  + max(0.0, min(dtemp  +273.16-baset(14),  30.0))
         gdd10(i) = gdd10(i) + max(0.0, min(dtemp  +273.16-baset(13), 30.0))
         gdd12(i) = gdd12(i) + max(0.0000001, min(dtemp  +273.16-baset(16), 30.0))
+        gdd11(i) = gdd11(i) + max(0.0, min(dtemp  +273.16-baset(17), 30.0))
 
-	
+
 
 	    if(pmmin(i,16).lt.pcm(16)-2) then
 
-	       if(k.ge.pmmin(i,16).and.k.lt.pcm(16)-2) then  
+	       if(k.ge.pmmin(i,16).and.k.lt.pcm(16)-2) then
            gddsgcp(i,1)= gddsgcp(i,1) + max(0.0, min(dtemp+273.16-baset(16),30.0))
            endif
 
@@ -99,7 +100,7 @@ subroutine climanl
 	    endif
 
        endif ! check for crop existence
-   
+
  220      continue
  210    continue
      if(isimagro .gt. 0)then

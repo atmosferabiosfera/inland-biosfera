@@ -366,7 +366,7 @@ subroutine alloc(irestart)
       rliql(:) = 0.
       rliqs(:) = 0.
       rliqu(:) = 0.
-      
+
       allocate (var1(ndpts), var2(ndpts),&
                var3(ndpts), var4(ndpts),&
                var5(ndpts), var6(ndpts))
@@ -393,7 +393,7 @@ subroutine alloc(irestart)
       cumvd(:) = 0.
       hdidx(:) = 0.
       gddfzcorn(:) = 0.
-      gddfzsgc(:) = 0. 
+      gddfzsgc(:) = 0.
       gddfzsoy(:) = 0.
       gddfzwht(:) = 0.
       conspdate(:) = 0.
@@ -401,7 +401,7 @@ subroutine alloc(irestart)
       cdays(:) = 0.
       ncyears(:) = 0.
       cropy(:) = 0.
-      ik(:) = 0. 
+      ik(:) = 0.
       gddpl15(:) = 0.
       gddemerg(:) = 0.
       rm(:) = 0.
@@ -417,166 +417,167 @@ subroutine alloc(irestart)
       huileaf(:) = 0.
       huigrain(:) = 0.
 
-      allocate (corndop(1,nrun+5), sgcdop(1,nrun+5), soydop(1,nrun+5),                     &
-               whtdop(1,nrun+5), gddcorn(lbeg:lend,nrun+5), gddsgc(lbeg:lend,nrun+5),                      &    
-               gddsgcp(lbeg:lend,2), gddsoy(lbeg:lend,nrun+5), gddwht(lbeg:lend,nrun+5),                         &
+      allocate (corndop(1,nrun+5), sgcdop(1,nrun+5), soydop(1,nrun+5), plmdop(1,nrun+5),   &
+               whtdop(1,nrun+5), gddcorn(lbeg:lend,nrun+5), gddsgc(lbeg:lend,nrun+5),      &
+               gddsgcp(lbeg:lend,2), gddsoy(lbeg:lend,nrun+5), gddwht(lbeg:lend,nrun+5),   &
                daygddc(1, 366), daygddsgc(1, 366), daygdds(1, 366))
 
-      corndop(:,:) = 0.   
-      sgcdop(:,:) = 0.    
-      soydop(:,:) = 0.    
-      whtdop(:,:) = 0.     
-      gddcorn(:,:) = 0.   
-      gddsgc(:,:) = 0.    
-      gddsgcp(:,:) = 0.      
-      gddsoy(:,:) = 0.    
-      gddwht(:,:) = 0.    
-      daygddc(:,:) = 0.   
-      daygddsgc(:,:) = 0. 
-      daygdds(:,:) = 0.   
+      corndop(:,:) = 0.
+      sgcdop(:,:) = 0.
+      plmdop(:,:) = 0.
+      soydop(:,:) = 0.
+      whtdop(:,:) = 0.
+      gddcorn(:,:) = 0.
+      gddsgc(:,:) = 0.
+      gddsgcp(:,:) = 0.
+      gddsoy(:,:) = 0.
+      gddwht(:,:) = 0.
+      daygddc(:,:) = 0.
+      daygddsgc(:,:) = 0.
+      daygdds(:,:) = 0.
 
 
       allocate (cntops(lbeg:lend,npft),&
-               cnrootvec(lbeg:lend,npft),& 
-               croplive(lbeg:lend,npft),& 
+               cnrootvec(lbeg:lend,npft),&
+               croplive(lbeg:lend,npft),&
                grnfraccrop(lbeg:lend,npft),&
 	       gddplant(lbeg:lend,npft),&
-	       gddtsoi(lbeg:lend,npft),& 
+	       gddtsoi(lbeg:lend,npft),&
 	       gddmaturity(lbeg:lend,npft),&
-	       thrlai(lbeg:lend,npft),&  
+	       thrlai(lbeg:lend,npft),&
 	       peaklai(lbeg:lend,npft),&
 	       hui(lbeg:lend,npft),&
 	       phuf(lbeg:lend,npft),&
 	       tlai(lbeg:lend,npft),&
 	       templai(lbeg:lend,npft),&
-	       harvidx(lbeg:lend,npft),& 
-	       fnleaf(lbeg:lend,npft),&    
-	       fnstem(lbeg:lend,npft),&     
-	       fnroot(lbeg:lend,npft),&     
-	       fngrain(lbeg:lend,npft),& 
-	       fnplant(lbeg:lend,npft),&  
-	       tnplant(lbeg:lend,npft),&   
-	       grainn(lbeg:lend,npft),&       
-	       cumlvs(lbeg:lend,npft),&       
-	       idpp(lbeg:lend,npft),&	  
-	       dpgf(lbeg:lend,npft),&	  
-	       cropyld(lbeg:lend,npft),&   
-	       dmleaf(lbeg:lend,npft),&       
-	       dmstem(lbeg:lend,npft),&       
-	       dmresidue(lbeg:lend,npft),& 
-	       dmyield(lbeg:lend,npft),&   
-	       dmcrop(lbeg:lend,npft),&       
-	       cropn(lbeg:lend, npft),&       
-	       cropfixn(lbeg:lend,npft),&  
-	       nconcl(lbeg:lend,npft),&       
-	       nconcs(lbeg:lend,npft),&       
-	       nconcr(lbeg:lend,npft),&       
-	       nconcg(lbeg:lend,npft),&       
-	       leafout(lbeg:lend,npft),&   
-	       cropplant(lbeg:lend,npft),& 
-	       croplaimx(lbeg:lend,npft),& 
-	       residuen(lbeg:lend, npft),& 
-	       dmroot(lbeg:lend,npft),&       
-	       hdate(lbeg:lend,npft),&	  
-	       idppout(lbeg:lend,npft),&   
-	       pdate(lbeg:lend,npft),&	  
-	       crmclim(lbeg:lend,npft),&   
-	       crmact(lbeg:lend,npft),&       
-	       crmplant(lbeg:lend,npft),&  
-	       ccdays(lbeg:lend,npft),&       
-	       grainday(lbeg:lend,npft),&  
-	       fertinput(lbeg:lend,npft),& 
-	       avehybrid(lbeg:lend,npft),& 
-	       pstart(lbeg:lend,npft),&       
-	       laidecl(lbeg:lend,npft),&  
-	       harvdate(lbeg:lend,npft),&  
-	       idop(lbeg:lend,npft),&	  
-	       iavepdate(lbeg:lend,npft)) 
+	       harvidx(lbeg:lend,npft),&
+	       fnleaf(lbeg:lend,npft),&
+	       fnstem(lbeg:lend,npft),&
+	       fnroot(lbeg:lend,npft),&
+	       fngrain(lbeg:lend,npft),&
+	       fnplant(lbeg:lend,npft),&
+	       tnplant(lbeg:lend,npft),&
+	       grainn(lbeg:lend,npft),&
+	       cumlvs(lbeg:lend,npft),&
+	       idpp(lbeg:lend,npft),&
+	       dpgf(lbeg:lend,npft),&
+	       cropyld(lbeg:lend,npft),&
+	       dmleaf(lbeg:lend,npft),&
+	       dmstem(lbeg:lend,npft),&
+	       dmresidue(lbeg:lend,npft),&
+	       dmyield(lbeg:lend,npft),&
+	       dmcrop(lbeg:lend,npft),&
+	       cropn(lbeg:lend, npft),&
+	       cropfixn(lbeg:lend,npft),&
+	       nconcl(lbeg:lend,npft),&
+	       nconcs(lbeg:lend,npft),&
+	       nconcr(lbeg:lend,npft),&
+	       nconcg(lbeg:lend,npft),&
+	       leafout(lbeg:lend,npft),&
+	       cropplant(lbeg:lend,npft),&
+	       croplaimx(lbeg:lend,npft),&
+	       residuen(lbeg:lend, npft),&
+	       dmroot(lbeg:lend,npft),&
+	       hdate(lbeg:lend,npft),&
+	       idppout(lbeg:lend,npft),&
+	       pdate(lbeg:lend,npft),&
+	       crmclim(lbeg:lend,npft),&
+	       crmact(lbeg:lend,npft),&
+	       crmplant(lbeg:lend,npft),&
+	       ccdays(lbeg:lend,npft),&
+	       grainday(lbeg:lend,npft),&
+	       fertinput(lbeg:lend,npft),&
+	       avehybrid(lbeg:lend,npft),&
+	       pstart(lbeg:lend,npft),&
+	       laidecl(lbeg:lend,npft),&
+	       harvdate(lbeg:lend,npft),&
+	       idop(lbeg:lend,npft),&
+	       iavepdate(lbeg:lend,npft))
 
             cnrootvec(:,:) = cnroot
-	    cntops(:,:) = 0.        
-	    croplive(:,:) = 0.  
-	    grnfraccrop(:,:) = 0. 
-	    gddplant(:,:) = 0.  
-	    gddtsoi(:,:) = 0.   
-	    gddmaturity(:,:) = 0. 
-	    thrlai(:,:) = 0.    
-	    peaklai(:,:) = 0.   
-	    hui(:,:) = 0.	  
-	    phuf(:,:) = 0.	  
-	    tlai(:,:) = 0. 
-	    templai(:,:) = 0. 
-	    harvidx(:,:) = 0.   
-	    fnleaf(:,:) = 0.    
-	    fnstem(:,:) = 0.    
-	    fnroot(:,:) = 0.    
-	    fngrain(:,:) = 0.   
-	    fnplant(:,:) = 0.   
-	    tnplant(:,:) = 0.   
-	    grainn(:,:) = 0.    
-!	    cumlvs(:,:) = 0.    
-	    idpp(:,:) = 0.	  
-!	    dpgf(:,:) = 0.	  
-	    cropyld(:,:) = 0.   
-	    dmleaf(:,:) = 0.    
-	    dmstem(:,:) = 0.    
-	    dmresidue(:,:) = 0. 
-	    dmyield(:,:) = 0.   
-	    dmcrop(:,:) = 0.    
-	    cropn(:,:) = 0.    
-	    cropfixn(:,:) = 0.  
-	    nconcl(:,:) = 0.    
-	    nconcs(:,:) = 0.    
-	    nconcr(:,:) = 0.    
-	    nconcg(:,:) = 0.    
-!	    leafout(:,:) = 0.   
-	    cropplant(:,:) = 0. 
-	    croplaimx(:,:) = 0. 
-	    residuen(:,:) = 0. 
-	    dmroot(:,:) = 0.    
-	    hdate(:,:) = 0.	  
-	    idppout(:,:) = 0.   
-	    pdate(:,:) = 0.	  
-	    crmclim(:,:) = 0.   
-	    crmact(:,:) = 0.    
-	    crmplant(:,:) = 0.  
-	    ccdays(:,:) = 0.    
+	    cntops(:,:) = 0.
+	    croplive(:,:) = 0.
+	    grnfraccrop(:,:) = 0.
+	    gddplant(:,:) = 0.
+	    gddtsoi(:,:) = 0.
+	    gddmaturity(:,:) = 0.
+	    thrlai(:,:) = 0.
+	    peaklai(:,:) = 0.
+	    hui(:,:) = 0.
+	    phuf(:,:) = 0.
+	    tlai(:,:) = 0.
+	    templai(:,:) = 0.
+	    harvidx(:,:) = 0.
+	    fnleaf(:,:) = 0.
+	    fnstem(:,:) = 0.
+	    fnroot(:,:) = 0.
+	    fngrain(:,:) = 0.
+	    fnplant(:,:) = 0.
+	    tnplant(:,:) = 0.
+	    grainn(:,:) = 0.
+!	    cumlvs(:,:) = 0.
+	    idpp(:,:) = 0.
+!	    dpgf(:,:) = 0.
+	    cropyld(:,:) = 0.
+	    dmleaf(:,:) = 0.
+	    dmstem(:,:) = 0.
+	    dmresidue(:,:) = 0.
+	    dmyield(:,:) = 0.
+	    dmcrop(:,:) = 0.
+	    cropn(:,:) = 0.
+	    cropfixn(:,:) = 0.
+	    nconcl(:,:) = 0.
+	    nconcs(:,:) = 0.
+	    nconcr(:,:) = 0.
+	    nconcg(:,:) = 0.
+!	    leafout(:,:) = 0.
+	    cropplant(:,:) = 0.
+	    croplaimx(:,:) = 0.
+	    residuen(:,:) = 0.
+	    dmroot(:,:) = 0.
+	    hdate(:,:) = 0.
+	    idppout(:,:) = 0.
+	    pdate(:,:) = 0.
+	    crmclim(:,:) = 0.
+	    crmact(:,:) = 0.
+	    crmplant(:,:) = 0.
+	    ccdays(:,:) = 0.
 !	    grainday(:,:) = 0.
 	    grainday(:,:) = 9999.
-!	    fertinput(:,:) = 0. 
-	    avehybrid(:,:) = 0. 
-	    pstart(:,:) = 999.    
-	    laidecl(:,:) = 0.   
-	    harvdate(:,:) = 0.  
-	    idop(:,:) = 0.	  
+!	    fertinput(:,:) = 0.
+	    avehybrid(:,:) = 0.
+	    pstart(:,:) = 999.
+	    laidecl(:,:) = 0.
+	    harvdate(:,:) = 0.
+	    idop(:,:) = 0.
 	    iavepdate(:,:) = 0.
 
       allocate (cropout(lbeg:lend,npft,60))
 
-               cropout(:,:,:) = 0.	 
+               cropout(:,:,:) = 0.
 
-      allocate (fleafwht(2),&	                     
+      allocate (fleafwht(2),&
 	       cfertmaize(2000),&
-	       cfertsoy(2000),&              
-	       cfertsgc(2000),&              
+	       cfertsoy(2000),&
+	       cfertsgc(2000),&
 	       cfertwheat(2000))
 
-	       fleafwht(:) = 0.	   
+	       fleafwht(:) = 0.
 	       cfertmaize(:) = 0.
-	       cfertsoy(:) = 0.  
-	       cfertsgc(:) = 0.  
-	       cfertwheat(:) = 0. 
+	       cfertsoy(:) = 0.
+	       cfertsgc(:) = 0.
+	       cfertwheat(:) = 0.
 
 !Allocate variables in comnitr
       allocate (storedn(lbeg:lend), yrleach(lbeg:lend), aplantn(lbeg:lend),                                  &
                totimm(lbeg:lend), totmin(lbeg:lend), totnrel(lbeg:lend), ctot(lbeg:lend), ctoti(lbeg:lend),  &
                ftot(lbeg:lend), tsinp(lbeg:lend), tslay(lbeg:lend), taninp(lbeg:lend), tsnimm(lbeg:lend),    &
                tsnmob(lbeg:lend), dtnleach(lbeg:lend), dnileach(lbeg:lend), tpnuptake(lbeg:lend),            &
-               totnvegn(lbeg:lend), drntot(lbeg:lend), ddrn(lbeg:lend), concn(lbeg:lend), assimn(lbeg:lend), & 
+               totnvegn(lbeg:lend), drntot(lbeg:lend), ddrn(lbeg:lend), concn(lbeg:lend), assimn(lbeg:lend), &
                ydeposn(lbeg:lend), yfixsoin(lbeg:lend), yno3leach(lbeg:lend), snbalance(lbeg:lend),          &
                fixsoin(lbeg:lend))
-      storedn(:) = 0. 
-      yrleach(:) = 0. 
+      storedn(:) = 0.
+      yrleach(:) = 0.
       aplantn(:) = 0.
       totimm(:) = 0.
       totmin(:) = 0.
@@ -670,7 +671,7 @@ subroutine alloc(irestart)
                gsls(lbeg:lend),&
                gsl3(lbeg:lend),&
                gsl4(lbeg:lend))
- 
+
       allocate(agddl(lbeg:lend),&
                agddu(lbeg:lend),&
                fl(lbeg:lend),&
@@ -734,7 +735,7 @@ subroutine alloc(irestart)
                cbios(lbeg:lend,npft),&
                cbiog(lbeg:lend,npft),&
 		       plaimx(lbeg:lend,npft))
- 
+
       allocate(csoislo(lbeg:lend),&
                decompl(lbeg:lend),&
                decomps(lbeg:lend),&
@@ -744,11 +745,13 @@ subroutine alloc(irestart)
                cdisturb(lbeg:lend),&
                greenfracl(lbeg:lend),&
                gdd12(lbeg:lend),&
+               gdd11(lbeg:lend),&
                gdd10(lbeg:lend),&
                gdd8(lbeg:lend),&
                gdd0c(lbeg:lend),&
                gdd10this(lbeg:lend),&
                gdd8this(lbeg:lend),&
+               gdd11this(lbeg:lend),&
                gdd12this(lbeg:lend),&
                gdd0cthis(lbeg:lend),&
                greenfracl3(lbeg:lend),&
@@ -761,7 +764,7 @@ subroutine alloc(irestart)
                gsc4(lbeg:lend))
 
 ! FIXME: Useless. 0D model runs on only single point, No need to allocate it
-!       as a vector but a single variable! Also, this seems to be used on a 
+!       as a vector but a single variable! Also, this seems to be used on a
 !       single subroutine, so no need to declare on a module at all!
 #ifdef SINGLE_POINT_MODEL
       allocate(cbioltot(npoi), cbiortot(npoi), cbiowtot(npoi))
@@ -816,7 +819,7 @@ subroutine alloc(irestart)
       tsoiavg(:) = 0.
       totcondc4(:) = 0.
       totcondc3(:) = 0.
- 
+
       agddl(:) = 0.
       agddu(:) = 0.
       fl(:) = 0.
@@ -846,7 +849,7 @@ subroutine alloc(irestart)
       cbiow(:,:) = 0.
       cbios(:,:) = 0.
       cbiog(:,:) = 0.
- 
+
       csoislo(:) = 0.
       decompl(:) = 0.
       decomps(:) = 0.
@@ -869,11 +872,13 @@ subroutine alloc(irestart)
 
       greenfracl(:) = 0.
       gdd12(:) = 0.
+      gdd11(:) = 0.
       gdd10(:) = 0.
       gdd8(:) = 0.
       gdd0c(:) = 0.
       gdd10this(:) = 0.
       gdd8this(:) = 0.
+      gdd11this(:) = 0.
       gdd12this(:) = 0.
       gdd0cthis(:) = 0.
       greenfracl3(:) = 0.
@@ -991,7 +996,7 @@ subroutine alloc(irestart)
       allocate(ibex(lbeg:lend,nsoilay))
 
       allocate(qglif(lbeg:lend,4))
-      
+
       allocate(fwtop(lbeg:lend), fwpud(lbeg:lend),deposn(lbeg:lend))
 
       wflo(:,:) = 0.
@@ -1080,7 +1085,7 @@ subroutine alloc(irestart)
 
 ! comatm's weather generator specific variables
 !---------------------------------------------------
-!   There's no need to initialize these variables. This is done in the 
+!   There's no need to initialize these variables. This is done in the
 ! subroutine in a adequate frequency.
       allocate(precip(lbeg:lend),precipdaysum(lbeg:lend),iwet(lbeg:lend), &
                iwetdaysum(lbeg:lend),cloud(lbeg:lend))
@@ -1311,8 +1316,8 @@ subroutine alloc(irestart)
 ! moved to inland_parameters (subroutine) allocation area on this file
 !     garea(:) = 0.
 
-      dwtot(:) = 0. 
-      wtotp(:) = 0. 
+      dwtot(:) = 0.
+      wtotp(:) = 0.
       wtot(:) = 0.
 
       adtsoic(:) = 0.

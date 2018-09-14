@@ -13,7 +13,7 @@ module inland_control
       integer idailyout   ! 0: no daily output 1: daily output
       integer ipointout ! 0: no point output
                         ! 1: point output
-      integer isimveg   ! 0: static veg 
+      integer isimveg   ! 0: static veg
 !                       ! 1: dynam veg initialized w/ fixed
 !                       ! 2: dynam veg initialized w/ cold start
       integer overveg   ! 0: no override pft
@@ -22,14 +22,14 @@ module inland_control
       integer isimland  ! 0: fixed land  1: dynamic land
       integer isimco2   ! 0: fixed co2   1: changing co2
       integer ccmexist  ! 0: calculates existence arrays using climatological temperatures
-!                       ! 1: calculates existence arrays using modeled monthly temperatures 
+!                       ! 1: calculates existence arrays using modeled monthly temperatures
 !
 !Castanho Kai included isinfilt, isimrwu
       integer isinfilt  ! Infiltration Function
-!                       ! 0: according to Darcy (1856); 
+!                       ! 0: according to Darcy (1856);
 !                       ! 1: according to Green-Ampt (1911)
       integer isimrwu   !Root water uptake module
-!                       ! 0: according to Foley et al., 1996; 
+!                       ! 0: according to Foley et al., 1996;
 !                       ! 1 according to Li et al. (2006)
 !!
       integer soicspin  ! 0: no spinup procedure for soil carbon
@@ -66,7 +66,7 @@ module inland_control
 
 
 ! model I/O variables, always access using trim()
-! values can be overriden at runtime with env. variables 
+! values can be overriden at runtime with env. variables
 ! INLAND_INDIR, INLAND_INFILE, INLAND_DATADIR, INLAND_OUTDIR
       character*255 indir, infile, datadir, outdir
 
@@ -82,8 +82,8 @@ module inland_control
       integer env_floatout
 
 ! write compressed netcdf files (netcdf-4 with DEFLATE compression) - requires hdf-5
-!   0: use uncompressed netcdf-classic format 
-!   >1: use netcdf4-format with DEFLATE compression (requires hdf-5) 
+!   0: use uncompressed netcdf-classic format
+!   >1: use netcdf4-format with DEFLATE compression (requires hdf-5)
 !   value specifies compression level (1-9) (default 0, 2 is recommended)
 !   note that compression is not recommended for small domains
       integer env_compressout
@@ -94,7 +94,7 @@ module inland_control
       integer env_chunkout
 
 ! debug output - set to higher than 0 for debug output, higher values increase verbosity
-      integer env_debug 
+      integer env_debug
 
 ! name of the vegtype file to read (and tileprop if mlpt>1)
 ! or default if blank (read in readit subroutine)

@@ -6,7 +6,7 @@ module inland_comveg
       save
 
 ! ------
-! comveg 
+! comveg
 ! ------
 !
 !
@@ -27,7 +27,7 @@ module inland_comveg
 !     tblows              ! decay time for blowoff of snow intercepted by upper canopy stems (sec)
 !     tblowu              ! decay time for blowoff of snow intercepted by upper canopy leaves (sec)
 !     tdripl              ! decay time for dripoff of liquid intercepted by lower canopy leaves & stem (sec)
-!     tdrips              ! decay time for dripoff of liquid intercepted by upper canopy stems (sec) 
+!     tdrips              ! decay time for dripoff of liquid intercepted by upper canopy stems (sec)
 !     tdripu              ! decay time for dripoff of liquid intercepted by upper canopy leaves (sec)
 !     wliqmin             ! minimum intercepted water on unit vegetated area (kg m-2)
 !     wliqlmax            ! maximum intercepted water on a unit lower canopy stem & leaf area (kg m-2)
@@ -83,9 +83,9 @@ module inland_comveg
 !     ancls(npoi)         ! canopy average net photosynthesis rate - shrubs       (mol_co2 m-2 s-1)
 !     ancl3(npoi)         ! canopy average net photosynthesis rate - c3 grasses   (mol_co2 m-2 s-1)
 !     ancl4(npoi)         ! canopy average net photosynthesis rate - c4 grasses   (mol_co2 m-2 s-1)
-!     totcondub(npoi)     ! 
+!     totcondub(npoi)     !
 !     totconduc(npoi)     !
-!     totcondls(npoi)     ! 
+!     totcondls(npoi)     !
 !     totcondl3(npoi)     !
 !     totcondl4(npoi)     !
 !     ancc4(npoi),        ! canopy average net photosynthesis rate - c4 crops (mol_co2 m-2 s-1)
@@ -139,7 +139,7 @@ module inland_comveg
 !     agddu(npoi)         ! annual accumulated growing degree days for bud burst, upper canopy (day-degrees)
 !     fl(npoi)            ! fraction of snow-free area covered by lower  canopy
 !     fu(npoi)            ! fraction of overall area covered by upper canopy
-!     gdd0(npoi)          ! growing degree days > 0C 
+!     gdd0(npoi)          ! growing degree days > 0C
 !     gdd0this(npoi)      ! annual total growing degree days for current year
 !     gdd5(npoi)          ! growing degree days > 5C
 !     gdd5this(npoi)      ! annual total growing degree days for current year
@@ -202,8 +202,8 @@ module inland_comveg
                                            clitws, csoipas, csoislo, csoislon, &
                                            csoislop, decompl, decomps, falll,  &
                                            fallr, fallw, cdisturb, caccount,   &
-					                       greenfracl, gdd12, gdd10, gdd8,     &
-					                       gdd0c, daylength, gdd10this,        &
+					                       greenfracl, gdd12, gdd11, gdd10, gdd8,        &
+					                       gdd0c, daylength, gdd10this, gdd11this,       &
                                            gdd8this, gdd12this, gdd0cthis,     &
                                            greenfracl3,                        &
                                            greenfracl4, cic3, cic4, csc3, csc4,&
@@ -236,27 +236,29 @@ module inland_comveg
 !     falll(npoi)         ! annual leaf litter fall                      (kg_C m-2/year)
 !     fallr(npoi)         ! annual root litter input                     (kg_C m-2/year)
 !     fallw(npoi)         ! annual wood litter fall                      (kg_C m-2/year)
-!     cdisturb(npoi)      ! annual amount of vegetation carbon lost 
+!     cdisturb(npoi)      ! annual amount of vegetation carbon lost
 !     caccount(npoi)      ! end of year correction to ensure carbon balance (kg_C m-2/year)
 !                         ! applied to last timestep ==> (kg_C m-2/timestep)
 !     greenfracl(npoi)    !
 !     gdd12(npoi),        ! growing degree days > 12C for sugarcane crops between April 1 - Sept 30
+!     gdd11(npoi),        ! growing degree days > 11C for sugarcane crops between April 1 - Sept 30
 !     gdd10(npoi),        ! growing degree days > 10C for soybean crops between April 1 - Sept 30
 !     gdd8(npoi),         ! growing degree days > 8C for corn crops between April 1 - Sept 30
-!     gdd0c(npoi),        ! growing degree days > 0C for wheat crops between  April 1 - Sept 30 
+!     gdd0c(npoi),        ! growing degree days > 0C for wheat crops between  April 1 - Sept 30
 !     daylength(npoi),    ! length of day (minutes)
 !     gdd10this(npoi),    ! annual total growing degree days for current year
 !     gdd8this(npoi),     ! annual total growing degree days for current year
+!     gdd11this(npoi),    ! annual total growing degree days for current year
 !     gdd12this(npoi),    ! annual total growing degree days for current year
 !     gdd0cthis(npoi),    ! annual total growing degree days for current year
 !     greenfracl3(npoi),
 !     greenfracl4(npoi)
 !     cic3(npoi),         ! intercellular co2 concentration - c3 crops (mol_co2/mol_air)
-!     cic4(npoi),         ! intercellular co2 concentration - c4 crops (mol_co2/mol_air) 
+!     cic4(npoi),         ! intercellular co2 concentration - c4 crops (mol_co2/mol_air)
 !     csc3(npoi),         ! leaf boundary layer co2 concentration - c3 crops (mol_co2/mol_air)
 !     csc4(npoi),         ! leaf boundary layer co2 concentration - c4 crops (mol_co2/mol_air)
-!     gsc3(npoi)          ! c3 crop canopy stomatal conductance (mol_co2 m-2 s-1) 
-!     gsc4(npoi)          ! c4 crop canopy stomatal conductance (mol_co2 m-2 s-1) 
+!     gsc3(npoi)          ! c3 crop canopy stomatal conductance (mol_co2 m-2 s-1)
+!     gsc4(npoi)          ! c4 crop canopy stomatal conductance (mol_co2 m-2 s-1)
 
 
 
@@ -284,7 +286,7 @@ module inland_comveg
 !     sai(npoi,2)         ! current single-sided stem area index
 !     zbot(npoi,2)        ! height of lowest branches above ground (m)
 !     ztop(npoi,2)        ! height of plant top above ground (m)
-!     ztopmx(npoi,2)      ! maximum annual height of plant top above ground (m) 
+!     ztopmx(npoi,2)      ! maximum annual height of plant top above ground (m)
 !     fallrsgc(npoi,3),   ! daily root litter input for sugarcane        (kg_C m-2/year)
 !     falllsgc(npoi,3),   ! daily leaf litter fall for sugarcane         (kg_C m-2/year)
 !     htmx(npoi,2)        ! maximum height attained by a crop during year
@@ -303,11 +305,11 @@ module inland_comveg
 !
       real*8, dimension(:,:), allocatable :: froot
 !
-!     froot(nsoilay,2)    ! fraction of root in soil layer 
+!     froot(nsoilay,2)    ! fraction of root in soil layer
 !
       real*8, dimension(:,:), allocatable :: exist
       !     exist(npoi,npft)    ! rule of existence of each plant functional type in a gridcell
-      
+
       integer, dimension(:,:), allocatable :: existvegtypemap
       !existvegtypemap(nvegtype,npft)     ! Existence of each plant functional type for each input vegtype
 
@@ -316,16 +318,16 @@ module inland_comveg
 ! Castanho HP, 2013 included dimensions npoi (i) in aleaf, awood, aroot, tauwood, specla, vmax when appropriate bellow
 
       real*8, dimension(:,:), allocatable :: specla, aleaf, aroot, awood          ! Castanho HP, 2013
-! 
-!     specla(npoi,npft)        ! specific leaf area (m**2/kg) 
+!
+!     specla(npoi,npft)        ! specific leaf area (m**2/kg)
 !     aleaf(npoi,npft)         ! carbon allocation fraction to leaves
 !     aroot(npoi,npft)         ! carbon allocation fraction to fine roots
 !     awood(npoi,npft)         ! carbon allocation fraction to wood
- 
+
 ! Castanho HP, 2013 keep properties read in canopy with one dimension, change name adding p aleafp, awoodp, specla
 
       real*8, dimension(:), allocatable :: speclap,  arootp, awoodp, aleafp          ! Castanho HP, 2013 aleafp is 1- awoodp-arootp
-! 
+!
 !     speclap(npft)        ! specific leaf area (m**2/kg) one dimension
 !     aleafp(npft)         ! carbon allocation fraction to leaves one dimension
 !     arootp(npft)         ! carbon allocation fraction to fine roots one dimension
@@ -356,7 +358,7 @@ module inland_comveg
       real*8, dimension(:), allocatable :: landusetype
       integer, dimension(:), allocatable :: landusetypemap
       integer, dimension(:,:), allocatable :: landusepftmap
- 
+
 !     landusetype(nvegtype)        ! Land Use type in a grid cell
 !     landusetypemap(nvegtype)     ! Land Use Type for each input vegtype
 !     landusepftmap(nlanduse,npft) ! rule of existence of each PFT in function of Land Use type

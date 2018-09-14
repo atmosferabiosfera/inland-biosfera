@@ -36,7 +36,7 @@ subroutine daily (test, dimforc)
 ! define working variables
       rwork = (grav / rair / 0.0065)
       niter = int (86400./dtime)
- 
+
 ! Calcul of the actual td, precip, tmin, and qd
       it0 = dimforc - test
       tmin(1) = 373.16
@@ -54,10 +54,10 @@ subroutine daily (test, dimforc)
 ! constrain daily average relative humidity
       ed = max (dble(0.30), ed)
       ed = min (dble(0.99), ed)
- 
+
 ! Calcul of psurf(specific for the Flona km 83 site)
       psurf(1) = 99208.7369088147 - 21.7473169490388 * (td(1) - 273.16)
- 
+
 ! convert from relative humidity to specific humidity at
 ! daily mean temperature
       qd(1) = ed * qsat(esat(td(1)), psurf(1))
@@ -69,42 +69,42 @@ subroutine daily (test, dimforc)
 !      iyrlast, nrun are not used for now
 subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! ---------------------------------------------------------------------
-! 
+!
 ! overview
-! 
+!
 ! this routine generates daily weather conditions from monthly-mean
 ! climatic parameters
-! 
+!
 ! specifically, this routine generates daily values of
-! 
+!
 !  - daily total precipitation
 !  - daily maximum temperature
 !  - daily minimum temperature
 !  - daily average cloud cover
 !  - daily average relative humidity
 !  - daily average wind speed
-! 
+!
 ! in order to generate daily weather conditions, the model uses a series
 ! of 'weather generator' approaches, which generate random combinations of
 ! weather conditions based upon the climatological conditions
-! 
+!
 ! in general, this weather generator is based upon the so-called Richardson
 ! weather generator
-! 
+!
 ! appropriate references include:
-! 
+!
 ! Geng, S., F.W.T. Penning de Vries, and L. Supit, 1985:  A simple
 ! method for generating rainfall data, Agricultural and Forest
 ! Meteorology, 36, 363-376.
-! 
-! Richardson, C. W. and Wright, D. A., 1984: WGEN: A model for 
+!
+! Richardson, C. W. and Wright, D. A., 1984: WGEN: A model for
 ! generating daily weather variables: U. S. Department of
 ! Agriculture, Agricultural Research Service.
-! 
+!
 ! Richardson, C., 1981: Stochastic simulation of daily
-! precipitation, temperature, and solar radiation. Water Resources 
+! precipitation, temperature, and solar radiation. Water Resources
 ! Research 17, 182-190.
-! 
+!
 ! former common blocks, now they are fortran 90 modules
       use inland_parameters
       use inland_control, only: iyear, imonth, iday, iyear0
@@ -112,7 +112,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
       use inland_comatm
       use inland_comsum
       use inland_comveg
-      use inland_comsatp      
+      use inland_comsatp
       use inland_subgrid
       use inland_comcrop
       use inland_comsoi
@@ -121,13 +121,13 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
       implicit none
 
 ! Arguments
-      integer :: seed,     & 
+      integer :: seed,     &
                  seed2,    &
                  seed3(32), &
                  seed4,     &
                  jdaily      ! 1 if reading in daily weather data
-                             ! 0 if using random/statistical weather generator   
- 
+                             ! 0 if using random/statistical weather generator
+
 ! local variables
       integer :: it1w,     & ! indice of previous month (interpolation)
                  it2w,     & ! indice of following month (interpolation)
@@ -164,12 +164,12 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                 tdum,        & ! storage variable
                 qdm,         & ! mean relative humidity
                 qdd,         & ! dry day relative humidity
-                qdw,         & ! wet day relative humidity 
+                qdw,         & ! wet day relative humidity
                 qde,  & ! expected relative humidity (based on wet/dry decision)
                 qdup,        & ! upper bound of humidity distribution function
                 qdlow,       & ! lower bound of humidity distribution function
                 eud        ! expected daily average wind speed from monthly mean
- 
+
       real*8 :: a(3,3), b(3,3)
       real*8 :: ee(3), r(3), rr(3), x(3)
       integer :: iyrlast, nrun ! these arguments are not used for now
@@ -177,12 +177,12 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
       real :: ran2,          & ! function random number generator
               rndnum,        & ! random number to decide if wet or dry day
               rn1,rn2,rn3,rn   ! random numbers
- 
+
 ! define autocorrelation matrices for Richardson generator
-! 
+!
 ! note that this matrix should be based upon a statistical
 ! analysis of regional weather patterns
-! 
+!
 ! for global simulations, we use 'nominal' values
       data a /  0.600,  0.500,  0.005, &
                 0.010,  0.250,  0.005, &
@@ -191,22 +191,22 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
       data b /  0.500,  0.250, -0.250, &
                 0.000,  0.500,  0.250, &
                 0.000,  0.000,  0.500 /
- 
+
 #define WGEN_COMSAT
 #include "inland_comsat.h"
 
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! * * * initial setup for daily climate calculations * * *
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! define working variables
       rwork = (grav / rair / 0.0065)
 
 ! 'omega' parameters used to calculate differences in expected
 ! climatic parameters on wet and dry days
-! 
+!
 ! following logic of weather generator used in the EPIC crop model
-! 
+!
 ! omcloud -- cloud cover
 ! omqd    -- humidity
 ! omtmax  -- maximum temperature
@@ -216,19 +216,19 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 
 ! calculate weighting factors used in interpolating climatological
 ! monthly-mean input values to daily-mean values
-! 
+!
 ! this is a simple linear interpolation technique that takes into
-! account the length of each month 
+! account the length of each month
 !      it1w = 1
 !      it1w = 1
 !      dt = 1
       if (jdaily .eq. 0) then
          if (float(iday).lt.float(ndaypm(imonth)+1)/2.0) then
             it1w = imonth - 1
-            it2w = imonth 
+            it2w = imonth
             dt   = (float(iday) - 0.5) / ndaypm(imonth) + 0.5
          else
-            it1w = imonth 
+            it1w = imonth
             it2w = imonth + 1
             dt   = (float(iday) - 0.5) / ndaypm(imonth) - 0.5
          end if
@@ -243,40 +243,41 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
          twthis(:)=-100.0
          gdd0this(:)=0.0
          gdd5this(:)=0.0
-      
+
          if(isimagro .gt. 0) then
             gdd0cthis(:)=0.0
             gdd8this(:)=0.0
             gdd10this(:)=0.0
+            gdd11this(:)=0.0
             gdd12this(:)=0.0
 !
 ! initialize variables to zero at beginning of year
 ! for crop types that do not grow over two calendar years
-! 
+!
 ! constant for gdd based on 10 cm soil temperature (planting bed-
 ! used to calculate leaf emergence after planting
 !
            do  i = lbeg, lend
               do  j = 1, npft
-                 if (j .le. scpft-1) then  ! natural vegetation 
+                 if (j .le. scpft-1) then  ! natural vegetation
                     ayanpp(i,j)     = 0.0
                  else if (j .ge. scpft) then
                     ayanpp(i,j)     = 0.0
                  endif
 	          enddo
-           enddo    
-         endif ! check for crop existence    
+           enddo
+         endif ! check for crop existence
       endif
 
      if(isimagro .gt. 0) then
 !
-! initialize this crop year's values 
+! initialize this crop year's values
 !
       do  i = lbeg, lend
          do  j = scpft, ecpft
             if (iday.eq.pcd(j).and.imonth.eq.pcm(j)) then
                if (exist(i,13).eq.1.and.j.eq.13) then
-                  gddsoy(i,iyear-iyear0+5) = gddfzsoy(i) 
+                  gddsoy(i,iyear-iyear0+5) = gddfzsoy(i)
                   consdays(i)=0
                   iniday(i)=9999
                   maxcons(i)=0
@@ -284,13 +285,13 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
-	       
+
                else if (exist(i,13).eq.0.and.j.eq.13) then
 	          gddsoy(i,iyear-iyear0+5)=0.0
 	       endif
 !
 	       if (exist(i,14).eq.1.and.j.eq.14) then
-                  gddcorn(i,iyear-iyear0+5) = gddfzcorn(i) 
+                  gddcorn(i,iyear-iyear0+5) = gddfzcorn(i)
                   consdays(i)=0
                   iniday(i)=9999
                   maxcons(i)=0
@@ -298,7 +299,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
-	
+
                else if (exist(i,14).eq.0.and.j.eq.14) then
                   gddcorn(i,iyear-iyear0+5)=0.0
                endif
@@ -312,7 +313,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
-! 
+!
                else if (exist(i,16).eq.0.and.j.eq.16) then
                   gddsgc(i,iyear-iyear0+5)=0.0
                endif
@@ -320,51 +321,51 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                if (croplive(i,j) .eq. 0 ) then
                   gddplant(i,j)   = 0.0
                   gddtsoi(i,j)    = 0.0
-               endif         
-            endif	
+               endif
+            endif
          enddo
       enddo
 !
     endif ! check for crop existence
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! * * * set daily climatic variables for entire domain * * *
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 
 ! if mlpt > 1 do for all gridcells
-! else 
+! else
 ! do for non-tile gridcells because of multiple calls to ran2 will generate diff. results
 ! and then replicate results to subgrid tiles
 ! in any case, loop from 1 to npoi1, because when mlpt = 1, npoi1 = npoi
 ! TODO fix this when lbeg != 1 and lend != npoi1
       do 200 i = 1, npoi1
 
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! * * * use weather generator to create daily statistics * * *
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
          if (jdaily .eq. 0) then
 
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! (1) determine if today will rain or not (following Geng et al.)
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! implement simple first-order Markov-chain precipitation generator logic
 ! based on Geng et al. (1986), Richardson and Wright (1984),
-! and Richardson (1981) 
-! 
-! basically, this allows for the probability of today being a wet day 
+! and Richardson (1981)
+!
+! basically, this allows for the probability of today being a wet day
 ! (a day with measureable precipitation) to be a function of what
 ! yesterday was (wet or dry)
-! 
+!
 ! the logic here is that it is more likely that a wet day will follow
 ! another wet day -- allowing for 'storm events' to persist
-! 
-! calculate monthly-average probability of rainy day 
+!
+! calculate monthly-average probability of rainy day
             pwet = max (dble(1.), xinwet(i,imonth)) / ndaypm(imonth)
 
 ! estimate the probability of a wet day after a dry day
             pwd = 0.75 * pwet
 
-! estimate the probability of a wet day after a wet day 
+! estimate the probability of a wet day after a wet day
             pww = 0.25 + pwd
 
 ! Beginning of block of code that figures out daily precip for
@@ -376,7 +377,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                xinprec(i, imonth) = max(dble(0.), xinprec(i, imonth))
                xinwet(i, imonth) = max(dble(1.), xinwet(i, imonth))
 9000           continue
- 
+
 ! Initialize monthly parameters back to zero
                iwetdaysum(i) = 0
                precipdaysum(i) = 0
@@ -391,7 +392,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 
 ! decide if today is a wet day or a dry day using a random number
                   rndnum = ran2(seed,seed2,seed3,seed4)
- 
+
 ! If it is the first day of the month do not look at previous day
                   if (j .eq. 1) then
                      if (dble(rndnum) .le. pwd) then
@@ -401,7 +402,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                         iwetday(i,j) = 0
                      endif
                   else
- 
+
 ! If it is not the first day, look at yesterday's wet/dry index to help
 ! determine if today is wet or dry
                      if (iwetday(i,j-1) .eq. 0) then
@@ -413,11 +414,11 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                         if (dble(rndnum).gt.pww) iwetday(i,j) = 0
                      endif
                   endif
- 
-! ---------------------------------------------------------------------- 
+
+! ----------------------------------------------------------------------
 ! (2) determine today's precipitation amount (following Geng et al.)
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! if it is going to rain today
                   if (iwetday(i,j) .eq. 1) then
 
@@ -427,42 +428,42 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 
 ! randomly select a daily rainfall amount from a probability density
 ! function of rainfall
-! 
+!
 ! method i --
-! 
+!
 ! use the following technique from Geng et al. and Richardson
 ! to distribute rainfall probabilities
-! 
+!
 ! pick a random rainfall amount from a two-parameter gamma function
 ! distribution function
-! 
+!
 ! estimate two parameters for gamma function (following Geng et al.)
                      beta  = max (dble(1.0), -2.16 + 1.83 * rainpwd)
                      alpha = rainpwd / beta
- 
+
 ! determine daily precipitation amount from gamma distribution function
 ! (following WGEN code of Richardson and Wright (1984))
-                     aa = 1.0 / alpha 
+                     aa = 1.0 / alpha
                      ab = 1.0 / (1.0 - alpha)
                      tr1 = exp(-18.42 / aa)
                      tr2 = exp(-18.42 / ab)
- 
+
 12                   rn1 = ran2(seed,seed2,seed3,seed4)
                      rn2 = ran2(seed,seed2,seed3,seed4)
- 
-! CD: rewrote parts of prehistoric code in fortran 77  
+
+! CD: rewrote parts of prehistoric code in fortran 77
                      if ((dble(rn1) - tr1) .le. 0) then
                         s1 = 0.0
-                     else 
+                     else
                         s1 = dble(rn1)**aa
                      end if
-    
-                     if ((dble(rn2) - tr2) .le. 0) then 
+
+                     if ((dble(rn2) - tr2) .le. 0) then
                         s2 = 0.0
-                     else 
+                     else
                         s2 = dble(rn2)**ab
                      end if
-           
+
 !                 if (rn1 - tr1) 61, 61, 62
 ! 61              s1 = 0.0
 !                 go to 63
@@ -471,63 +472,63 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! 64              s2 = 0.0
 !                 go to 66
 ! 65              s2 = rn2**ab
-!  
+!
 ! 66                   s12 = s1 + s2
                      s12 = s1 + s2
-! 
+!
                      if (s12 - 1.0)  13, 13, 12
 13                      z = s1 / s12
                         rn3 = ran2(seed,seed2,seed3,seed4)
                         precipday(i,j) = -z * dble(log(rn3)) * beta
- 
+
 ! method ii --
-! 
+!
 ! here we use a one-parameter Weibull distribution function
 ! following the analysis of Selker and Haith (1990)
-! 
+!
 ! Selker, J.S. and D.A. Haith, 1990: Development and testing of single-
-! parameter precipitation distributions, Water Resources Research, 
+! parameter precipitation distributions, Water Resources Research,
 ! 11, 2733-2740.
-! 
+!
 ! this technique seems to have a significant advantage over other
 ! means of generating rainfall distribution functions
-! 
+!
 ! by calibrating the Weibull function to U.S. precipitation records,
 ! Selker and Haith were able to establish the following relationship
-! 
+!
 ! the cumulative probability of rainfall intensity x is given as:
-! 
+!
 ! f(x) = 1.0 - exp(-(1.191 x / rainpwd)**0.75)
-! 
+!
 ! where x       : rainfall intensity
 !       rainpwd : rainfall per wet day
-! 
+!
 ! using transformation method, take uniform deviate and convert it to a
 ! random number weighted by the following Weibull function
-! 
+!
 !          rndnum = ran2(seed,seed2,seed3,seed4)
-! 
+!
 !          precip(i) = rainpwd / 1.191 * (-log(1.0 - rndnum))**1.333333
-! 
+!
 ! bound daily precipitation to "realistic" range
-! 
+!
 ! lower end is determined by definition of a 'wet day' (at least
 ! 0.25 mm of total precipitation)
-! 
+!
 ! upper end is to prevent inland from blowing up
                      precipday(i,j) = max (precipday(i,j),dble(0.25))    ! min =   0.25 mm/day
                      precipday(i,j) = min (precipday(i,j),dble(150.00))  ! max = 150.00 mm/day
-! 
+!
 ! Back to beginning of month loop, this is the end of it
                   endif
 
 ! Add today's precip to the monthly summation
                   precipdaysum(i) = precipdaysum(i) + precipday(i,j)
 220            continue
-! 
+!
 ! Adjust daily precip amounts (using precipfac) so that the monthly
 ! summation equals the input precip amount, when using interannual
-! anomalies 
+! anomalies
                if ((precipdaysum(i) .eq. 0).AND.(xinprec(i,imonth) .gt. 0)) then
                   rndnum = 1.0 + (float(ndaypm(imonth)) - 1.0) * ran2(seed,seed2,seed3,seed4)
                   iwetday(i,nint(rndnum)) = 1
@@ -584,7 +585,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                      end if
                   end if
 230            continue
-    
+
 ! Verification of the weather generator algorithm
                iwetdaysum(i) = 0
                precipdaysum(i) = 0.
@@ -593,15 +594,15 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   precipdaysum(i) = precipdaysum(i) + precipday(i,j)
                   iwetdaysum(i) = iwetdaysum(i) + iwetday(i,j)
 240            continue
- 
+
                dif = precipdaysum(i) - xinprec(i,imonth) * float(ndaypm(imonth))
-    
+
                if ((dif.lt.-0.1).or.(dif.gt.0.1)) then
                   print *, 'ERROR in DAILY:', i, precipdaysum(i),    &
                            xinprec(i,imonth)* float(ndaypm(imonth)), &
                            iwetdaysum(i), xinwet(i,imonth)
                end if
-! end of the verification 
+! end of the verification
             end if               !end of the iday loop
 
 ! Relate today's iwetday and precipday to iwet and precip that will be
@@ -609,14 +610,14 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
             iwet(i) = iwetday(i,iday)
             precip(i) = precipday(i,iday)
 
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! (3) estimate expected minimum and maximum temperatures
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! first determine the expected maximum and minimum temperatures
 ! (from climatological means) for this day of the year
-! 
-! mean daily mean temperature (K) 
+!
+! mean daily mean temperature (K)
             tdm = xint(i,it1w) + dt * (xint(i,it2w) - xint(i,it1w)) + 273.16
 
 ! mean daily temperature range (K)
@@ -634,9 +635,9 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                tmaxd = tmaxm
                tmaxw = tmaxm
             endif
- 
+
 ! set the 'expected' maximum and minimum temperatures for today
-! 
+!
 ! note that the expected minimum temperatures are the same for
 ! both wet and dry days
             if (iwet(i).eq.0) then
@@ -644,14 +645,14 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
             else
                tmaxe = tmaxw
             endif
- 
+
             tmine = tminm
- 
+
 ! estimate variability in minimum and maximum temperatures
-! 
+!
 ! tmaxs : standard deviation in maximum temperature (K)
 ! tmins : standard deviation in minimum temperature (K)
-! 
+!
 ! Regression is based on analysis of 2-m air temperature data from the
 ! NCEP/NCAR reanalysis (1958-1997) for 294 land points over central
 ! North America (24N-52N, 130W-60W, 0.5-degree resolution): Daily max
@@ -663,24 +664,24 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! deviation calculated for each month. The 294 x 12 standard
 ! deviations were then regressed against the 3528 long-term monthly
 ! mean temperatures.
-! 
-! note: the values are bound to be greater than 1.0 K 
+!
+! note: the values are bound to be greater than 1.0 K
 ! (at the very least they must be bound so they don't go below zero)
             tmaxs = max (dble(1.0), -0.0713 * (tdm - 273.16) + 4.89)
             tmins = max (dble(1.0), -0.1280 * (tdm - 273.16) + 5.73)
 
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! (4) estimate expected cloud cover
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! the formulation of dry and wet cloud cover has been
 ! derived from the weather generator used in the epic crop model
-! 
+!
 ! cloudm : mean cloud cover for today
 ! cloudd : dry day cloud cover
 ! cloudw : wet day cloud cover
 ! cloude : expected cloud cover today
-! 
+!
 ! Verify the data set consistency when using interannual anomalies of
 ! cloudiness (values under 0 % or over 100 %)
             if (iday.eq.1) then
@@ -692,10 +693,10 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 
 ! monthly mean cloud cover (%)
             cloudm = xincld(i,it1w) + dt * (xincld(i,it2w) - xincld(i,it1w))
- 
+
 ! convert from percent to fraction
             cloudm = cloudm / 100.0
- 
+
 ! adjust cloud cover depending on dry day / rainy day
 ! following logic of the EPIC weather generator code
             if (pwet .ne. 0.0) then
@@ -711,33 +712,33 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
             else
                cloude = cloudw
             endif
- 
+
 ! estimate variability in cloud cover for wet and dry days
 ! following numbers proposed by Richardson
-! 
+!
 ! clouds : standard deviation of cloud fraction
-            if (iwet(i).eq.0) then 
-               clouds = 0.24 * cloude 
-            else 
-               clouds = 0.48 * cloude 
+            if (iwet(i).eq.0) then
+               clouds = 0.24 * cloude
+            else
+               clouds = 0.48 * cloude
             endif
- 
-! ---------------------------------------------------------------------- 
+
+! ----------------------------------------------------------------------
 ! (5) determine today's temperatures and cloud cover using
 !     first-order serial autoregressive technique
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! use the Richardson (1981) weather generator approach to simulate the
 ! daily values of minimum / maximum temperature and cloud cover
-! 
+!
 ! following the implementation of the Richardson WGEN weather generator
 ! used in the EPIC crop model
-! 
+!
 ! this approach uses a multivariate generator, which assumes that the
 ! perturbation of minimum / maximum temperature and cloud cover are
 ! normally distributed and that the serial correlation of each
 ! variable may be described by a first-order autoregressive model
-! 
+!
 ! generate standard deviates for weather generator
             do 111 j = 1, 3
  31            rn1 = ran2(seed,seed2,seed3,seed4)
@@ -760,7 +761,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   rr(j) = rr(j) + a(j,k) * xstore(i,k)
 141            continue
 131         continue
-! 
+!
 ! solve for x() perturbation vector and save current vector
 ! into the xim1() storage vector (saved for each point)
             do 151 j = 1, 3
@@ -771,44 +772,44 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! determine today's minimum and maximum temperature
             tmax(i)  = tmaxe + tmaxs * x(1)
             tmin(i)  = tmine + tmins * x(2)
- 
+
 ! if tmin > tmax, then switch the two around
             if (tmin(i).gt.tmax(i)) then
                tdum    = tmax(i)
                tmax(i) = tmin(i)
                tmin(i) = tdum
             endif
- 
+
 ! daily average temperature
             td(i) = 0.44 * tmax(i) + 0.56 * tmin(i)
 
 ! determine today's cloud cover
             cloud(i) = cloude + clouds * x(3)
- 
+
 ! constrain cloud cover to be between 0 and 100%
             cloud(i) = max (dble(0.0), min (dble(1.0), cloud(i)))
- 
-! ---------------------------------------------------------------------- 
+
+! ----------------------------------------------------------------------
 ! (6) estimate today's surface atmospheric pressure
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! simply a function of the daily average temperature and topographic
 ! height -- nothing fancy here
             psurf(i) = 101325.0 * ((td(i) - 0.0065 * xintopo(i))/td(i))**rwork
 
 
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! (7) estimate today's relative humidity
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! the formulation of dry and wet relative humidities has been
 ! derived from the weather generator used in the epic crop model
-! 
-! qdm : mean relative humidity 
+!
+! qdm : mean relative humidity
 ! qdd : dry day relative humidity
 ! qdw : rainy day relative humidity
 ! qde : expected relative humidity (based on wet/dry decision)
-! 
+!
 ! Verify the data set consistency when using interannual anomalies of
 ! relative humidity (values over 100 % or under 0 %)
             if (iday.eq.1) then
@@ -839,11 +840,11 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                qdd = qdm
                qdw = qdm
             endif
- 
+
             if (iwet(i).eq.0) then
                qde = qdd
             else
-               qde = qdw 
+               qde = qdw
             endif
 
 ! estimate lower and upper bounds of humidity distribution function
@@ -858,39 +859,39 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
             b3 = qde  - qdlow
             b2 = qdup - qde
             b1 = dble(rn) / y
-            x1 = y * b3 / 2.0 
+            x1 = y * b3 / 2.0
 
             if (dble(rn).gt.x1) then
                qd(i) = qdup  - sqrt (b2 * b2 - 2.0 * b2 * (b1 - 0.5 * b3))
             else
                qd(i) = qdlow + sqrt (2.0 * b1 * b3)
             endif
- 
+
 ! adjust daily humidity to conserve monthly mean values
-! 
+!
 ! note that this adjustment sometimes gives rise to humidity
 ! values greater than 1.0 -- which is corrected below
             amn = (qdup + qde + qdlow) / 3.0
             qd(i) = qd(i) * qde / amn
- 
+
 ! constrain daily average relative humidity
             qd(i) = max (dble(0.30), qd(i))
             qd(i) = min (dble(0.99), qd(i))
- 
+
 ! convert from relative humidity to specific humidity at
 ! daily mean temperature
             qd(i) = qd(i) * qsat(esat(td(i)), psurf(i))
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! (8) estimate today's daily average wind speed
-! ---------------------------------------------------------------------- 
-! 
+! ----------------------------------------------------------------------
+!
 ! first estimate the expected daily average wind speed (from monthly
 ! means)
             eud = xinwind(i,it1w) + dt * (xinwind(i,it2w) - xinwind(i,it1w))
 
 ! following logic of the EPIC weather generator
 ! select random wind speed following this equation
-            ud(i) = 1.13989 * eud * (-log(ran2(seed,seed2,seed3,seed4)))**0.30 
+            ud(i) = 1.13989 * eud * (-log(ran2(seed,seed2,seed3,seed4)))**0.30
 
         if(isimagro .gt. 0)then
            ud(i) = ud(i)*(1. + 0.79824*log((za(i)-0.65*ztop(i,2)) /&
@@ -899,32 +900,32 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 
 !            if(isimagro .gt. 0) ud(i) = max (dble(2.5), min (dble(50.0), ud(i)))
 
- 
+
 ! constrain daily wind speeds to be between 2.5 and 10.0 m/sec
             if(isimagro .gt. 0) then
                ud(i) = max (dble(2.5), min (dble(50.0), ud(i)))
-            else 
+            else
                ud(i) = max (dble(2.5), min (dble(10.0), ud(i)))
             endif
 
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! * * * use real daily climate data * * *
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 !
          else
 !
-! --------------------------------------------------------------------------------------- 
+! ---------------------------------------------------------------------------------------
 ! * * * Disaggregated the CRU monthly value to daily value using NCEP daily anomaly * * *
-! --------------------------------------------------------------------------------------- 
+! ---------------------------------------------------------------------------------------
 !
 ! use basic daily climate data, converting units
-! 
+!
 ! daily total precipitation
-! 
+!
 ! Here we multiply xinprecd, the daily fraction of precip calculated from
 ! the NCEP dataset, by xinprec, the total monthly amount of precip taken from
 ! the CRU05 dataset to obtain our derived daily precip amount. Also do a check
-! to see if the daily precip exceeds 360mm (as is done in the daily weather 
+! to see if the daily precip exceeds 360mm (as is done in the daily weather
 ! generator) ... no correction is made, only a warning is printed
            precip(i) = xinprecd(i)
            if (precip(i) .gt. 360) then
@@ -932,19 +933,19 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
               print *, 'year, month, day, gridcell = '
               print *, iyear, imonth, iday, i
            endif
-! 
+!
 ! daily average temperatures
-! 
+!
             td(i) = xintd(i) + 273.16
             tmax(i) = xintmaxd(i) + 273.16
             tmin(i) = xintmind(i) + 273.16
 
 ! daily average cloud cover
-! 
+!
 ! Here we add the NCEP cloud anomaly to the monthly anomaly from CRU05
 ! before converting percentage of cover to fraction
 ! We also bound cloud cover fraction between 0 and 1
-! 
+!
             cloud(i) = xincldd(i) *0.01
             cloud(i) = min (cloud(i), dble(1.0))
             cloud(i) = max (dble(0.0), cloud(i))
@@ -954,11 +955,11 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
             psurf(i) = 101325.0 * ((td(i) - 0.0065 * xintopo(i))/td(i))**rwork
 
 ! daily average specific humidity
-! 
+!
             qd(i) = xinqd(i)
 
 ! daily average wind speed
-! 
+!
 ! Here we multiply the NCEP fraction of windspeed by the CRU05
 ! climatological monthly windspeed
             ud(i) = xinwindd(i)
@@ -981,7 +982,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 ! u(z2) = u(z1)*(1.+(log((z2-d)/(z1-d))) / (log((z1-d)/zm)))
 ! Use canopyheight = z1 = ztop(i,2), and z2=93m
 ! and substitute d and zm to get equation dependent on canopy height:
-        
+
         if(isimagro .gt. 0) then
            ud(i) = ud(i)*(1. + 0.79824*log((za(i)-0.65*ztop(i,2))/ &
                         (0.35*ztop(i,2))))
@@ -998,7 +999,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 
      if(isimagro .gt. 0)then
 
-! * * * 
+! * * *
       if (iyear.ge.istyear .and. iyear.le.istend ) then
 !###TO DO FIXME - test with tiles
       if(stinprecd(i).ge.0.) precip(i) = stinprecd(i)
@@ -1027,7 +1028,7 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
           qd(i) = max (0.30, qd(i))
           qd(i) = min (0.99, qd(i))
 	print*,'warning'
- 
+
 !
 ! convert from relative humidity to specific humidity at
 ! daily mean temperature
@@ -1035,9 +1036,9 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 !
 	endif
        if(stinwindd(i).ge.0.) then
- 
+
          ud(i) = stinwindd(i)
-	
+
           ud(i) = ud(i)*(1. + 0.79824*log((93.-0.65*ztop(i,2))/ &
                   (0.35*ztop(i,2))))
 
@@ -1058,13 +1059,13 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
 
 
 !
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! * * * other daily climate calculations * * *
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 
 ! if using subgrid tiles, replicate results to subgrid tiles
 if ( mlpt .gt. 1 ) then
-      do i = 1, npoi1  
+      do i = 1, npoi1
          do ilpt = 2,mlpt
             j = subgrid_get_index(i,ilpt)
             if ( j .ne. 0 ) then
@@ -1083,6 +1084,7 @@ if ( mlpt .gt. 1 ) then
                gdd5this(j) = gdd5this(i)
                gdd8this(j) = gdd8this(i)
                gdd10this(j) = gdd10this(i)
+               gdd11this(j) = gdd11this(i)
                gdd12this(j) = gdd12this(i)
                gddplant(j,:) = gddplant(i,:)
                gddtsoi(j,:) = gddtsoi(i,:)
@@ -1095,9 +1097,9 @@ if ( mlpt .gt. 1 ) then
 endif
       do 201 i = 1, npoi
 
-! 
+!
 ! calculated temperature extremes -- for vegetation limits (deg c)
-! 
+!
 ! for this purpose, use the 10-day running mean temperature
          tcthis(i) = min (tcthis(i), (a10td(i) - 273.16))
          twthis(i) = max (twthis(i), (a10td(i) - 273.16))
@@ -1105,23 +1107,24 @@ endif
 ! update this year's growing degree days
          gdd0this(i) = gdd0this(i) + max(dble(0.), (td(i) - 273.16))
          gdd5this(i) = gdd5this(i) + max(dble(0.), (td(i) - 278.16))
-    
+
 
        if(isimagro .gt. 0 .and. npoi .ne. 1) then
 
         gdd0cthis(i) = gdd0cthis(i) + max (0.0 ,(td(i) - baset(15)))    ! wheat
-        gdd8this(i)  = gdd8this(i)  + max (0.0 ,(td(i) - baset(14)))    ! maize 
+        gdd8this(i)  = gdd8this(i)  + max (0.0 ,(td(i) - baset(14)))    ! maize
         gdd10this(i) = gdd10this(i) + max (0.0 ,(td(i) - baset(13)))    ! soybean
+        gdd11this(i) = gdd11this(i) + max (0.0 ,(td(i) - baset(17)))    ! oil palm
         gdd12this(i) = gdd12this(i) + max (0.0 ,(td(i) - baset(16)))    ! sugarcane
 
 !
 ! form calculations of number of growing degree days between frost events
 !
 ! events (e.g., tmin(i) .le. -2.2 C) this is applicable to CRU data
-! differences exist when using a combination of CRU/NCEP  
+! differences exist when using a combination of CRU/NCEP
 ! -2.2 used as a threshold from Schwartz and Reiter, 2000.  International
-! Journal of Climatology, 20: 929-932.  Changes in North American Spring 
-!       
+! Journal of Climatology, 20: 929-932.  Changes in North American Spring
+!
 !
         if (tmin(i) .ge. 273.16) then
           consdays(i) = consdays(i) + 1
@@ -1132,9 +1135,9 @@ endif
           endif
 !
 !         if(cdays(i) .eq. 367) cdays(i)=366
-          daygddc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14)))) 
-          daygdds(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13)))) 
-          daygddsgc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16)))) 
+          daygddc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14))))
+          daygdds(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13))))
+          daygddsgc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16))))
 
 !
          else
@@ -1142,13 +1145,13 @@ endif
          endif
 !
          if (cdays(i).eq.365) then
-!Growing-degree day 
+!Growing-degree day
             if (iniday(i) .eq. 9999) then
                iniday(i) = cdays (i)
                maxcons(i) = 1
             elseif (iniday(i) .eq. 0) then
 	       iniday(i)=1
-            endif      
+            endif
                endday(i) = iniday(i) + maxcons(i)-1
 
          do 125 k = iniday(i), endday(i)
@@ -1165,7 +1168,7 @@ endif
 
              if (iniday(i).eq.0) then
                  iniday(i) = 1
-             endif     
+             endif
 
              endday(i) = iniday(i) + maxcons(i)-1
 
@@ -1189,11 +1192,11 @@ endif
         endif
 ! accumulate growing degree days for planted crops past planting
 !
-        do 150 j = scpft, ecpft 
+        do 150 j = scpft, ecpft
 !
 ! for crops except winter wheat
 ! be careful with rotations
-! 
+!
 
        if (croplive(i,j).eq.1.0.and.((j.eq.13.or.j.eq. 14.or.j.eq. 16) &
              .or.    (iwheattype .eq. 1 .and. j .eq. 15))) then
@@ -1225,7 +1228,7 @@ endif
 	  ik(i)=ik(i)+1
 	 if(cropy(i).eq.1.and.idpp(i,j).eq.1) then
 !	 print*,'GDD_start',i,iyear,jday
-         gddpl15(i)=0	
+         gddpl15(i)=0
 	 ik(i)=1
 	endif
 
@@ -1234,9 +1237,9 @@ endif
 	endif
 
        if (ik(i).eq.(mxmat(16)-30)) then
-!	print*,'GDD_1/5 anos',i,iyear,jday,gddsgcp(i,1),gddpl15(i),mxmat(16)-30	
+!	print*,'GDD_1/5 anos',i,iyear,jday,gddsgcp(i,1),gddpl15(i),mxmat(16)-30
        gddsgcp(i,1)= (gddsgcp(i,1)+ gddpl15(i))/2
-!	print*,'GDD_1/5 anos',i,iyear,jday,gddsgcp(i,1)	
+!	print*,'GDD_1/5 anos',i,iyear,jday,gddsgcp(i,1)
 	endif
 
 	endif
@@ -1253,7 +1256,7 @@ endif
  201  continue !npoi
 
 #endif /* SINGLE_POINT_MODEL */
- 
+
 ! return to main program
       return
 end subroutine daily

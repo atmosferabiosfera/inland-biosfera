@@ -5,7 +5,7 @@
 !
 ! overview
 !
-! this routine generates daily weather conditions from hourly obsarvations - 
+! this routine generates daily weather conditions from hourly obsarvations -
 !
 !
 ! specifically, this routine needs daily values of
@@ -38,7 +38,7 @@
       integer jday,    &     ! 1 if reading in daily weather data
               iday,    &
               imonth,  &
-              iyear  
+              iyear
 !
 ! local variables
 !
@@ -48,7 +48,7 @@
               j,       &
               k            ! loop indice
 !
-      real rwork,      &   ! 
+      real rwork,      &   !
            omcloud,    &   ! cloud cover
            omqd,       &   ! humidity
            omtmax,     &   ! maximum temperature
@@ -92,7 +92,7 @@
            tdum,       &   ! storage variable
            qdm,        &   ! mean relative humidity
            qdd,        &   ! dry day relative humidity
-           qdw,        &   ! wet day relative humidity 
+           qdw,        &   ! wet day relative humidity
            qde,        &   ! expected relative humidity (based on wet/dry decision)
            qdup,       &   ! upper bound of humidity distribution function
            qdlow,      &   ! lower bound of humidity distribution function
@@ -103,7 +103,7 @@
            x1,         &
            amn,        &
            eud             ! expected daily average wind speed from monthly mean
-! 
+!
       integer iyranom,    &
               iyrlast,    &
               nrun
@@ -111,7 +111,7 @@
       real precipfac,  &
            dif,        &
            humidfrac
-	   
+
 #define WGEN_COMSAT
 #include "inland_comsat.h"
 !
@@ -129,28 +129,29 @@
         gdd0cthis = 0.0
         gdd8this = 0.0
         gdd10this = 0.0
+        gdd11this = 0.0
         gdd12this = 0.0
 !
 ! initialize variables to zero at beginning of year
 ! for crop types that do not grow over two calendar years
-! 
+!
 ! constant for gdd based on 10 cm soil temperature (planting bed-
 ! used to calculate leaf emergence after planting
 !
           do  i = lbeg, lend
              do  j = 1, npft
 !
-              if (j .le. scpft-1) then  ! natural vegetation 
+              if (j .le. scpft-1) then  ! natural vegetation
                  ayanpp(i,j) = 0.0
               else if ( j .ge. scpft) then
                  ayanpp(i,j) = 0.0
               endif
 	     enddo
          enddo
-!           
+!
       endif
 !
-! initialize this crop year's values 
+! initialize this crop year's values
 
 
     do  i = lbeg, lend
@@ -201,23 +202,23 @@
           gddplant(i,j)   = 0.0
           gddtsoi(i,j)    = 0.0
         endif
-          
+
       endif
-	
+
       enddo
-    
+
     enddo
 !
 !
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! * * * set daily climatic variables for entire domain * * *
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 !
       do 200 i = lbeg, lend
 !
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 ! * * * other daily climate calculations * * *
-! ---------------------------------------------------------------------- 
+! ----------------------------------------------------------------------
 !
 ! calculated temperature extremes -- for vegetation limits (deg c)
 !
@@ -229,37 +230,38 @@
 ! update this year's growing degree days
 !
 
-        gdd0this(i)  = gdd0this(i)  + max (0.0 ,(td(i) - 273.16)) 
+        gdd0this(i)  = gdd0this(i)  + max (0.0 ,(td(i) - 273.16))
         gdd0cthis(i) = gdd0cthis(i) + max (0.0 ,(td(i) - baset(15)))    ! wheat
         gdd5this(i)  = gdd5this(i)  + max (0.0 ,(td(i) - 278.16))
-        gdd8this(i)  = gdd8this(i)  + max (0.0 ,(td(i) - baset(14)))    ! maize 
+        gdd8this(i)  = gdd8this(i)  + max (0.0 ,(td(i) - baset(14)))    ! maize
         gdd10this(i) = gdd10this(i) + max (0.0 ,(td(i) - baset(13)))    ! soybean
+        gdd11this(i) = gdd11this(i) + max (0.0 ,(td(i) - baset(17)))    ! oil palm
         gdd12this(i) = gdd12this(i) + max (0.0 ,(td(i) - baset(16)))    ! sugarcane
 
 
 ! form calculations of number of growing degree days between frost events
 !
 ! events (e.g., tmin(i) .le. -2.2 C) this is applicable to CRU data
-! differences exist when using a combination of CRU/NCEP  
+! differences exist when using a combination of CRU/NCEP
 ! -2.2 used as a threshold from Schwartz and Reiter, 2000.  International
-! Journal of Climatology, 20: 929-932.  Changes in North American Spring 
-!       
+! Journal of Climatology, 20: 929-932.  Changes in North American Spring
+!
 
         if (tmin(i) .ge. 273.16) then
           consdays(i) = consdays(i) + 1
           maxcons(i)  = max(maxcons(i), consdays(i))
-          
+
           if(maxcons(i) .eq. consdays(i)) then
             iniday(i) = cdays(i)+1 - maxcons(i)
           endif
 
-           daygddc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14)))) 
-           daygdds(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13)))) 
+           daygddc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14))))
+           daygdds(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13))))
            daygddsgc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16))))
 !
         else
            daygddc(1,cdays(i)) = 0
-           daygdds(1,cdays(i)) = 0 
+           daygdds(1,cdays(i)) = 0
            daygddsgc(1,cdays(i)) = 0
            consdays(i) = 0
         endif
@@ -274,7 +276,7 @@
                  maxcons(i) = 1
 	     elseif (iniday(i) .eq. 0) then
 	     iniday(i)=1
-             endif      
+             endif
              endday(i) = iniday(i) + maxcons(i) - 1
 
           do 125 k = iniday(i), endday(i)
@@ -283,7 +285,7 @@
              gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,k)
 
              gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,k)
-             gsdays(i) = gsdays(i) + 1 
+             gsdays(i) = gsdays(i) + 1
 
 125     continue
 
@@ -291,7 +293,7 @@
 
              if (iniday(i).eq.0) then
                  iniday(i) = 1
-             endif      
+             endif
 
              endday(i) = iniday(i) + maxcons(i)-1
 
@@ -305,7 +307,7 @@
              gddfzcorn(i) =  gddfzcorn(i) + daygddc(1,k)
              gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,k)
              gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,k)
-             gsdays(i) = gsdays(i) + 1 
+             gsdays(i) = gsdays(i) + 1
          enddo
         endif
 !***************************** fim da provavel limpesa ****
@@ -313,11 +315,11 @@
 !
 ! accumulate growing degree days for planted crops past planting
 !
-        do 150 j = scpft, ecpft 
+        do 150 j = scpft, ecpft
 !
 ! for crops except winter wheat
 ! be careful with rotations
-! 
+!
           if (croplive(i,j) .eq. 1.0 .and. iwheattype .ne. 2) then
 !
                  gddplant(i,j) = gddplant(i,j) + max(0.0, min(td(i) &
@@ -329,7 +331,7 @@
 ! by vernalization factor (calculated in crops.f) until crop
 ! is fully vernalized (cold-hardened)
 !
-             elseif (croplive(i,j) .eq. 1.0 .and. j .eq. 15 .and. & 
+             elseif (croplive(i,j) .eq. 1.0 .and. j .eq. 15 .and. &
                  iwheattype .eq. 2) then
 
                  gddplant(i,j) = gddplant(i,j) + vf(i) * max(0.0, min(td(i) &
@@ -343,7 +345,7 @@
 	     ik(i)=ik(i)+1
              if(cropy(i).eq.1.and.idpp(i,j).eq.1) then
 	        print*,'GDD_start',i,iyear,jday
-                gddpl15(i)=0	
+                gddpl15(i)=0
 	        ik(i)=1
              endif
 
@@ -352,13 +354,13 @@
              endif
 
              if (ik(i).eq.(mxmat(16)-30)) then
-	        print*,'GDD_1/5 anos',i,iyear,jday,gddsgcp(i,1),gddpl15(i),mxmat(16)-30	
+	        print*,'GDD_1/5 anos',i,iyear,jday,gddsgcp(i,1),gddpl15(i),mxmat(16)-30
                 gddsgcp(i,1)= (gddsgcp(i,1)+ gddpl15(i))/2
-	        print*,'GDD_1/5 anos',i,iyear,jday,gddsgcp(i,1)	
+	        print*,'GDD_1/5 anos',i,iyear,jday,gddsgcp(i,1)
 	     endif
 
           endif
-	
+
 !
 150  continue
 !

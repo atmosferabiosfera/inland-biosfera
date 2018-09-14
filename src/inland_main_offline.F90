@@ -17,7 +17,7 @@ program main !main_offline!
       use inland_control, only: jday, iday, imonth, iyear, iyear0, idailyout, &
                                 imonthout, iyearout, isimveg, overveg, isimfire,       &
                                 isimco2, nspinsoil, spinmax, eqyears, istep,  &
-                                spincons, spinfrac, ipointout, ccmexist, & 
+                                spincons, spinfrac, ipointout, ccmexist, &
                                 nluc, iyrluc, isimland, &
                                 indir, infile, datadir, outdir, &
                                 env_ran2val, env_fastexec, env_debug, &
@@ -71,7 +71,7 @@ program main !main_offline!
               imonthlast,  & ! last month of previous run (for restart)
               idiag,       & ! number of diagnostic files requested
               irestart,    & ! 0: normal mode 1: restart mode
-              iholdsoiln,  & ! 0: don't save inorganic soil N values 1: keep inorganic soil N values 
+              iholdsoiln,  & ! 0: don't save inorganic soil N values 1: keep inorganic soil N values
               iyrrestart,  & ! Year to restart model
               jnorth,      & ! 1st lat index for subset
               nanom,       & ! # of years in the anomaly files
@@ -168,16 +168,16 @@ program main !main_offline!
               endp,        & ! time to end precipitation event (seconds since midnight)
               ilens,       & ! length of irrigation event in seconds
               starti,      & ! time to start irrigation event (seconds since midnight)
-              endi,        & ! time to end irrigation event (seconds since midnight) 
-              slope,       & ! rate of decrease of number of iteration for soil C spinup 
+              endi,        & ! time to end irrigation event (seconds since midnight)
+              slope,       & ! rate of decrease of number of iteration for soil C spinup
               snorth,      & ! north latitude for subsetting std grid
               ssouth,      & ! south latitude for subsetting std grid
               swest,       & ! west longitude for subsetting std grid
               seast,       & ! east longitude for subsetting std grid
-              ffact,       & ! numerical multiplying factor applied to N fertilizer being applied after 2000 
+              ffact,       & ! numerical multiplying factor applied to N fertilizer being applied after 2000
               test,        & ! test on timestep
-              thigh          ! tower elevation (inland.infile) 
-	      
+              thigh          ! tower elevation (inland.infile)
+
       character*255  domain
       character*1024 filen
       character*4    chyear
@@ -205,14 +205,14 @@ program main !main_offline!
 #endif /* SINGLE_POINT_MODEL */
 
 ! multiproc variables
-      integer ithread, numthreads 
+      integer ithread, numthreads
 #ifdef _OPENMP
 #ifndef SINGLE_POINT_MODEL
       !     USE omp_lib
       INTEGER OMP_GET_MAX_THREADS
       INTEGER OMP_GET_NUM_THREADS
       INTEGER OMP_GET_NUM_PROCS
-      INTEGER OMP_GET_THREAD_NUM     
+      INTEGER OMP_GET_THREAD_NUM
 #endif
 #endif
 
@@ -227,7 +227,7 @@ program main !main_offline!
       ipointout=0
 
 ! ---------------------------------------------------------------
-!                       j o b   c o n t r o l 
+!                       j o b   c o n t r o l
 ! ---------------------------------------------------------------
 !
 ! multiproc variables - put default values for now
@@ -294,9 +294,9 @@ iwheattype = 1         ! 1: spring wheat 2: winter wheat - used if icroptype = w
 cropsfile  = ''        ! cropsfile - read crop data to produce crop veg map (use mlpt>1)
 !
 irotation  = 0         ! 0: none 1: winter wheat/fallow 2: 2 corn/soy 3: corn/soy/spring wheat 4: soy/winter wheat/corn
-iholdsoiln = 1         ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N  
+iholdsoiln = 1         ! 0: doesn't save soil inorganic N from restart 1: save inorganic soil N
 ffact      = 1.0       ! numeric multiplying factor applied to N fertilizer after 2000 (for all crops)
-isoilay    = nsoilay-2 ! soil layer for which nitrate leaching/drainage is output  
+isoilay    = nsoilay-2 ! soil layer for which nitrate leaching/drainage is output
 elevin     = 550       ! site elevation        (m)
 thigh      = 6         ! tower input elevation (m)
 !
@@ -307,7 +307,7 @@ ssouth     =  -25.75   ! ssouth - southern latitude for subsetting in/output (no
 swest      =  -53.75   ! swest - western longitude for subsetting in/output (no default)
 seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no default)
 !
-#ifndef SINGLE_POINT_MODEL 
+#ifndef SINGLE_POINT_MODEL
 !
 ! Heterogeneous Parameterization
       itauw	 =  0	! itauw -  0:reads 1 dimension tauwood0 from parms canopy; 1:reads 2 dimension from input maps
@@ -361,7 +361,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
          stop 1
 8151     write(*,*) 'ERROR: ibis.infile domain='//trim(domain)//' but conf/inland-grid.domains does not contain '//trim(domain)
          stop 1
-       
+
 8152     close (15)
 
       end if
@@ -374,12 +374,12 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 
 ! we are not coupled. ccmexist (from inland_control.F90) is 0.
       ccmexist = 0
-      
+
 ! Check values in inland-grid.infile
 #ifdef SINGLE_POINT_MODEL
       call check(soilcspin, nrun, isoilforc)
 #else
-      call check(irestart, soilcspin, nrun, snorth, ssouth, swest, seast)      
+      call check(irestart, soilcspin, nrun, snorth, ssouth, swest, seast)
 #endif
 
 ! tell user about the simulation
@@ -397,7 +397,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       if (irestart .eq. 1) then
          write (*,*) 'INFO: running in restart mode'
 #ifdef SINGLE_POINT_MODEL
-         write (*,*) 'ERROR: Single Point Model (0D) does NOT support restart.' 
+         write (*,*) 'ERROR: Single Point Model (0D) does NOT support restart.'
          write (*,*) 'Please turn off restart (set irestart to 0) in config file.'
          stop 1
 #endif /* SINGLE_POINT_MODEL */
@@ -427,8 +427,8 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 9002  format (1x,'INFO: CO2 method                          : ',i5)
 9006  format (1x,'INFO: number of iterations per day        : ',i8)
 9010  format (1x,'INFO: model lon, lat resolution (degrees) : ',2f8.2)
-9020  format (1x,'INFO: model domain (nlon x nlat)          :     ',i3,'  x  ',i3)  
-9025  format (1x,'INFO: model limits (N,S,W,E)              : ',f8.2,' ',f8.2,' ',f8.2,' ',f8.2)  
+9020  format (1x,'INFO: model domain (nlon x nlat)          :     ',i3,'  x  ',i3)
+9025  format (1x,'INFO: model limits (N,S,W,E)              : ',f8.2,' ',f8.2,' ',f8.2,' ',f8.2)
 9030  format (1x,'INFO: last year run in this sequence      : ',i8)
 9040  format (1x,'INFO: number of threads                   : ',i8)
 9041  format (1x,'INFO: input directory                     :     ',a)
@@ -444,7 +444,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       endif
 
 ! ---------------------------------------------------------------
-!                     t i m e   c o n t r o l 
+!                     t i m e   c o n t r o l
 ! ---------------------------------------------------------------
 ! determine the number of timesteps per day
       niter = int(86400.0 / dtime)
@@ -453,7 +453,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       test = dmod(dble(86400.0), dtime)
 
       if (test .gt. 1.e-20) then
-         write (*,*) 'ERROR: dtime ', dtime, ' should be divisible into 86400'  
+         write (*,*) 'ERROR: dtime ', dtime, ' should be divisible into 86400'
          stop 3
       else
          write (*,9006) niter
@@ -519,7 +519,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
       if (isparse.eq.0) then
         call readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       else
-        call readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)        
+        call readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       end if
 
 
@@ -529,11 +529,11 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
          call build_file
       endif
 #endif /* SINGLE_POINT_MODEL */
-      
+
 ! multiproc variables
 #ifdef _OPENMP
 #ifndef SINGLE_POINT_MODEL
-      numthreads = OMP_GET_MAX_THREADS() 
+      numthreads = OMP_GET_MAX_THREADS()
 
       ! make sure numthreads <= 2, unless explicitly set with OMP_NUM_THREADS
       call getenv("OMP_NUM_THREADS", chtmp)
@@ -553,7 +553,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
          call omp_set_num_threads(numthreads)
       end if
       numlv = numthreads
-      if ( numthreads .gt. 1 ) write (*,9040), numthreads 
+      if ( numthreads .gt. 1 ) write (*,9040), numthreads
 #endif
 #endif
 
@@ -565,8 +565,8 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 
 ! FIXME: 'test' variable. No clue what it is for, this is a badly written code.
       test = dimforc
-      
-      call build_file      
+
+      call build_file
 
 #endif /* SINGLE_POINT_MODEL */
 
@@ -591,9 +591,9 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
          if (istyrd .le. 0) istyrd = 9999
       end if
 
-!    If first year of this run/restart is an anomaly year, then read in 
+!    If first year of this run/restart is an anomaly year, then read in
 ! anomalies for month 12 of previous year and month 1 of this year
-! (note: rdanom reads imonth+1) 
+! (note: rdanom reads imonth+1)
       iy2 = iyrlast + nrun
 #endif /* SINGLE_POINT_MODEL */
 
@@ -618,7 +618,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 !      do i = lbeg, lend
 !         seedvec(i) = i
 !      end do
-! make sure subgrids get same seed at given point, this to have equal random values 
+! make sure subgrids get same seed at given point, this to have equal random values
       do i = 1,npoi1
          do j = 1, mlpt
             seedvec( subgrid_get_index(i,j) ) = i
@@ -687,7 +687,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
          if (isimco2.eq.1) call co2(co2init)
 
 
-          if (isimagro.gt.0) then         
+          if (isimagro.gt.0) then
            !gabriel abrahao: Read yearly crop parameter maps here. TODO: Put a setting in namelist and call this in an if
            if (irdcropparmaps.eq.1) then
               call rdcropparmaps(iwest,jnorth)
@@ -705,7 +705,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
          end if
 #ifdef SINGLE_POINT_MODEL
 ! Observed, step data, might not start on first month of year.
-         if (iyear.eq.iy1) then 
+         if (iyear.eq.iy1) then
             monthstart = imonth0
          else
             monthstart = 1
@@ -878,7 +878,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
                   else
                      spinmax = 1
                   endif
-               else 
+               else
                   spinmax = 1
                endif
 
@@ -913,17 +913,17 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 ! calculate irrigation amount, timing, and duration
 ! if applicable to model run
 !
-! assume irrigation duration for a day is 12 hours long between 
+! assume irrigation duration for a day is 12 hours long between
 ! 6 am and 6 pm local time - this might be changed if managed irrigation can
-! take place at night (e.g. crops)  
-        ilens  = dtime * (12.0 * 3600. / dtime)   
+! take place at night (e.g. crops)
+        ilens  = dtime * (12.0 * 3600. / dtime)
         starti = dtime * (6.0  * 3600. / dtime)
-        endi   = starti + ilens 
+        endi   = starti + ilens
 !
 ! only call irrigation if turned on and crops are planted
 !
-        if (irrigate .eq. 1) then 
-           call irrigation(ilens,irrigate) 
+        if (irrigate .eq. 1) then
+           call irrigation(ilens,irrigate)
         endif
       endif ! check for crop existence
 
@@ -959,20 +959,20 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
        endif
 ! call the land surface model
 
-! for now openmp is here only, because 80% of work is in lsxmain, 
+! for now openmp is here only, because 80% of work is in lsxmain,
 ! and diurnal cannot be parallelized without "fixing" weather generator
 #ifdef _OPENMP
 #ifndef SINGLE_POINT_MODEL
       !$OMP PARALLEL DEFAULT(SHARED),PRIVATE(loopi,kpti,kptj,ithread,mpt)
       ithread = OMP_GET_THREAD_NUM()+1
       loopi = ithread
-      kpti = 1 + (ithread-1)*(npoi/numthreads) 
+      kpti = 1 + (ithread-1)*(npoi/numthreads)
       kptj = kpti + (npoi/numthreads) - 1  ! test when 1 numthreads
       if ( ithread .eq. numthreads ) then
          if ( kptj .ne. npoi ) then
             kptj = npoi
          end if
-      end if 
+      end if
       mpt = kptj - kpti + 1
       !print *,'ithread=',ithread,'thread=',OMP_GET_THREAD_NUM(),'kpti=',kpti,'kptj=',kptj
 #endif
@@ -1009,7 +1009,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
                   if (idiag .ne. 0) then
                      do 250 i = 1, idiag
                         if (iyear.ge.diagstart(i) .and. iyear.le.diagend(i) &
-                            .and. ndiagpt(i).ge.1) then  
+                            .and. ndiagpt(i).ge.1) then
                            if (mod(istep,nfreq(i)).eq.0) then
                               call wdiag(i, istep)
                            end if
@@ -1043,11 +1043,11 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 !this part is for calculating the crop 0D
 
      if (isimagro .gt. 0) then
-	   
-         flx(10) = flx(10)/24. 
-	     flx(14) = flx(14)/24. 
-         flx(15) = flx(15)/24. 
- 
+
+         flx(10) = flx(10)/24.
+	     flx(14) = flx(14)/24.
+         flx(15) = flx(15)/24.
+
 
 !	     if((iyear.eq.2009.and.jday.gt.300).or.(iyear.eq.2010.and.jday.lt.140)) then
 	     if(imetyear .ne. 9999) then
@@ -1056,11 +1056,11 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
                                 flx(5),flx(6),flx(7),flx(8),flx(9),flx(11),flx(10),  &
                                 plai(1,16)*grnfraccrop(1,16),plai(1,16),flx(12),     &
                                 flx(13),flx(14),flx(15)
-	endif  
+	endif
 
- 9201         format (2(i4,'  '),2(f6.2,'  '),3(f7.1,'  '),6(f6.2,'  '),6(f5.2,'  ')) 
-     
-        flx(1)= 0.0 
+ 9201         format (2(i4,'  '),2(f6.2,'  '),3(f7.1,'  '),6(f6.2,'  '),6(f5.2,'  '))
+
+        flx(1)= 0.0
         flx(2)= 0.0
         flx(3)= 0.0
         flx(4)= 0.0
@@ -1069,19 +1069,19 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
         flx(7)= 0.0
         flx(8)= 0.0
         flx(9)= 0.0
-        flx(10)= 0.0     
-        flx(11)= 0.0     
-        flx(12)= 0.0     
-        flx(13)= 0.0     
-        flx(14)= 0.0     
-        flx(15)= 0.0    
- 
+        flx(10)= 0.0
+        flx(11)= 0.0
+        flx(12)= 0.0
+        flx(13)= 0.0
+        flx(14)= 0.0
+        flx(15)= 0.0
+
      endif! check for crop existence
 
 #ifndef SINGLE_POINT_MODEL
 ! write out daily output
                if ( idailyout.eq.1 ) then
-                  
+
                   if ( env_debug.gt.0  ) then
                      write (STDOUT,9101,advance='no') char(13), char(13), iyear, &
                           imonth, iday,              &
@@ -1096,7 +1096,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
                   end if
 !this part is for calculating the crop 0D
     if(npoi .gt. 1)then
-                  call wdaily(jday,nday) 
+                  call wdaily(jday,nday)
     endif
                endif
 
@@ -1258,7 +1258,7 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 
 ! timing report - only works with gfortran
 #ifdef __GFORTRAN__
-      call ETIME(tarray, tresult)  
+      call ETIME(tarray, tresult)
       telapsed = time() - telapsed
       write(*,*) ' '
       write(*,1001) 'elapsed time:', INT(telapsed), REAL(telapsed)/60.0
