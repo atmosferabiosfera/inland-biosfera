@@ -17,6 +17,7 @@ module inland_comcrop
                 icroptype,       &  ! define crop type to use in all grid points - 0: no crops / 13: soybean / 14: maize / 15: wheat / 16: sgc / 17: oil palm
 ! TODO iwheattype should be a grid-point variable instead...
                 iwheattype,      &  ! 1: spring wheat 2: winter wheat - used if icroptype = wheat
+                itranspplm,      &  ! 0: sowing oil palm seed on field 1: transplanting from nursery - only used if icroptype = oil palm (default 1)
                 irotation,       &  ! 0: no crops rotated (monoculture) 2: two crops rotated 3: 3 crops rotated (see crops.f)
                 isoilay,         &  ! soil layer for which drainage and leaching data is output
                 nratoon,         &  ! number of ratoon crops
