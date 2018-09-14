@@ -66,7 +66,6 @@
   5.0       5.0        2.0        6.0     0.40    0.05    0.00    0.00    1.05      0.95  !  14   Maize
   3.5       3.0        1.0        7.0     0.30    0.00    0.00    0.05    1.05    999.0   !  15   Wheat
   5.0       5.0        2.0        4.0     0.95    0.20    0.14    0.10    0.00      0.00  !  16   Sugarcane
-  5.0       5.0        2.0        4.5     0.30    0.10    0.28    0.15    0.00      0.00  !  17   Palm oil
 #============================================================================================================
 #
 #----------------------------------------------------------------------------------------------------------------
@@ -221,7 +220,6 @@
   0.43      10.0       0.65    1.00    0.50   0.015   0.017   0.05    0.75    0.0285 ! 14
   0.45      10.0       0.60    1.00    0.45   0.009   0.0225  0.40    0.75    0.0075 ! 15
   0.421     159.46   999.00    0.80    0.50   0.015   0.017   0.05    0.75    0.0285 ! 16
-  0.50      10.0       1.00    0.25    0.50   0.015   0.017   0.75    0.16    0.0285 ! 17
 #=============================================================================================
 #    grainmoisture(npft) ! grain moisture, must be between 0.08 and 0.16
 #----------------------------------------------------------------------------
@@ -231,15 +229,26 @@
    0.0        ! 14 the value for this pft is 0.155 (when used grain moisture)
    0.0        ! 15 the value for this pft is 0.135 (when used grain moisture)
    999.9      ! 16
-   999.9      ! 17
 #============================================================================
 #----------------------------------------------------------------------------
 # Oil palm parameters
 #----------------------------------------------------------------------------
 #
-#    mxplmage            ! maximum oil palm plant age (years)
+#    mxplmage             ! maximum oil palm plant age (years)
+#    plmarooti            ! initial value of root allocation coefficient before the first fruit-fill
+#    plmarootf            ! final value of root allocation coefficient after vegetative maturity
+#    plmaleafi            ! initial value of leaf allocation coefficient before the first fruit-fill
+#    plmaleaff            ! final value of leaf allocation coefficient after vegetative maturity
+#    plmfracstem          ! fraction of new stem allocation that goes to live stem tissues
+#    laitransp            ! initial total LAI assigned to existing expanded phytomers at transplanting (0.0 to planting as seeds)
 #
 #----------------------------------------------------------------------------
-   25                    ! mxplmage
+   25       ! mxplmage
+   0.30     ! plmarooti
+   0.10     ! plmarootf
+   0.15     ! plmaleafi
+   0.28     ! plmaleaff
+   0.15     ! plmfracstem
+   0.30     ! laitransp
 
 #============================================================================
