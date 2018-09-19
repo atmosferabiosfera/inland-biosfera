@@ -25,7 +25,7 @@ subroutine summonth (mcsec, loopi, kpti, kptj)
 !-----------------------------------------------------------------------
 ! input-output variables
       integer loopi     ! index of little vector in big vector
-      integer kpti      ! index of 1st point of little vector 
+      integer kpti      ! index of 1st point of little vector
                         ! in big lpt vector
       integer kptj      ! index of last point of little vector
 
@@ -38,12 +38,12 @@ subroutine summonth (mcsec, loopi, kpti, kptj)
              solartot,  & ! total incoming radiation (direct + diffuse, visible + nearIR)
              reflectot, & ! total monthly reflected / monthly incident
              soiltemp,  & ! average soil temp for 4 1st layers
-             soilmois,  & ! average soil moisture for 4 1st layers 
-             soilice,   & ! average soil ice for 4 1st layers 
+             soilmois,  & ! average soil moisture for 4 1st layers
+             soilice,   & ! average soil ice for 4 1st layers
              vwc,       & ! total liquid + ice content of 4 1st layers
              awc,       & ! total available water (+ ice) content of 4 1st layer
              snodpth      ! total snow depth
-      
+
       logical lastts ! is this the last timestep of a given day?
 
 !-----------------------------------------------------------------------
@@ -100,7 +100,7 @@ subroutine summonth (mcsec, loopi, kpti, kptj)
        if(isimagro .gt.0 ) then
          amtrans(i) = ((nmtimes-1) * amtrans(i)  + (gtransl(i) + &
                         gtransu(i)) * 86400.) * rwork
-         amtratio(i)  = max(0.0, min(1.0, amtrans(i) / amaet(i))) 
+         amtratio(i)  = max(0.0, min(1.0, amtrans(i) / amaet(i)))
 
 ! ---------------------------------------------------------------------
 ! * * * nitrogen variables * * *
@@ -134,7 +134,7 @@ subroutine summonth (mcsec, loopi, kpti, kptj)
          reflectot = asurd(i,1) * solad(i,1) + asurd(i,2) * solad(i,2) + &
                      asuri(i,1) * solai(i,1) + asuri(i,2) * solai(i,2)
 
-!       amalbedo(i) = ((nmtimes-1) * amalbedo(i) + 
+!       amalbedo(i) = ((nmtimes-1) * amalbedo(i) +
 !    >                albedotot/(solartot + epsilon)) * rwork
          amreflect(i) = ((nmtimes-1) * amreflect(i) + reflectot) * rwork
 
@@ -180,11 +180,11 @@ subroutine summonth (mcsec, loopi, kpti, kptj)
 ! Monthly averages per layer
 !
 !       do k = 1, nsoilay
-!          amtsoil(i,k) = ((nmtimes-1)*amtsoil(i,k)  
+!          amtsoil(i,k) = ((nmtimes-1)*amtsoil(i,k)
 !    <                      + tsoi(i,k)) *rwork
-!          amwsoil(i,k) = ((nmtimes-1)*amwsoil(i,k)   
+!          amwsoil(i,k) = ((nmtimes-1)*amwsoil(i,k)
 !    <                      + wsoi(i,k)) * rwork
-!          amwisoil(i,k) = ((nmtimes-1)*amwisoil(i,k)  
+!          amwisoil(i,k) = ((nmtimes-1)*amwisoil(i,k)
 !    <                       + wisoi(i,k)) * rwork
 !       end do
 ! ---------------------------------------------------------------------
@@ -237,17 +237,19 @@ end if
                               amnpp(i,5) + amnpp(i,6)  + amnpp(i,7)  + amnpp(i,8) + &
                               amnpp(i,9) + amnpp(i,10) + amnpp(i,11) + amnpp(i,12)
          endif
- 
+
          if (isimagro .gt. 0) then
              amnpp(i,13)  = ((nmtimes-1) * amnpp(i,13)  + tnpp(i,13)  * rwork3) * rwork
              amnpp(i,14) = ((nmtimes-1) * amnpp(i,14) + tnpp(i,14) * rwork3) * rwork
              amnpp(i,15) = ((nmtimes-1) * amnpp(i,15) + tnpp(i,15) * rwork3) * rwork
              amnpp(i,16) = ((nmtimes-1) * amnpp(i,16) + tnpp(i,16) * rwork3) * rwork
-         
-             amnpptot(i) = amnpp(i,1) + amnpp(i,2)  + amnpp(i,3)  + amnpp(i,4) +  &
-                           amnpp(i,5) + amnpp(i,6)  + amnpp(i,7)  + amnpp(i,8) +  &
-                           amnpp(i,9) + amnpp(i,10) + amnpp(i,11) + amnpp(i,12) + &
-                           amnpp(i,13)+ amnpp(i,14) + amnpp(i,15)+ amnpp(i,16)
+             amnpp(i,17) = ((nmtimes-1) * amnpp(i,17) + tnpp(i,17) * rwork3) * rwork
+
+             amnpptot(i) = amnpp(i,1) + amnpp(i,2)  + amnpp(i,3)  + amnpp(i,4)  +  &
+                           amnpp(i,5) + amnpp(i,6)  + amnpp(i,7)  + amnpp(i,8)  +  &
+                           amnpp(i,9) + amnpp(i,10) + amnpp(i,11) + amnpp(i,12) +  &
+                           amnpp(i,13)+ amnpp(i,14) + amnpp(i,15) + amnpp(i,16) +  &
+                           amnpp(i,17)
           endif ! end the isimagro
 
 ! ---------------------------------------------------------------------
@@ -272,7 +274,7 @@ end if
             amco2ratio(i) = -999.99
          endif
 
-!  monthly net ecosystem co2 flux -- npp total minus microbial respiration 
+!  monthly net ecosystem co2 flux -- npp total minus microbial respiration
 !  the npp total includes losses from root respiration
 
         if(isimagro .eq. 0) then
