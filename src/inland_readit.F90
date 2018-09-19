@@ -40,14 +40,14 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       integer mlpt1 !mlpt used to read vegtype
       real*8, dimension(:,:), allocatable :: buffer2 ! used to read cropsfile
 
-! xmask(nlon,nlat) ::> equivalence --> pointer 
+! xmask(nlon,nlat) ::> equivalence --> pointer
 ! cant use equivalence ( xmask(1,1), work(1) ) to xmask with allocatable arrays
 !   The work variable is ndim2 which is nlon*nlat size. Here, we just declare
 ! xmask as (nlon,nlat)-dimensioned and use it on a new memory space.
-!   If there's still problem with that approach, we will have to allocate work 
+!   If there's still problem with that approach, we will have to allocate work
 ! statically. As of yet, nlon and nlat are compile-time options and this
 ! will not be a problem. Even if we were to get nlon and nlat from input config
-! file (inland-grid.infile/inland-single_point.infile), this would already have been 
+! file (inland-grid.infile/inland-single_point.infile), this would already have been
 ! done.
       real*8 xmask(nlon,nlat)
 
@@ -64,7 +64,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 #ifndef SINGLE_POINT_MODEL
 ! land mask, latitudes, and longitudes
 
-      filen = trim(datadir)//'/surta.nc'     
+      filen = trim(datadir)//'/surta.nc'
 
       ! make sure this file exists, if not print error and exit
       inquire( file=trim(filen), exist=file_e )
@@ -107,7 +107,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       if (snorth.lt.latscale(1) .or. ssouth.gt.latscale(nlat) .or. &
           swest.gt.lonscale(1) .or.  seast.lt.lonscale(nlon)) then
          jnorth = 0
-        
+
          if (snorth .lt. (latscale(nlat)+latscale(nlat-1))/2.) then
             jnorth = nlat
          elseif (snorth .ge. (latscale(1)+latscale(2))/2.) then
@@ -174,7 +174,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 
 ! First, we calculate nlpoints
 ! At this point we cycle thru all the loop without changing anything.
-! As in sage, here i/j refers to entire grid (1 to nlon/nlat), 
+! As in sage, here i/j refers to entire grid (1 to nlon/nlat),
 ! ii/jj refers to subgrid (1 to nlonsub/nlatsub)
       nlpoints = 0
       do j = jnorth, jsouth
@@ -196,10 +196,10 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
          end do !i
       end do !j
 
-      write (*,9010) 
+      write (*,9010)
       write (*,9020) nlpoints
       if ( mlpt .gt. 1 ) write (*,9030) mlpt
-      write (*,9010) 
+      write (*,9010)
 
 ! now we set npoi, lbeg/lend and mpt here, this should change with openmp/mpi
 ! this used to be hard-coded in include/inland_compar.h (LPT variable)
@@ -305,14 +305,16 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       allocate(xintauwood(lbeg:lend,npft), xinawood(lbeg:lend,npft), xinaroot(lbeg:lend,npft), &
                  xinvmax(lbeg:lend,npft), xinspecla(lbeg:lend,npft),xinaleaf(lbeg:lend,npft), &
                  vmax_pft(lbeg:lend,npft), tauwood0(lbeg:lend,npft), awood(lbeg:lend,npft),    &
-                 aroot(lbeg:lend,npft),astem(lbeg:lend,npft),aleaf(lbeg:lend,npft),specla(lbeg:lend,npft))       
+                 aroot(lbeg:lend,npft),astem(lbeg:lend,npft),aleaf(lbeg:lend,npft),specla(lbeg:lend,npft), &
+                 abunch(lbeg:lend,npft))
       tauwood0(:,:) = 0.
-      vmax_pft(:,:) = 0.     
-      awood(:,:) = 0. 
-      aroot(:,:) = 0. 
-      astem(:,:) = 0. 
-      aleaf(:,:) = 0. 
-      specla(:,:) = 0.     
+      vmax_pft(:,:) = 0.
+      awood(:,:) = 0.
+      aroot(:,:) = 0.
+      astem(:,:) = 0.
+      aleaf(:,:) = 0.
+      abunch(:,:) = 0.
+      specla(:,:) = 0.
 
 ! Variables in comsoi used for readit subroutine
       allocate(sand(lbeg:lend,nsoilay),clay(lbeg:lend,nsoilay))
@@ -325,7 +327,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 ! gabriel abrahao: Allocate the crop parameters that can also be read as maps (rdcropparmaps) here, and replicate their temporary values to all points. If rdcropparmaps is called later, those will be overriden
       if (isimagro.gt.0) then
          allocate(pmmin(lbeg:lend,npft),pdmin(lbeg:lend,npft))
-         do j = scpft, ecpft 
+         do j = scpft, ecpft
             pdmin(:,j) = pdmin_temp(j)
             pmmin(:,j) = pmmin_temp(j)
          end do
@@ -337,7 +339,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 ! Now we write data to the structures.
 ! initialize lonindex, latindex for use in arr2vec, vec2arr, etc.
 ! and calculate the approximate the area of the land gridcells
-! here, i/j refers to entire grid (1 to nlon/nlat), 
+! here, i/j refers to entire grid (1 to nlon/nlat),
 ! ii/jj refers to subgrid (1 to nlonsub/nlatsub)
       nlpoints = 0
       do j = jnorth, jsouth
@@ -532,7 +534,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
          !   pft number, as defined in params/vegetation
          ! there are 2 ways to define crops, depending on isimagro value
          ! TODO add isimagro check in inland_test - an error happens if isimagro=-1
-         if ( isimagro .gt. 0 ) then         
+         if ( isimagro .gt. 0 ) then
 
             ! if we using a unique crop (using icroptype)
             if ( isimagro .eq. 1 ) then
@@ -579,12 +581,12 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
 
                filen = trim(datadir)//'/'//trim(cropsfile)
                aname = 'cropdata'
-               
+
                write (*,*) 'INFO: running in agro mode, reading crops from '//trim(filen)
-               
-               ! number of agro pfts - cropsfile must have (at least) this number of crops defined 
-               ! and in the same order as crop pfts 
-               tmpint = ecpft - scpft + 1 
+
+               ! number of agro pfts - cropsfile must have (at least) this number of crops defined
+               ! and in the same order as crop pfts
+               tmpint = ecpft - scpft + 1
                allocate(buffer2(1:npoi1,tmpint))
                buffer2(:,:) = 0
 
@@ -609,13 +611,13 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
                         croptype(ipt) = j + scpft - 1
                      end do ! tmpint
                   end do ! npoi1
-                  
+
                ! general case - less subgrids than # of crops
                else
                   do i = 1, npoi1
                      ! first get all values so we can sort crops by fraction
                      do j = 1, tmpint
-                        buffer(j) = buffer2(i,j) 
+                        buffer(j) = buffer2(i,j)
                      end do
                      ! now find maxes and use them as subgrids, in decreasing fraction
                      do j = 1, mlpt-1
@@ -634,10 +636,10 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
                            ! make this tile a natural, but tilefrac=0
                            xinveg(ipt) = xinveg(i)
                         end if
-                     end do ! mlpt-1 
+                     end do ! mlpt-1
                   end do ! npoi1
                end if
-               
+
                icount(3) = mlpt
                istart(3) = 1
                icount(4) = 1
@@ -666,7 +668,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
          if ( mlpt .gt. 1 ) then
 
             ! make sure totals = 1.0 for each point
-            ! verify with 
+            ! verify with
             ! cdo vertsum inland-tiles-1981.nc  tmp1.nc ;  cdo selvar,tilefrac tmp1.nc tmp2.nc ; cdo selvar,waterfrac inland-tiles-1981.nc tmp3.nc ; cdo add tmp2.nc tmp3.nc tmp4.nc
             do i = 1,npoi1
                totreal = dble(0)
@@ -690,7 +692,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
                else if ( ( dble(1) - totreal ) .gt. 0.0001 ) then
                   ipt = subgrid_get_index(i,1)
                   if ( env_debug .gt. 0 ) write(*,9050),1,i,tilefrac(ipt),( tilefrac(ipt) + dble(1) - totreal )
-                  ! if using hrmap, exit because this shouldn't happen 
+                  ! if using hrmap, exit because this shouldn't happen
                   ! and ihrtileparent indexes will be wrong
                   if ( trim(hrmapfile) .ne. '' ) then
                      write(*,9040),i,totreal
@@ -725,8 +727,8 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
             end do
 
          end if ! mlpt > 1
-         
-      end if ! (isimveg .le. 1)          
+
+      end if ! (isimveg .le. 1)
 
       if ( env_debug .ge. 5 ) then
          print *,'xinveg:     ', xinveg
@@ -928,20 +930,20 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
         call arr2vec (cdummy((ntime-1)*nlonsub*nlatsub + 1), xinaleaf(1,ntime))
       enddo
       ndim = npoi*npft
-      call scopya (ndim,xinaleaf,aleaf)      
+      call scopya (ndim,xinaleaf,aleaf)
       end if
-      
-! Verifing if the sum of aleaf+awood+aroot=1 
+
+! Verifing if the sum of aleaf+awood+aroot=1
 !
    if(isimagro .eq. 0)then
       do i=1, npoi
          do j=1,12
             caverf=aleaf(i,j)+ awood(i,j)+aroot(i,j)
-            if(caverf.gt.1.or.caverf.lt.1) then 
-               print*,'Unexpected values : The total carbon allocation aroot + awood + aleaf is greater or lower then one' 
+            if(caverf.gt.1.or.caverf.lt.1) then
+               print*,'Unexpected values : The total carbon allocation aroot + awood + aleaf is greater or lower then one'
                print*,'ERROR in subroutine readit'
                stop
-            endif 
+            endif
          enddo
       enddo
     endif
@@ -991,7 +993,7 @@ subroutine readit(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       call scopya(ndim, clmcld, xincld)
       call scopya(ndim, clmq, xinq)
       call scopya(ndim, clmwet, xinwet)
-      
+
 ! return to main program
       return
 #endif /* SINGLE_POINT_MODEL */

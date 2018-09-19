@@ -317,12 +317,13 @@ module inland_comveg
 !
 ! Castanho HP, 2013 included dimensions npoi (i) in aleaf, awood, aroot, tauwood, specla, vmax when appropriate bellow
 
-      real*8, dimension(:,:), allocatable :: specla, aleaf, aroot, awood          ! Castanho HP, 2013
+      real*8, dimension(:,:), allocatable :: specla, aleaf, aroot, awood, abunch          ! Castanho HP, 2013
 !
 !     specla(npoi,npft)        ! specific leaf area (m**2/kg)
 !     aleaf(npoi,npft)         ! carbon allocation fraction to leaves
 !     aroot(npoi,npft)         ! carbon allocation fraction to fine roots
 !     awood(npoi,npft)         ! carbon allocation fraction to wood
+!     abunch(npoi,npft)        ! carbon allocation fraction to bunch
 
 ! Castanho HP, 2013 keep properties read in canopy with one dimension, change name adding p aleafp, awoodp, specla
 

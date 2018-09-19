@@ -34,14 +34,14 @@ subroutine inland_prealloc
       real*8    realvar
       real*4    real4var
 
-! Castanho HP, 2013 included dimensions npoi (i) in aleaf, awood, aroot, tauwood, specla, vmax when appropriate 
+! Castanho HP, 2013 included dimensions npoi (i) in aleaf, awood, aroot, tauwood, specla, vmax when appropriate
 
 !! Variables for rd_param
 !==========================
 ! Allocate variables in comcrop
       allocate(baset(npft),mxtmp(npft),tkill(npft),laicons(npft),allconsl(npft), &
                allconss(npft),laimx(npft),arooti(npft),arootf(npft),aleaff(npft), &
-               astemf(npft),declfact(npft),fleafi(npft),hybgdd(npft),gddmin(npft),&                     
+               astemf(npft),declfact(npft),fleafi(npft),hybgdd(npft),gddmin(npft),&
                lfemerg(npft),grnfill(npft),mxgddgf(npft),mxdgfi(npft),mxmat(npft),&
                bfact(npft),arepr(npft),astemi(npft),aleafi(npft),fleaf(npft))
 
@@ -59,16 +59,16 @@ subroutine inland_prealloc
       declfact(:) = 0.
       fleafi(:) = 0.
       hybgdd(:) = 0.
-      gddmin(:) = 0.   
-      lfemerg(:) = 0.  
-      grnfill(:) = 0.  
-      mxgddgf(:) = 0.  
-      mxdgfi(:) = 0.   
-      mxmat(:) = 0.	 
+      gddmin(:) = 0.
+      lfemerg(:) = 0.
+      grnfill(:) = 0.
+      mxgddgf(:) = 0.
+      mxdgfi(:) = 0.
+      mxmat(:) = 0.
       bfact(:) = 0.
       arepr(:) = 0.
-      astemi(:) = 0.   
-      aleafi(:) = 0.   
+      astemi(:) = 0.
+      aleafi(:) = 0.
       fleaf(:) = 0.
 
       allocate(ptemp(npft),pmintemp(npft),pcm(npft),pcd(npft))
@@ -109,13 +109,13 @@ subroutine inland_prealloc
       rratio(:) = 0.
       fnopt(:) = 0.
       grainmoisture(:) = 0.
-	     
+
 ! From compft
 
-! Castanho HP, 2013 moved vmax_pft and tauwood0 2 dimension to allocate in readit 
+! Castanho HP, 2013 moved vmax_pft and tauwood0 2 dimension to allocate in readit
 ! Castanho HP, 2013 added *p to one dimension that is read in rd param
 
-      allocate(tauleaf(npft),tauroot(npft), tauwood0p(npft), vmax_pftp(npft), &  
+      allocate(tauleaf(npft),tauroot(npft), tauwood0p(npft), vmax_pftp(npft), &
                TminL(npft),TminU(npft),Twarm(npft),GDD(npft),lotemp(npft),&
                hitemp(npft),drought(npft),f1(npft),f2(npft))
 
@@ -158,7 +158,7 @@ subroutine inland_prealloc
 ! Allocate variables in comtex
       allocate(texdat(3,ndat),porosdat(ndat),sfielddat(ndat),swiltdat(ndat), &
                bexdat(ndat),suctiondat(ndat),hydrauldat(ndat),cpwfdat(ndat))
-      texdat(:,:) = 0.     
+      texdat(:,:) = 0.
       porosdat(:) = 0.
       sfielddat(:) = 0.
       swiltdat(:) = 0.

@@ -241,6 +241,10 @@
 #    plmaleaff            ! final value of leaf allocation coefficient after vegetative maturity
 #    plmfracstem          ! fraction of new stem allocation that goes to live stem tissues
 #    laitransp            ! initial total LAI assigned to existing expanded phytomers at transplanting (0.0 to planting as seeds)
+#    dmat                 ! factor to control the age when the leaf allocation ratio stabilizes at plmaleaff
+#    dleafalloc           ! factor to control the nonlinear function that calculates plmaleaff
+#    acoef                ! parameter a for fruit allocation coefficient in bunch dry matter
+#    bcoef                ! parameter b for fruit allocation coefficient in bunch dry matter
 #
 #----------------------------------------------------------------------------
    25       ! mxplmage
@@ -250,5 +254,9 @@
    0.28     ! plmaleaff
    0.15     ! plmfracstem
    0.30     ! laitransp
+   0.60     ! dmat
+   0.60     ! dleafalloc
+   0.20     ! acoef
+   0.02     ! bcoef
 
 #============================================================================

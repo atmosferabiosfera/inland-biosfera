@@ -792,6 +792,8 @@ subroutine alloc(irestart)
 
       allocate(exist(lbeg:lend,npft))
 
+      allocate(plmaleafmat(lbeg:lend))
+
       ! specla, aleaf, awood, aroot are allocated on inland_prealloc
 
       topparl(:) = 0.
@@ -896,6 +898,8 @@ subroutine alloc(irestart)
       froot(:,:) = 0.
 
       exist(:,:) = 0.
+
+      plmaleafmat(:)=0.0
 
 ! Allocate variables in comfire
       allocate(Pbio(lbeg:lend),&

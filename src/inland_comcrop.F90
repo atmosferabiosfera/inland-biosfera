@@ -30,7 +30,7 @@ module inland_comcrop
                                            totirrig, df, vf, cumvd, hdidx, gddfzcorn, &
                                            gddfzsgc, gddfzsoy, gddfzwht, conspdate,   &
                                            conshybrid, ncyears, cropy, ik, gddpl15,   &
-                                           gddemerg, rm, croptype
+                                           gddemerg, rm, croptype, plmaleafmat
 
 !
 !            consdays(npoi),        ! counter keeping track of number of days between freezing events
@@ -57,6 +57,7 @@ module inland_comcrop
 !            rm(npoi)               ! sugarcane relative maturity GDD/GDDmaturity
 !            icropsum(npoi)         ! index - number of crop types planted in each grid cell - replaced by croptype
 !            croptype(npoi)         ! index - crop type (same value as corresponding crop pft code, or 0 if none)
+!            plmaleafmat(npoi),     ! last value of allocation coefficient for leaf calculated right before fruit-fill starts
 !
       integer, dimension(:), allocatable :: cdays, iniday, endday
 !
@@ -101,7 +102,18 @@ module inland_comcrop
                 ztopmxsgc,      &   ! maximum height of sugar cane canopy
                 ztopmxsoy,      &   ! maximum height of soybean canopy
                 ztopmxwht,      &   ! maximum height of wheat canopy
-                ztopmxmze           ! maximum height of maize canopy
+                ztopmxmze,      &   ! maximum height of maize canopy
+                plmaleafi,      &   ! initial value of leaf allocation coefficient before the first fruit-fill
+                plmaleaff,      &   ! final value of leaf allocation coefficient after the first fruit-fill
+                mxplmage,       &   ! maximum oil palm plant age (years)
+                plmarooti,      &   ! initial value of root allocation coefficient before the first fruit-fill
+                plmarootf,      &   ! final value of root allocation coefficient after the first fruit-fill
+                plmfracstem,    &   ! fraction of new stem allocation that goes to live stem tissues
+                laitransp,      &   ! initial total LAI assigned to existing expanded phytomers at transplanting (0.0 to planting as seeds)
+                dmat,           &   ! factor to control the age when the leaf allocation ratio stabilizes at plmaleaff
+                dleafalloc,     &   ! factor to control the nonlinear function that calculates plmaleaff
+                acoef,          &   ! parameter a for fruit allocation coefficient in bunch dry matter
+                bcoef               ! parameter b for fruit allocation coefficient in bunch dry matter
 
 
 !      real*8, dimension(:), allocatable ::  ptemp, pmintemp, pmmin, pdmin, pcm, pcd,  &
