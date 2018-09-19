@@ -81,7 +81,8 @@ subroutine phenocrop (kpti,kptj)
              crmcorn,      &
              crmsgc,sipf3, &
              sipf4,sipf6,  &
-             aspecla,ccf5
+             aspecla,ccf5, &
+             dppmat
 
       integer nplants,     &
               i,j,k,l,n
@@ -427,21 +428,22 @@ subroutine phenocrop (kpti,kptj)
 
                     if(gddemerg(i).eq.0) gddemerg(i) = gddplant(i,j)
 
-                    aroot(i,j) = plmarooti - ((plmarooti - plmarootf) * min(1.0, max(0.0, idpp(i) / (365 * mxplmage))))
+                    aroot(i,j) = plmarooti - ((plmarooti - plmarootf) * min(1.0, max(0.0, idpp(i,j) / (365 * mxplmage))))
                     aroot(i,j) = min(1.0, max(0.0, aroot(i,j)))
-                    if() then
+                    if(iddp(i,j).lt.mxmat(j)) then
                       aleaf(i,j) = plmaleafi * (1 - aroot(i,j))
                       aleaf(i,j) = min(1.0, max(0.0, aleaf(i,j)))
                       plmaleafmat(j) = aleaf(i,j)
-                      ddpmat = ddp(i)
+                      ddpmat = iddp(i,j)
                     else
                       aleaf(i,j) = plmaleaff - (plmaleafmat(j) - plmaleaff) * ((ddp(i) - ddpmat) / &
                       (365 * mxplmage * dmat - ddpmat))**dleafalloc
                       aleaf(i,j) = min(1.0, max(0.0, aleaf(i,j)))
+                      abunch(i,j) = (2.0 / (1.0 + exp(-bcoef * (amnpp(i,j) - 100)))) - acoef
+                      abunch(i,j) = min(2.0, max(0.0, abunch(i,j)))
                     end if
                     astem(i,j) = 1 - aroot(i,j) - aleaf(i,j)
                     astem(i,j) = min(1.0, max(0.0, astem(i,j)))
-
 
                   end if
 
