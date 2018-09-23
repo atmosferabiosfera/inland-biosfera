@@ -430,13 +430,13 @@ subroutine phenocrop (kpti,kptj)
 
                     aroot(i,j) = plmarooti - ((plmarooti - plmarootf) * min(1.0, max(0.0, idpp(i,j) / (365 * mxplmage))))
                     aroot(i,j) = min(1.0, max(0.0, aroot(i,j)))
-                    if(iddp(i,j).lt.mxmat(j)) then
+                    if(idpp(i,j).lt.mxmat(j)) then
                       aleaf(i,j) = plmaleafi * (1 - aroot(i,j))
                       aleaf(i,j) = min(1.0, max(0.0, aleaf(i,j)))
                       plmaleafmat(j) = aleaf(i,j)
-                      ddpmat = iddp(i,j)
+                      ddpmat = idpp(i,j)
                     else
-                      aleaf(i,j) = plmaleaff - (plmaleafmat(j) - plmaleaff) * ((ddp(i) - ddpmat) / &
+                      aleaf(i,j) = plmaleaff - (plmaleafmat(j) - plmaleaff) * ((idpp(i) - ddpmat) / &
                       (365 * mxplmage * dmat - ddpmat))**dleafalloc
                       aleaf(i,j) = min(1.0, max(0.0, aleaf(i,j)))
                       abunch(i,j) = (2.0 / (1.0 + exp(-bcoef * (amnpp(i,j) - 100)))) - acoef
