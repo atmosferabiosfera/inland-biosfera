@@ -418,12 +418,17 @@ subroutine phenocrop (kpti,kptj)
 
 ! Phenology for oil palm
 
+                  if(itranspplm.ne.0) then
+                    leafout(i,j) = huileaf(j)
+                    plai(i,j) = plminilai
+                  end if
+
                   if(leafout(i,j).lt.huileaf(j) .and. j.eq.17 .and. itranspplm.eq.0) then
                     gddemerg(i) = 0.0
                     aroot(i,j)  = 0.0
                     aleaf(i,j)  = 0.0
                     astem(i,j)  = 0.0
-                    arepr(j)    = 0.0
+                    abunch(i,j) = 0.0
                   else if(leafout(i,j).ge.huileaf(j).and.j.eq.17) then
 
                     if(gddemerg(i).eq.0) gddemerg(i) = gddplant(i,j)
@@ -434,10 +439,10 @@ subroutine phenocrop (kpti,kptj)
                       aleaf(i,j) = plmaleafi * (1 - aroot(i,j))
                       aleaf(i,j) = min(1.0, max(0.0, aleaf(i,j)))
                       plmaleafmat(j) = aleaf(i,j)
-                      ddpmat = idpp(i,j)
+                      dppmat = idpp(i,j)
                     else
-                      aleaf(i,j) = plmaleaff - (plmaleafmat(j) - plmaleaff) * ((idpp(i,j) - ddpmat) / &
-                      (365 * mxplmage * dmat - ddpmat))**dleafalloc
+                      aleaf(i,j) = plmaleaff - (plmaleafmat(j) - plmaleaff) * ((idpp(i,j) - dppmat) / &
+                      (365 * mxplmage * dmat - dppmat))**dleafalloc
                       aleaf(i,j) = min(1.0, max(0.0, aleaf(i,j)))
                       abunch(i,j) = (2.0 / (1.0 + exp(-bcoef * (amnpp(i,j) - 100)))) - acoef
                       abunch(i,j) = min(2.0, max(0.0, abunch(i,j)))
@@ -452,18 +457,20 @@ subroutine phenocrop (kpti,kptj)
 ! keep track of total biomass production for the entire year, and the
 ! aboveground value to calculate harvest index
 
-                  aybprod(i,j) = aybprod(i,j)                    &
+                  aybprod(i,j) = aybprod(i,j)                      &
                                + aleaf(i,j) * max(0.0,adnpp(i,j))  &
                                + astem(i,j) * max(0.0,adnpp(i,j))  &
                                + aroot(i,j) * max(0.0,adnpp(i,j))  &
                                + awood(i,j) * max(0.0,adnpp(i,j))  &
-                               + arepr(j) * max(0.0,adnpp(i,j))
+                               + arepr(j) * max(0.0,adnpp(i,j))    &
+                               + abunch(i,j) * max(0.0,adnpp(i,j))
 !-above
-                  ayabprod(i,j) = ayabprod(i,j)                  &
+                  ayabprod(i,j) = ayabprod(i,j)                    &
                                 + aleaf(i,j) * max(0.0,adnpp(i,j)) &
                                 + astem(i,j) * max(0.0,adnpp(i,j)) &
-                                + arepr(j) * max(0.0,adnpp(i,j)) &
-                                + awood(i,j) * max(0.0,adnpp(i,j))
+                                + arepr(j) * max(0.0,adnpp(i,j))   &
+                                + awood(i,j) * max(0.0,adnpp(i,j)) &
+                                + abunch(i,j) * max(0.0,adnpp(i,j))
 
                   cropout(i,j,31) = aleaf(i,j)
                   cropout(i,j,33) = arepr(j)
