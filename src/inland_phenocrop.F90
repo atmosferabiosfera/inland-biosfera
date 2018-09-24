@@ -436,7 +436,7 @@ subroutine phenocrop (kpti,kptj)
                       plmaleafmat(j) = aleaf(i,j)
                       ddpmat = idpp(i,j)
                     else
-                      aleaf(i,j) = plmaleaff - (plmaleafmat(j) - plmaleaff) * ((idpp(i) - ddpmat) / &
+                      aleaf(i,j) = plmaleaff - (plmaleafmat(j) - plmaleaff) * ((idpp(i,j) - ddpmat) / &
                       (365 * mxplmage * dmat - ddpmat))**dleafalloc
                       aleaf(i,j) = min(1.0, max(0.0, aleaf(i,j)))
                       abunch(i,j) = (2.0 / (1.0 + exp(-bcoef * (amnpp(i,j) - 100)))) - acoef
