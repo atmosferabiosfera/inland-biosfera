@@ -30,8 +30,8 @@ subroutine sumyear(mcsec, loopi, kpti, kptj)
              solartot, &! total incoming radiation (direct + diffuse, visible + nearIR)
              reflectot,&! total incoming radiation (direct + diffuse, visible + nearIR)
              soiltemp, &! average soil temp for 4 1st layers
-             soilmois, &! average soil moisture for 4 1st layers 
-             soilice,  &! average soil ice for 4 1st layers 
+             soilmois, &! average soil moisture for 4 1st layers
+             soilice,  &! average soil ice for 4 1st layers
              vwc,      &! total liquid + ice content of 4 1st layers
              awc,      &! total available water (+ ice) content of 4 1st layer
              water,    &! fire factor: total water content of 1st layer (liquid+ice)
@@ -58,7 +58,7 @@ subroutine sumyear(mcsec, loopi, kpti, kptj)
 
       lastts = .false.
       if ( ( mcsec .eq. (86400 - dtime) ) .and. (iday .eq. ndaypm(imonth) ) ) lastts = .true.
-      
+
 ! accumulate yearly output
       nytime(loopi) = nytime(loopi) + 1
 
@@ -102,7 +102,7 @@ subroutine sumyear(mcsec, loopi, kpti, kptj)
         aysrunoff(i)=((nytimes-1) * aysrunoff(i) + grunof(i) * rwork2) * rwork
         aydrainage(i)=((nytimes-1)*aydrainage(i) + gdrain(i)*rwork2)*rwork
         if(isimagro .eq. 0) then
-           aytrunoff(i) = aysrunoff(i) + aydrainage(i) 
+           aytrunoff(i) = aysrunoff(i) + aydrainage(i)
         else
            aytrunoff(i)  = ((nytimes-1) * aytrunoff(i) + (grunof(i) + gdrain(i)) * rwork2) * rwork
         endif
@@ -212,7 +212,7 @@ end if
                        aygpp(i,7) + aygpp(i,8) + aygpp(i,9)    + &
                        aygpp(i,10) + aygpp(i,11) + aygpp(i,12) + &
                        aygpp(i,13)+ aygpp(i,14) + aygpp(i,15)  + &
-                       aygpp(i,16)
+                       aygpp(i,16) + aygpp(i,17)
        else
          aygpptot(i) = aygpp(i,1) + aygpp(i,2) + aygpp(i,3) + &
                        aygpp(i,4) + aygpp(i,5) + aygpp(i,6) + &
@@ -237,7 +237,7 @@ end if
                        aynpp(i,7) + aynpp(i,8) + aynpp(i,9)    + &
                        aynpp(i,10) + aynpp(i,11) + aynpp(i,12) + &
                        aynpp(i,13) + aynpp(i,14) + aynpp(i,15) + &
-                       aynpp(i,16)
+                       aynpp(i,16) + aynpp(i,17)
        else
          aynpptot(i) = aynpp(i,1) + aynpp(i,2) + aynpp(i,3) + &
                        aynpp(i,4) + aynpp(i,5) + aynpp(i,6) + &
@@ -275,7 +275,8 @@ end if
          allroots = cbior(i,1) + cbior(i,2)  + cbior(i,3)  + cbior(i,4)  + &
                     cbior(i,5) + cbior(i,6)  + cbior(i,7)  + cbior(i,8)  + &
                     cbior(i,9) + cbior(i,10) + cbior(i,11) + cbior(i,12) + &
-                    cbior(i,13) + cbior(i,14) + cbior(i,15) + cbior(i,16)
+                    cbior(i,13) + cbior(i,14) + cbior(i,15) + cbior(i,16)+ &
+                    cbior(i,17)
        else
          allroots = cbior(i,1) + cbior(i,2)  + cbior(i,3)  + cbior(i,4) + &
                     cbior(i,5) + cbior(i,6)  + cbior(i,7)  + cbior(i,8) + &
@@ -301,13 +302,13 @@ end if
 ! immobilization (gross)
 !
         ayimmtot(i)  = ((nytimes-1) * ayimmtot(i) + &
-                     totimm(i) * rwork4) * rwork 
+                     totimm(i) * rwork4) * rwork
 !
 ! other mineralization/immobilization
 ! from non-microbial transformations
 !
         aynreltot(i) = ((nytimes-1) * aynreltot(i) + &
-                     totnrel(i) * rwork4) * rwork 
+                     totnrel(i) * rwork4) * rwork
 !
      endif ! check for crop existence
 ! other biogeochemistry variables

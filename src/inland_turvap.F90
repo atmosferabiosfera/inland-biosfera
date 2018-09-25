@@ -13,9 +13,9 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
 ! sides in the rhs vector
 !
 ! then calls linsolve to solve this system, passing template mplate of
-! zeros of arr 
-! 
-! finally calculates the implied fluxes and stores them 
+! zeros of arr
+!
+! finally calculates the implied fluxes and stores them
 ! for the agcm, soil, snow models and budget calcs
 !
 ! ---------------------------------------------------------------------
@@ -35,7 +35,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
 !
 ! input variables
       integer niter, iter
-      integer kpti            ! index of 1st point of little vector 
+      integer kpti            ! index of 1st point of little vector
                               ! in big lpt vector
       integer kptj            ! index of last point of little vector
 
@@ -50,18 +50,18 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
 
       real*8 fradu(kpti:kptj),frads(kpti:kptj), fradl(kpti:kptj),qu(kpti:kptj),&
              qs(kpti:kptj),ql(kpti:kptj),qg(kpti:kptj),qi(kpti:kptj), &
-             dqu(kpti:kptj),dqs(kpti:kptj),dql(kpti:kptj),dqg(kpti:kptj), & 
+             dqu(kpti:kptj),dqs(kpti:kptj),dql(kpti:kptj),dqg(kpti:kptj), &
              dqi(kpti:kptj),tupre(kpti:kptj),tspre(kpti:kptj),tlpre(kpti:kptj),&
              tgpre(kpti:kptj),tipre(kpti:kptj),suw(kpti:kptj),ssw(kpti:kptj), &
              slw(kpti:kptj),sut(kpti:kptj),slt(kpti:kptj),slt0(kpti:kptj), &
              suh(kpti:kptj),ssh(kpti:kptj),slh(kpti:kptj),qgfac(kpti:kptj)
 
-! FIXME: these arrays should have dimension kpti:kptj instead of lbeg:lend , 
+! FIXME: these arrays should have dimension kpti:kptj instead of lbeg:lend ,
 !        and then iterate over j = i - kpti + 1
-      real*8 xu(lbeg:lend),xs(lbeg:lend),xl(lbeg:lend),chux(lbeg:lend), & 
+      real*8 xu(lbeg:lend),xs(lbeg:lend),xl(lbeg:lend),chux(lbeg:lend), &
              chsx(lbeg:lend),chlx(lbeg:lend),chgx(lbeg:lend),wlgx(lbeg:lend), &
              wigx(lbeg:lend),cog(lbeg:lend),coi(lbeg:lend),zirg(lbeg:lend), &
-             ziri(lbeg:lend),wu(lbeg:lend),ws(lbeg:lend),wl(lbeg:lend), &    
+             ziri(lbeg:lend),wu(lbeg:lend),ws(lbeg:lend),wl(lbeg:lend), &
              wg(lbeg:lend),wi(lbeg:lend),tuold(lbeg:lend),tsold(lbeg:lend), &
              tlold(lbeg:lend),tgold(lbeg:lend),tiold(lbeg:lend), &
              qgfac0(lbeg:lend)
@@ -77,7 +77,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
              vec(kptj-kpti+1,nqn)
       integer mplate(nqn,nqn)
 
-!                  tu  ts  tl t12 t34 q12 q34  tg  ti 
+!                  tu  ts  tl t12 t34 q12 q34  tg  ti
 !                  ----------------------------------
       data mplate / 1,  0,  0,  1,  0,  1,  0,  0,  0, & !tu
                     0,  1,  0,  1,  0,  1,  0,  0,  0, & !ts
@@ -113,7 +113,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
          xu(i) = 2.0 * lai(i,2) * fu(i)
          xs(i) = 2.0 * sai(i,2) * fu(i)
          xl(i) = 2.0 * (lai(i,1) + sai(i,1)) * fl(i) * (1.0 - fi(i))
-10    continue 
+10    continue
 
 ! specific heats per leaf/stem area
       do 20 i = kpti, kptj
@@ -122,7 +122,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
          chlx(i) = chl + ch2o * wliql(i) + cice * wsnol(i)
 20    continue
 
-      do 30 i = kpti, kptj 
+      do 30 i = kpti, kptj
          rwork = poros(i,1) * rhow
          chgx(i) = ch2o * wpud(i) + cice * wipud(i) &
                    + ((1.-poros(i,1)) * csoi(i,1) * rhosoi(i,1) &
@@ -132,7 +132,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
          wlgx(i) = wpud(i) + rwork * (1. - wisoi(i,1)) * wsoi(i,1) * hsoi(1)
 
          wigx(i) = wipud(i) + rwork * wisoi(i,1) * hsoi(1)
-30      continue 
+30      continue
 
 ! conductivity coeffs between ground skin and first layer
          do 40 i = kpti, kptj
@@ -168,10 +168,10 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
 ! call impexp2 for snow model
       call impexp2 (wi, ti, tiold, iter, kpti, kptj)
 
-! adjust t* for this iteration 
+! adjust t* for this iteration
 !
-! in this routine we are free to choose them, 
-! since they are just the central values about which the 
+! in this routine we are free to choose them,
+! since they are just the central values about which the
 ! equations are linearized - heat is conserved in the matrix
 ! solution because t*old are used for the rhs heat capacities
 !
@@ -189,7 +189,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
          tl(i) = wl(i) * tl(i) + (1.0 - wl(i)) * tlold(i)
          tg(i) = wg(i) * tg(i) + (1.0 - wg(i)) * tgold(i)
          ti(i) = wi(i) * ti(i) + (1.0 - wi(i)) * tiold(i)
-80    continue 
+80    continue
 
 ! save current "central" values for final flux calculations
       do 90 i = kpti, kptj
@@ -229,7 +229,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
          qg(i)  = qsat (ee1, psurf(i))
          dqg(i) = dqsat (tg(i), qg(i))
          dqg(i) = min (dqg(i), qg(i) * 0.1)
- 
+
          ee1      = esat(ti(i))
          qi(i)  = qsat (ee1, psurf(i))
          dqi(i) = dqsat (ti(i), qi(i))
@@ -342,7 +342,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
 ! leaf/stem areas, and for dry (transpiring) leaf areas
 !
 ! the wetted-area coeffs suw,ssw,slw are constrained to be less
-! than what would evaporate 0.8 * the intercepted h2o mass in 
+! than what would evaporate 0.8 * the intercepted h2o mass in
 ! this timestep (using previous iteration's q* values)
 !
 ! this should virtually eliminate evaporation-overshoots and the need
@@ -406,7 +406,8 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
                      totcondc3(i) * frac(i,13) + &
                      totcondc4(i) * frac(i,14) + &
                      totcondc3(i) * frac(i,15) + &
-                     totcondc4(i) * frac(i,16))
+                     totcondc4(i) * frac(i,16) + &
+                     totcondc3(i) * frac(i,17))
        else
            slw(i) = min (fwetlx(i) * sl(i), &
                     0.8 * (wliql(i) + wsnol(i)) &
@@ -434,7 +435,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
 200   continue
 
 ! set the matrix of coefficients and the right-hand sides
-! of the linearized equations. 
+! of the linearized equations.
 ! arr, rhs and vec are defined from 1 -> npt, instead of kpti --> kptj
 ! j is used to translate them.
       arr(:,:,:) = 0.0
@@ -579,7 +580,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
       call linsolve (arr, rhs, vec, mplate, nqn, npt)
 
 ! translate this iteration's solution to t*, q12, q34 (1 --> npt to
-! kpti --> kptj) 
+! kpti --> kptj)
       do 400 i = kpti, kptj
          j = i - kpti + 1
          tu(i)  = vec(j,1)
@@ -649,7 +650,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
          qiav = qi(i) + wi(i) * dqi(i) * (ti(i) - tipre(i))
          fvapi(i) = si(i) * (qiav-q34(i))
 510   continue
- 
+
 ! adjust ir fluxes
       do 520 i = kpti, kptj
          firg(i) = firg(i) - wg(i)*zirg(i)*(tg(i) - tgold(i))
@@ -663,7 +664,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
 
 ! set upsoi[u,l], the actual soil water uptake rates from each
 ! soil layer due to transpiration in the upper and lower stories,
-! for the soil model 
+! for the soil model
       do 600 k = 1, nsoilay
          do 610 i = kpti, kptj
 
@@ -675,7 +676,7 @@ subroutine turvap(iter,niter,kpti,kptj,xu,xs,xl,chux,chsx,chlx,chgx,wlgx,wigx, &
                           stressu(i,k) / max (stre_tu(i), epsilon)
 
             upsoil(i,k) = fvaplt(i) * 2.0 * lai(i,1) * fl(i) *    &
-                          (1. - fi(i)) *                           & 
+                          (1. - fi(i)) *                           &
                           stressl(i,k) / max (stre_tl(i), epsilon)
          else
 

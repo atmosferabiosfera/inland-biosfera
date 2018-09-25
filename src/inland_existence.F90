@@ -65,10 +65,11 @@ subroutine existence
         exist(i,14) = 0.
         exist(i,15) = 0.
         exist(i,16) = 0.
+        exist(i,17) = 0.
 !
 !*** DTP 2001/06/07: Modified version of above code reads in PFT
 ! existence criteria from external parameter file "params.veg"
-!    These are copied here for reference.... 
+!    These are copied here for reference....
 !------------------------------------------------------------------
 !  TminL    TminU    Twarm    GDD    PFT
 !------------------------------------------------------------------
@@ -170,24 +171,24 @@ subroutine existence
 ! this code is used to override existence parameterizations for potential
 ! vegetation distribution based on climatic constraints. Instead
 ! we only allow PFTs to compete in each grid cell
-! based on land cover dataset and classification found in that region 
+! based on land cover dataset and classification found in that region
 ! override those pfts that are not desired but might have exist = 1.0
 ! from above initialization - this essentially limits vegetation competition
 ! during spin-up periods so that vegetation growing there is confined to
-! what is typically observed today (potential vegetation).  If doing 
-! climate change scenarios, overveg should be set to 0 so full 
-! vegetation dynamics are used, if desired. 
+! what is typically observed today (potential vegetation).  If doing
+! climate change scenarios, overveg should be set to 0 so full
+! vegetation dynamics are used, if desired.
 !
          if ((isimveg.eq.0).and.(overveg .eq. 1).and.(isimagro.eq.0)) then
 !
             inveg = nint(xinveg(i))
-            
+
             do j=1,12
                 exist(i,j) = exist(i,j) * existvegtypemap(inveg,j)
             end do
-            
-!          
-! wherever vegetation is allowed to exist, check the rules from above 
+
+!
+! wherever vegetation is allowed to exist, check the rules from above
 !
 ! tropical deciduous
 !
@@ -198,7 +199,7 @@ subroutine existence
 !                do 70 j = 3,16
 !                   exist(i,j) = 0.0
 !  70            continue
-! 
+!
 ! !
 ! ! temperate conifers
 ! !
@@ -239,7 +240,7 @@ subroutine existence
 !                   exist(i,j) = 0.0
 !  76            continue
 ! !
-! ! boreal deciduous 
+! ! boreal deciduous
 ! !
 !             else if (inveg .eq. 7) then
 !                do 77 j = 7, 8
@@ -258,7 +259,7 @@ subroutine existence
 ! !
 ! ! let existence rules determine whether temperate or boreal species
 ! ! can exist at this location
-! ! 
+! !
 !             else if (inveg .eq. 8) then
 ! !              do 69 j = 4, 8
 ! !                 exist(i,j) = 1.0
@@ -283,7 +284,7 @@ subroutine existence
 !                   exist(i,j) = 0.0
 !  83            continue
 ! !
-!                do 84 j = 6, 10 
+!                do 84 j = 6, 10
 !                   exist(i,j) = 0.0
 !  84            continue
 ! !
@@ -297,15 +298,15 @@ subroutine existence
 !                exist(i,11) = 1.0
 !                exist(i,12) = 1.0
 ! !
-!                do 86 j = 1, 10 
+!                do 86 j = 1, 10
 !                   exist(i,j) = 0.0
 !  86            continue
 ! !
-!                do 87 j = 13, 16 
+!                do 87 j = 13, 16
 !                   exist(i,j) = 0.0
 !  87            continue
 ! !
-! ! dense shrubland 
+! ! dense shrubland
 ! !
 !             else if (inveg .eq. 11) then
 !                exist(i,9)  = 1.0
@@ -313,11 +314,11 @@ subroutine existence
 !                exist(i,11) = 1.0
 !                exist(i,12) = 1.0
 ! !
-!                do 88 j = 1, 8 
+!                do 88 j = 1, 8
 !                   exist(i,j) = 0.0
 !  88            continue
 ! !
-!                do 89 j = 13, 16 
+!                do 89 j = 13, 16
 !                   exist(i,j) = 0.0
 !  89            continue
 ! !
@@ -325,23 +326,23 @@ subroutine existence
 ! !
 !             else if (inveg .eq. 12) then
 ! !
-!                do 90 j = 9, 12 
+!                do 90 j = 9, 12
 !                   exist(i,j) = 1.0
 !  90            continue
 ! !
-!                do 91 j = 1, 8 
+!                do 91 j = 1, 8
 !                   exist(i,j) = 0.0
 !  91            continue
 ! !
-!                do 92 j = 13, 16 
+!                do 92 j = 13, 16
 !                   exist(i,j) = 0.0
 !  92            continue
 ! !
-! ! tundra 
+! ! tundra
 ! !
 !             else if (inveg .eq. 13) then
 ! !
-!                do 93 j = 9, 12 
+!                do 93 j = 9, 12
 !                   exist(i,j) = 1.0
 !  93            continue
 ! !
@@ -349,7 +350,7 @@ subroutine existence
 !                   exist(i,j) = 0.0
 !  94            continue
 ! !
-!                do 95 j = 13, 16 
+!                do 95 j = 13, 16
 !                   exist(i,j) = 0.0
 !  95            continue
 !             endif
@@ -364,7 +365,7 @@ subroutine existence
 !   but if landusetype >= 2 then some pfts may not be allowed to exist
 
 ! if a point has landusetype "cropland" (2) and a specific croptype, then only the crop pft can exist
-! else (because croptype is not known or landusetype is pasture/urban), use values in landusepftmap 
+! else (because croptype is not known or landusetype is pasture/urban), use values in landusepftmap
 !   (which is built from the last table in params/vegetation)
 
          if ( landusetype(i) .gt. 1 ) then

@@ -285,12 +285,13 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
-
+                  gddfzplm(i)=0.0
+                  gddfzplm(i)=0.0
                else if (exist(i,13).eq.0.and.j.eq.13) then
-	          gddsoy(i,iyear-iyear0+5)=0.0
-	       endif
+	                gddsoy(i,iyear-iyear0+5)=0.0
+	             endif
 !
-	       if (exist(i,14).eq.1.and.j.eq.14) then
+	             if (exist(i,14).eq.1.and.j.eq.14) then
                   gddcorn(i,iyear-iyear0+5) = gddfzcorn(i)
                   consdays(i)=0
                   iniday(i)=9999
@@ -299,12 +300,12 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
+                  gddfzplm(i)=0.0
+              else if (exist(i,14).eq.0.and.j.eq.14) then
+                gddcorn(i,iyear-iyear0+5)=0.0
+              endif
 
-               else if (exist(i,14).eq.0.and.j.eq.14) then
-                  gddcorn(i,iyear-iyear0+5)=0.0
-               endif
-!
-	       if (exist(i,16).eq.1.and.j.eq.16) then
+              if (exist(i,16).eq.1.and.j.eq.16) then
                   gddsgc(i,iyear-iyear0+5)  = gddfzsgc(i)
                   consdays(i)=0
                   iniday(i)=9999
@@ -313,16 +314,31 @@ subroutine daily (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
-!
-               else if (exist(i,16).eq.0.and.j.eq.16) then
+                  gddfzplm(i)=0.0
+              else if (exist(i,16).eq.0.and.j.eq.16) then
                   gddsgc(i,iyear-iyear0+5)=0.0
-               endif
+              endif
+
+              if (exist(i,14).eq.1.and.j.eq.14) then
+                 gddcorn(i,iyear-iyear0+5) = gddfzcorn(i)
+                 consdays(i)=0
+                 iniday(i)=9999
+                 maxcons(i)=0
+                 gsdays(i)=0
+                 gddfzcorn(i)=0.0
+                 gddfzsoy(i)=0.0
+                 gddfzsgc(i)=0.0
+                 gddfzplm(i)=0.0
+             else if (exist(i,14).eq.0.and.j.eq.14) then
+                 gddplm(i,iyear-iyear0+5)=0.0
+             endif
 !
-               if (croplive(i,j) .eq. 0 ) then
-                  gddplant(i,j)   = 0.0
-                  gddtsoi(i,j)    = 0.0
-               endif
-            endif
+             if (croplive(i,j) .eq. 0 ) then
+                gddplant(i,j)   = 0.0
+                gddtsoi(i,j)    = 0.0
+             endif
+
+           endif
          enddo
       enddo
 !
@@ -1138,6 +1154,7 @@ endif
           daygddc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14))))
           daygdds(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13))))
           daygddsgc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16))))
+          daygddplm(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(17))))
 
 !
          else
@@ -1150,7 +1167,7 @@ endif
                iniday(i) = cdays (i)
                maxcons(i) = 1
             elseif (iniday(i) .eq. 0) then
-	       iniday(i)=1
+	             iniday(i)=1
             endif
                endday(i) = iniday(i) + maxcons(i)-1
 
@@ -1158,7 +1175,8 @@ endif
 
              gddfzcorn(i) =  gddfzcorn(i) + daygddc(1,cdays(i))
              gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,cdays(i))
-             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,cdays(i))
+             gddfzsgc(i)  =  gddfzsgc(i)  + daygddsgc(1,cdays(i))
+             gddfzplm(i)  =  gddfzplm(i)  + daygddplm(1,cdays(i))
              gsdays(i) = gsdays(i) + 1
 
 
@@ -1174,8 +1192,9 @@ endif
 
              gddfzcorn(i) = 0.
              gddfzsoy(i)  = 0.
-             gddfzsgc(i) =  0.
-             gsdays(i) =    0.
+             gddfzsgc(i)  = 0.
+             gddfzplm(i)  = 0.
+             gsdays(i)    = 0.
 
 
 
@@ -1183,7 +1202,8 @@ endif
 
              gddfzcorn(i) =  gddfzcorn(i) + daygddc(1,cdays(i))
              gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,cdays(i))
-             gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,cdays(i))
+             gddfzsgc(i)  =  gddfzsgc(i)  + daygddsgc(1,cdays(i))
+             gddfzplm(i)  =  gddfzplm(i)  + daygddplm(1,cdays(i))
              gsdays(i) = gsdays(i) + 1
 !
 !
@@ -1198,7 +1218,7 @@ endif
 ! be careful with rotations
 !
 
-       if (croplive(i,j).eq.1.0.and.((j.eq.13.or.j.eq. 14.or.j.eq. 16) &
+       if (croplive(i,j).eq.1.0.and.((j.eq.13 .or. j.eq.14 .or. j.eq.16 .or. j.eq.17) &
              .or.    (iwheattype .eq. 1 .and. j .eq. 15))) then
 !
              gddplant(i,j) = gddplant(i,j) + max(0.0, min(td(i) &
@@ -1225,12 +1245,12 @@ endif
 
 	if(j.eq.16) then
 
-	  ik(i)=ik(i)+1
+	 ik(i)=ik(i)+1
 	 if(cropy(i).eq.1.and.idpp(i,j).eq.1) then
 !	 print*,'GDD_start',i,iyear,jday
-         gddpl15(i)=0
-	 ik(i)=1
-	endif
+      gddpl15(i)=0
+	    ik(i)=1
+	 endif
 
        if (ik(i).le.(mxmat(16)-30)) then
        gddpl15(i)= gddpl15(i) + max(0.0, min(td(i)- baset(j), mxtmp(j)))

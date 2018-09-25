@@ -10,7 +10,7 @@ subroutine iniveg (isimveg, irestart)
       use inland_comveg
       use inland_compft
       use inland_combgc
-      
+
       implicit none
 !-----------------------------Arguments---------------------------------
 ! Input arguments
@@ -20,10 +20,10 @@ subroutine iniveg (isimveg, irestart)
 ! local variables
       integer npts,    &
               ideci,   &    ! # deciduous plant functional types (pft)
-              ievgr,   &    ! # evergreen pft 
-              ishrub,  &    ! # shrub pft 
+              ievgr,   &    ! # evergreen pft
+              ishrub,  &    ! # shrub pft
               igrass,  &    ! # herbaceous pft
-              icrop,   &    ! # cropland pft 
+              icrop,   &    ! # cropland pft
               ilower,  &    ! possible # pft for lower canopy
               iupper        ! possible # pft for upper canopy
 
@@ -45,9 +45,9 @@ subroutine iniveg (isimveg, irestart)
       if (irestart .eq. 0) then
              agddu(:) = 1000.0
              agddl(:) = 1000.0
-             cntops(:,:) = 40.0 
+             cntops(:,:) = 40.0
              cnrootvec(:,:) = cnroot
-             tnplant(:,:) = 0.0 
+             tnplant(:,:) = 0.0
              harvdate(:,:) = 999
 ! initialize the moisture stress factors
          stresstu(:) = 1.0
@@ -78,7 +78,7 @@ subroutine iniveg (isimveg, irestart)
          a10td(:) = 293.16
 #endif /* SINGLE_POINT_MODEL */
 
-! initialize running-mean values of canopy photosynthesis rates 
+! initialize running-mean values of canopy photosynthesis rates
 ! if not restart
          a10ancub(:) = 10.0e-06
          ! It is said a10ancuc is not being used, so its commented out - fzm
@@ -103,7 +103,7 @@ subroutine iniveg (isimveg, irestart)
          gdd0this(:) = 0.
          gdd5this(:) = 0.
          tcthis(:) = 100.
-         twthis(:) = - 100.        
+         twthis(:) = - 100.
       endif
 
       do 100 i = lbeg, lend
@@ -154,7 +154,7 @@ subroutine iniveg (isimveg, irestart)
 !
 ! determine number of crop functional types
          if (nint(exist(i,13)).eq.1) then
-            icrop = icrop + 1   ! soybean 
+            icrop = icrop + 1   ! soybean
             if(irestart .eq. 0) then
                croplive(i,13) = 0.0
             endif !end irestart
@@ -175,6 +175,12 @@ subroutine iniveg (isimveg, irestart)
             icrop = icrop + 1   ! sugarcane
             if(irestart .eq. 0) then
                croplive(i,16) = 0.0
+            endif!end irestart
+         endif
+         if (nint(exist(i,17)).eq.1) then
+            icrop = icrop + 1   ! sugarcane
+            if(irestart .eq. 0) then
+               croplive(i,17) = 0.0
             endif!end irestart
          endif
 
@@ -245,13 +251,15 @@ subroutine iniveg (isimveg, irestart)
 ! 11: warm (c4) grasses
 ! 12: cool (c3) grasses
 ! 13: soybean
-! 14: maize 
-! 15: winter and spring wheat 
+! 14: maize
+! 15: winter and spring wheat
+! 16: Sugarcane
+! 17: Oil palm
 ! ---------------------------------------------------
 !*** David Price 2001/05/25. The following code replaces the 450+
 !    lines defining plai for each vegtype. Note that values of plai_init are read in as
 !    parameters from params.veg. Note also that the declarations
-!    of the four local variables plaievgr, plaideci, plaishrub 
+!    of the four local variables plaievgr, plaideci, plaishrub
 !    and plaigrass have been dropped.
                plai(i,1)  = exist(i,1)  / float(ievgr)  * plai_init(1,inveg)
                plai(i,2)  = exist(i,2)  / float(ideci)  * plai_init(2,inveg)
@@ -277,6 +285,7 @@ subroutine iniveg (isimveg, irestart)
                plai(i,14) = 0.0  ! maize
                plai(i,15) = 0.0  ! wheat
                plai(i,16) = 0.0  ! sugarcane
+               plai(i,17) = 0.0  ! oil palm
 #endif /* SINGLE_POINT_MODEL */
             endif !isimveg.eq.0 .or. isimveg.eq.1
 
@@ -299,11 +308,12 @@ subroutine iniveg (isimveg, irestart)
                plai(i,10) = exist(i,10) / float(ilower) * plailower
                plai(i,11) = exist(i,11) / float(ilower) * plailower
                plai(i,12) = exist(i,12) / float(ilower) * plailower
-#ifndef SINGLE_POINT_MODEL 
+#ifndef SINGLE_POINT_MODEL
                plai(i,13) = exist(i,13) / float(ilower) * plailower
                plai(i,14) = exist(i,14) / float(ilower) * plailower
                plai(i,15) = exist(i,15) / float(ilower) * plailower
                plai(i,16) = exist(i,16) / float(ilower) * plailower
+               plai(i,17) = exist(i,17) / float(ilower) * plailower
 #endif /* SINGLE_POINT_MODEL */
             endif
 
@@ -324,11 +334,12 @@ subroutine iniveg (isimveg, irestart)
             plai(i,10) = max (plai(i,10), exist(i,10) * xminlai)
             plai(i,11) = max (plai(i,11), exist(i,11) * xminlai)
             plai(i,12) = max (plai(i,12), exist(i,12) * xminlai)
-#ifndef SINGLE_POINT_MODEL 
+#ifndef SINGLE_POINT_MODEL
             plai(i,13) = max (plai(i,13), exist(i,13) * xminlai)
             plai(i,14) = max (plai(i,14), exist(i,14) * xminlai)
             plai(i,15) = max (plai(i,15), exist(i,15) * xminlai)
             plai(i,16) = max (plai(i,16), exist(i,16) * xminlai)
+            plai(i,17) = max (plai(i,17), exist(i,17) * xminlai)
 #endif /* SINGLE_POINT_MODEL */
 
 ! set sapwood fraction and biomass characteristics
@@ -344,11 +355,11 @@ subroutine iniveg (isimveg, irestart)
                cbios(i,j) = 0.0
                cbiog(i,j) = 0.0
             endif
-           
+
 !
                if (j.lt.9) cbiow(i,j) = plai(i,j) * 10.0 / 6.0
 #ifdef SINGLE_POINT_MODEL
-! FIXME: Explain why this value is forced and hardcoded to the model. 
+! FIXME: Explain why this value is forced and hardcoded to the model.
 !       Should this change be used to the 2D model as well? -fzm
                if (j.eq.1) cbiow(i,j) = 18.5 * 5/6
                if (j.eq.2) cbiow(i,j) = 18.5 * 1/6
@@ -376,18 +387,20 @@ subroutine iniveg (isimveg, irestart)
 ! total leaf area for upper and lower canopies
             totlaiu(i)  =  plai(i,1) + plai(i,2) + plai(i,3) + plai(i,4) + &
                            plai(i,5) + plai(i,6) + plai(i,7) + plai(i,8)
-#ifndef SINGLE_POINT_MODEL 
+#ifndef SINGLE_POINT_MODEL
             totlail(i)  =  plai(i,9) + plai(i,10) + plai(i,11) + plai(i,12) + &
-                           plai(i,13) + plai(i,14) + plai(i,15) + plai(i,16)
+                           plai(i,13) + plai(i,14) + plai(i,15) + plai(i,16)+ &
+                           plai(i,17)
 #else
             totlail(i)  =  plai(i,9) + plai(i,10) + plai(i,11) + plai(i,12)
 #endif /* SINGLE_POINT_MODEL */
 
             totbiou(i)  = biomass(i,1)+biomass(i,2)+biomass(i,3)+biomass(i,4) + &
                           biomass(i,5)+biomass(i,6)+biomass(i,7)+biomass(i,8)
-#ifndef SINGLE_POINT_MODEL 
+#ifndef SINGLE_POINT_MODEL
             totbiol(i)  = biomass(i,9)+biomass(i,10)+biomass(i,11)+biomass(i,12) + &
-                          biomass(i,13)+biomass(i,14)+biomass(i,15)+biomass(i,16)
+                          biomass(i,13)+biomass(i,14)+biomass(i,15)+biomass(i,16)+ &
+                          biomass(i,17)
 #else
             totbiol(i)  = biomass(i,9)+biomass(i,10)+biomass(i,11)+biomass(i,12)
 
@@ -416,7 +429,7 @@ subroutine iniveg (isimveg, irestart)
 ! TODO: it may be desired on 0D version (single point input), to fix these
 !     values to a defined (previously observed) value set. For instance, on the
 !     2D version, the calculations must be dynamical.
- 
+
           if(croptype(i) .lt. scpft)then
 
             zbot(i,1) = 0.05
@@ -435,7 +448,7 @@ subroutine iniveg (isimveg, irestart)
 !            ztop(i,2) = 35.0
 #endif /* SINGLE_POINT_MODEL */
 
-! constrain ztop to be at least 0.5 meter lower than 
+! constrain ztop to be at least 0.5 meter lower than
 ! zbot for upper canopy
             ztop(i,1) = min (ztop(i,1), zbot(i,2) - 0.5)
 
@@ -444,11 +457,11 @@ subroutine iniveg (isimveg, irestart)
              zbot(i,1) =  0.01
              ztop(i,1) =  0.50
 
-! constrain ztop to be at least 0.5 meter lower than 
+! constrain ztop to be at least 0.5 meter lower than
 ! zbot for upper canopy
 
             ztop(i,2) =  5.0  !to match the tower, wind
-          
+
          end if !end agro
 
 ! ************************************************************************
@@ -465,11 +478,13 @@ subroutine iniveg (isimveg, irestart)
                totlaiu(i) = plai(i,1) + plai(i,2) + plai(i,3) + plai(i,4) + &
                             plai(i,5) + plai(i,6) + plai(i,7) + plai(i,8)
                totlail(i) = plai(i,9) + plai(i,10) + plai(i,11) + plai(i,12)+ &
-                            plai(i,13) + plai(i,14) + plai(i,15) + plai(i,16)
+                            plai(i,13) + plai(i,14) + plai(i,15) + plai(i,16)+ &
+                            plai(i,17)
                totbiou(i) = biomass(i,1)+biomass(i,2)+biomass(i,3)+biomass(i,4)+ &
                             biomass(i,5)+biomass(i,6)+biomass(i,7)+biomass(i,8)
                totbiol(i) = biomass(i,9)+biomass(i,10)+biomass(i,11)+biomass(i,12)+ &
-                            biomass(i,13)+biomass(i,14)+biomass(i,15)+biomass(i,16)
+                            biomass(i,13)+biomass(i,14)+biomass(i,15)+biomass(i,16)+ &
+                            biomass(i,17)
 
 ! initial single-sided sai for upper and lower canopies
                sai(i,1) = 0.050 * totlail(i)
@@ -485,7 +500,7 @@ subroutine iniveg (isimveg, irestart)
                zbot(i,2) = 3.0
                ztop(i,2) = max(zbot(i,2) + 1.00, 2.50 * totbiou(i) / fu(i) * 0.75)
 
-! constrain ztop to be at least 0.5 meter lower than 
+! constrain ztop to be at least 0.5 meter lower than
 ! zbot for upper canopy
                ztop(i,1) = min (ztop(i,1), zbot(i,2) - 0.5)
 
@@ -494,11 +509,11 @@ subroutine iniveg (isimveg, irestart)
                zbot(i,1) =  0.01
                ztop(i,1) =  0.50
 
-! constrain ztop to be at least 0.5 meter lower than 
+! constrain ztop to be at least 0.5 meter lower than
 ! zbot for upper canopy
 
                ztop(i,2) =  5.0  !to match the tower, wind
-          
+
            endif !end isimagro
 
          end if  ! end restart if loop
@@ -512,7 +527,7 @@ subroutine iniveg (isimveg, irestart)
     if(isimagro .gt. 0)then
         chifuz = 0.65  !Pousa - this value was declared to compare with Agro-IBIS
       if (iwheattype .gt. 0) then
-        chiflz = 0.65 
+        chiflz = 0.65
       else
         chiflz = -0.2        ! leaf orientation factors (-1 vertical, 0 random, 1 horizontal)
       endif
@@ -598,7 +613,7 @@ subroutine iniveg (isimveg, irestart)
 
 ! Kai modify for total soil depth of any depth totdepth
      dru = min(totdepth, alog(0.003)/dlog(beta2))   ! Kai NOTE dlog double precision natural log
-     drl = min(totdepth, alog(0.003)/dlog(beta1))   ! Kai NOTE 
+     drl = min(totdepth, alog(0.003)/dlog(beta1))   ! Kai NOTE
 !
 
 ! normalization factors
@@ -621,4 +636,3 @@ subroutine iniveg (isimveg, irestart)
 400   continue
       return
 end subroutine iniveg
-

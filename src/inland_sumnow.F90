@@ -21,7 +21,7 @@ subroutine sumnow(kpti, kptj)
       implicit none
 !------------------------------Arguments--------------------------------
 ! Input arguments
-      integer kpti    ! index of 1st point of little vector 
+      integer kpti    ! index of 1st point of little vector
                       ! in big lpt vector
       integer kptj    ! index of last point of little vector
 !------------------------------Local variables-------------------------
@@ -54,7 +54,7 @@ subroutine sumnow(kpti, kptj)
 ! initially, we pick values for respiration coefficients that
 ! defined in units of  / year
 !
-!   rwood ~ 0.0125 
+!   rwood ~ 0.0125
 !   rroot ~ 1.2500
 !
 ! however, we convert the unitsconvert to have resulting respiration
@@ -88,13 +88,13 @@ subroutine sumnow(kpti, kptj)
 !
 ! 5-day time averaging factor
 !
-      zweight5 = exp(-1. / (5.0 * workday)) 
+      zweight5 = exp(-1. / (5.0 * workday))
 !
   endif
 
 !Commented by Pousa, it doesn' necessary
-! factors for instantaneous NEE 
-!      rwork = 1./(ndaypy * 86400.0 * 12.e-3 )     
+! factors for instantaneous NEE
+!      rwork = 1./(ndaypy * 86400.0 * 12.e-3 )
 !      xminlai =  0.010
 
 ! begin global grid
@@ -115,13 +115,13 @@ subroutine sumnow(kpti, kptj)
 
 ! note that the following plants types follow different physiological paths
 !
-!   - broadleaf trees   :  types 1, 2, 3, 5, 7, 8 
+!   - broadleaf trees   :  types 1, 2, 3, 5, 7, 8
 !   - conifer   trees   :  types 4, 6
 !   - shrubs            :  types 9, 10
 !   - c4 grasses        :  type 11
 !   - c3 grasses        :  type 12
-!   - c3 crops          :  soybean, wheat (type 13, 15) 
-!   - c4 crops          :  maize and sugarcane (type 14, 16)  
+!   - c3 crops          :  soybean, wheat (type 13, 15)
+!   - c4 crops          :  maize and sugarcane (type 14, 16)
 !
 ! note that plant type 8 is actually a deciduous conifer (e.g., Larix), but
 ! we are assuming that it's physiological behavior is like a broadleaf tree
@@ -136,7 +136,7 @@ subroutine sumnow(kpti, kptj)
          nppdummy(i,6)  = frac(i,6)  * ancuc(i) * lai(i,2) * fu(i)
          nppdummy(i,7)  = frac(i,7)  * ancub(i) * lai(i,2) * fu(i)
          nppdummy(i,8)  = frac(i,8)  * ancub(i) * lai(i,2) * fu(i)
-         nppdummy(i,9)  = frac(i,9)  * ancls(i) * lai(i,1) * fl(i) * smask 
+         nppdummy(i,9)  = frac(i,9)  * ancls(i) * lai(i,1) * fl(i) * smask
          nppdummy(i,10) = frac(i,10) * ancls(i) * lai(i,1) * fl(i) * smask
          nppdummy(i,11) = frac(i,11) * ancl4(i) * lai(i,1) * fl(i) * smask
          nppdummy(i,12) = frac(i,12) * ancl3(i) * lai(i,1) * fl(i) * smask
@@ -147,11 +147,12 @@ subroutine sumnow(kpti, kptj)
          nppdummy(i,14) = frac(i,14) * ancc4(i) * lai(i,1) * fl(i) * smask
          nppdummy(i,15) = frac(i,15) * ancc3(i) * lai(i,1) * fl(i) * smask
          nppdummy(i,16) = frac(i,16) * ancc4(i) * lai(i,1) * fl(i) * smask
+         nppdummy(i,17) = frac(i,17) * ancc4(i) * lai(i,1) * fl(i) * smask
        endif
 #endif /* SINGLE_POINT_MODEL */
 
 ! Navin's correction to compute npp using tgpp via agXXX
-! agXXX should be used 
+! agXXX should be used
          tgpp(i,1)  = frac(i,1)  * agcub(i) * lai(i,2) * fu(i)
          tgpp(i,2)  = frac(i,2)  * agcub(i) * lai(i,2) * fu(i)
          tgpp(i,3)  = frac(i,3)  * agcub(i) * lai(i,2) * fu(i)
@@ -160,7 +161,7 @@ subroutine sumnow(kpti, kptj)
          tgpp(i,6)  = frac(i,6)  * agcuc(i) * lai(i,2) * fu(i)
          tgpp(i,7)  = frac(i,7)  * agcub(i) * lai(i,2) * fu(i)
          tgpp(i,8)  = frac(i,8)  * agcub(i) * lai(i,2) * fu(i)
-         tgpp(i,9)  = frac(i,9)  * agcls(i) * lai(i,1) * fl(i) * smask 
+         tgpp(i,9)  = frac(i,9)  * agcls(i) * lai(i,1) * fl(i) * smask
          tgpp(i,10) = frac(i,10) * agcls(i) * lai(i,1) * fl(i) * smask
          tgpp(i,11) = frac(i,11) * agcl4(i) * lai(i,1) * fl(i) * smask
          tgpp(i,12) = frac(i,12) * agcl3(i) * lai(i,1) * fl(i) * smask
@@ -169,6 +170,7 @@ subroutine sumnow(kpti, kptj)
          tgpp(i,14) = frac(i,14) * agcc4(i) * lai(i,1) * fl(i) * smask
          tgpp(i,15) = frac(i,15) * agcc3(i) * lai(i,1) * fl(i) * smask
          tgpp(i,16) = frac(i,16) * agcc4(i) * lai(i,1) * fl(i) * smask
+         tgpp(i,17) = frac(i,17) * agcc3(i) * lai(i,1) * fl(i) * smask
        endif
 
 ! calculate total gridcell gpp
@@ -217,13 +219,13 @@ subroutine sumnow(kpti, kptj)
 !   wood respiration = rwood * cbiow(i,k) * funca * sapwood fraction
 !
 ! where
-! 
+!
 !   funca = temperature function for aboveground biomass (stems)
 !   funcb = temperature function for belowground biomass (roots)
 !
 ! note that we assume the sapwood fraction for shrubs is 1.0
 !
-! also note that we apply growth respiration, (1 - rgrowth), 
+! also note that we apply growth respiration, (1 - rgrowth),
 ! throughout the year; this may cause problems when comparing
 ! these npp values with flux tower measurements
 !
@@ -231,7 +233,7 @@ subroutine sumnow(kpti, kptj)
 ! root biomass from kilograms of carbon to moles of carbon
 ! to maintain consistent units (done in rwood, rroot)
 !
-! finally, note that growth respiration is only applied to 
+! finally, note that growth respiration is only applied to
 ! positive carbon gains (i.e., when gpp-rmaint is positive)
          tnpp(i,1)  = nppdummy(i,1) - rwood * cbiow(i,1) * sapfrac(i) * funca -&
                       rroot * cbior(i,1) * funcb
@@ -261,9 +263,10 @@ subroutine sumnow(kpti, kptj)
          tnpp(i,14) = nppdummy(i,14) - rroot * cbior(i,14) * funcb
          tnpp(i,15) = nppdummy(i,15) - rroot * cbior(i,15) * funcb
          tnpp(i,16) = nppdummy(i,16) - rroot * cbior(i,16) * funcb
+         tnpp(i,17) = nppdummy(i,17) - rroot * cbior(i,17) * funcb
 
 !FIXME Variable below is not being used anywere else
-!      	  rootr(i) = rroot * cbior(i,16) * funcb   !sugarcane 
+!      	  rootr(i) = rroot * cbior(i,16) * funcb   !sugarcane
        endif
 #endif /* SINGLE_POINT_MODEL */
 ! Apply existence array from previous year to have coherent instanteneous nee and yearly nee.
@@ -350,7 +353,7 @@ subroutine sumnow(kpti, kptj)
 ! 10-day minimimum daily temperature average -- used to help determine
 ! planting dates of crops.  If both the daily average temperature
 ! (10-day mean) > 8 C and the 10-day minimum temperature average
-! is > 0 C, then soybean and maize crops are allowed to be planted. 
+! is > 0 C, then soybean and maize crops are allowed to be planted.
 !
         a5tmin(i)  = zweight5 * a5tmin(i) + (1. - zweight5) * tmin(i)
         a10tmin(i) = zweight  * a10tmin(i)+ (1. - zweight)  * tmin(i)

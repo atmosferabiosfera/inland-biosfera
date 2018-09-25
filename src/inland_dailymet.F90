@@ -168,6 +168,7 @@
            gddfzcorn(i)=0.0
            gddfzsoy(i)=0.0
            gddfzsgc(i)=0.0
+           gddplm(i,iyear)=0.0
 	else
 	   gddsoy(i,iyear)=0.0
 	endif
@@ -181,6 +182,7 @@
           gddfzcorn(i)=0.0
           gddfzsoy(i)=0.0
           gddfzsgc(i)=0.0
+          gddplm(i,iyear)=0.0
 	else
           gddcorn(i,iyear)=0.0
 	endif
@@ -194,8 +196,23 @@
           gddfzcorn(i)=0.0
           gddfzsoy(i)=0.0
           gddfzsgc(i)=0.0
+          gddplm(i,iyear)=0.0
 	else
 	  gddsgc(i,iyear)=0.0
+	endif
+
+  if(exist(i,17).eq.1.and.j.eq.17) then
+          gddsgc(i,iyear)  = gddfzsgc(i)
+          consdays(i)=0
+          iniday(i)=9999
+          maxcons(i)=0
+          gsdays(i)=0
+          gddfzcorn(i)=0.0
+          gddfzsoy(i)=0.0
+          gddfzsgc(i)=0.0
+          gddplm(i,iyear)=0.0
+	else
+	  gddplm(i,iyear)=0.0
 	endif
 
         if(croplive(i,j) .eq. 0 ) then
@@ -258,6 +275,7 @@
            daygddc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(14))))
            daygdds(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(13))))
            daygddsgc(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(16))))
+           daygddplm(1,cdays(i)) = min(30.0,max(0.0, (td(i) - baset(17))))
 !
         else
            daygddc(1,cdays(i)) = 0
@@ -285,6 +303,8 @@
              gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,k)
 
              gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,k)
+             gddfzplm(i) =  gddfzplm(i)   + daygddplm(1,k)
+
              gsdays(i) = gsdays(i) + 1
 
 125     continue
@@ -300,6 +320,7 @@
              gddfzcorn(i) = 0
              gddfzsoy(i)  = 0
              gddfzsgc(i) =  0
+             gddfzplm(i) =  0
              gsdays(i) =    0
 
           do  k = iniday(i), endday(i)
@@ -307,6 +328,7 @@
              gddfzcorn(i) =  gddfzcorn(i) + daygddc(1,k)
              gddfzsoy(i)  =  gddfzsoy(i)  + daygdds(1,k)
              gddfzsgc(i) =  gddfzsgc(i)   + daygddsgc(1,k)
+             gddfzplm(i) =  gddfzplm(i)   + daygddplm(1,k)
              gsdays(i) = gsdays(i) + 1
          enddo
         endif

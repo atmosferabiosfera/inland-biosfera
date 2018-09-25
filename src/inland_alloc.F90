@@ -379,7 +379,7 @@ subroutine alloc(irestart)
 
 ! Allocate variables in comcrop
       allocate 	(xirrig(lbeg:lend), xirriga(lbeg:lend), totirrig(lbeg:lend), df(lbeg:lend), vf(lbeg:lend), &
-                cumvd(lbeg:lend), hdidx(lbeg:lend), gddfzcorn(lbeg:lend), gddfzsgc(lbeg:lend),             &
+                cumvd(lbeg:lend), hdidx(lbeg:lend), gddfzcorn(lbeg:lend), gddfzsgc(lbeg:lend), gddfzplm(lbeg:lend),  &
                 gddfzsoy(lbeg:lend), gddfzwht(lbeg:lend), conspdate(lbeg:lend), conshybrid(lbeg:lend),     &
                 cdays(lbeg:lend), ncyears(lbeg:lend), cropy(lbeg:lend), ik(lbeg:lend), gddpl15(lbeg:lend), &
                 gddemerg(lbeg:lend), rm(lbeg:lend), consdays(lbeg:lend),              &
@@ -394,6 +394,7 @@ subroutine alloc(irestart)
       hdidx(:) = 0.
       gddfzcorn(:) = 0.
       gddfzsgc(:) = 0.
+      gddfzsoy(:) = 0.
       gddfzsoy(:) = 0.
       gddfzwht(:) = 0.
       conspdate(:) = 0.
@@ -420,7 +421,8 @@ subroutine alloc(irestart)
       allocate (corndop(1,nrun+5), sgcdop(1,nrun+5), soydop(1,nrun+5), plmdop(1,nrun+5),   &
                whtdop(1,nrun+5), gddcorn(lbeg:lend,nrun+5), gddsgc(lbeg:lend,nrun+5),      &
                gddsgcp(lbeg:lend,2), gddsoy(lbeg:lend,nrun+5), gddwht(lbeg:lend,nrun+5),   &
-               daygddc(1, 366), daygddsgc(1, 366), daygdds(1, 366))
+               gddplm(lbeg:lend,nrun+5), daygddc(1, 366), daygddsgc(1, 366), daygdds(1, 366), &
+               daygddplm(1,366))
 
       corndop(:,:) = 0.
       sgcdop(:,:) = 0.
@@ -432,8 +434,10 @@ subroutine alloc(irestart)
       gddsgcp(:,:) = 0.
       gddsoy(:,:) = 0.
       gddwht(:,:) = 0.
+      gddplm(:,:) = 0.
       daygddc(:,:) = 0.
       daygddsgc(:,:) = 0.
+      daygddplm(:,:) = 0.
       daygdds(:,:) = 0.
 
 

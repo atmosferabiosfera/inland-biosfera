@@ -230,7 +230,7 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
-
+                  gddfzplm(i)=0.0
                else if (exist(i,13).eq.0.and.j.eq.13) then
 	          gddsoy(i,iyear-iyear0+5)=0.0
 	       endif
@@ -244,7 +244,7 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
-
+                  gddfzplm(i)=0.0
                else if (exist(i,14).eq.0.and.j.eq.14) then
                   gddcorn(i,iyear-iyear0+5)=0.0
                endif
@@ -258,10 +258,24 @@ subroutine dailymon (seed, seed2,seed3,seed4, jdaily, iyrlast, nrun)
                   gddfzcorn(i)=0.0
                   gddfzsoy(i)=0.0
                   gddfzsgc(i)=0.0
-!
+                  gddfzplm(i)=0.0
                else if (exist(i,16).eq.0.and.j.eq.16) then
                   gddsgc(i,iyear-iyear0+5)=0.0
                endif
+
+               if (exist(i,17).eq.1.and.j.eq.17) then
+                        gddsgc(i,iyear-iyear0+5)  = gddfzsgc(i)
+                        consdays(i)=0
+                        iniday(i)=9999
+                        maxcons(i)=0
+                        gsdays(i)=0
+                        gddfzcorn(i)=0.0
+                        gddfzsoy(i)=0.0
+                        gddfzsgc(i)=0.0
+                        gddfzplm(i)=0.0
+    else if (exist(i,17).eq.0.and.j.eq.17) then
+                        gddplm(i,iyear-iyear0+5)=0.0
+                     endif
 !
                if (croplive(i,j) .eq. 0 ) then
                   gddplant(i,j)   = 0.0

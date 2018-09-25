@@ -30,7 +30,8 @@ module inland_comcrop
                                            totirrig, df, vf, cumvd, hdidx, gddfzcorn, &
                                            gddfzsgc, gddfzsoy, gddfzwht, conspdate,   &
                                            conshybrid, ncyears, cropy, ik, gddpl15,   &
-                                           gddemerg, rm, croptype, plmaleafmat
+                                           gddemerg, rm, croptype, plmaleafmat,       &
+                                           gddfzplm
 
 !
 !            consdays(npoi),        ! counter keeping track of number of days between freezing events
@@ -46,6 +47,7 @@ module inland_comcrop
 !            gddfzcorn(npoi),       ! seasonal gdd (base 8 C) in between last freeze and first freeze
 !            gddfzsgc(npoi),        ! seasonal gdd (base 12 C) in between last freeze and first freeze
 !            gddfzsoy(npoi),        ! seasonal gdd (base 10 C) in between last freeze and first freeze
+!            gddfzplm(npoi),        ! seasonal gdd (base 11 C) in between last freeze and first freeze
 !            gddfzwht(npoi),        ! seasonal gdd (base 0 C) in between last freeze and first freeze
 !            conspdate(npoi),       ! constant planting date based on specified time period
 !            conshybrid(npoi),      ! constant hybrid (gdd) based on specified time period
@@ -99,6 +101,7 @@ module inland_comcrop
                 cnmax,          &   ! maximum allowable residue c/n ratio
                 gnmin,          &   !
                 smax,           &   ! maximum value stressn can have
+                ztopmxplm,      &   ! maximum height of oil palm canopy
                 ztopmxsgc,      &   ! maximum height of sugar cane canopy
                 ztopmxsoy,      &   ! maximum height of soybean canopy
                 ztopmxwht,      &   ! maximum height of wheat canopy
@@ -138,7 +141,7 @@ module inland_comcrop
 !
       real*8, dimension(:,:), allocatable :: corndop, sgcdop, soydop, whtdop, plmdop, &
                                              gddcorn, gddsgc, gddsgcp, gddsoy, gddwht,&
-                                             daygddc, daygddsgc,            &
+                                             daygddc, daygddsgc, daygddplm, gddplm,   &
                                              daygdds
 
 !                                             fertmaize, fertsgc, fertsoy, fertwheat, xinhybrid, xinpdate &
@@ -153,6 +156,7 @@ module inland_comcrop
 !            gddsgcp(npoi,2),       ! factor to get the hybrid planted for sugarcane plating, 1 and half year.
 !            gddsoy(npoi,2100),     ! hybrid planted for soy
 !            gddwht(npoi,2100),     ! hybrid planted for wheat
+!            gddplm(npoi,2100),     ! hybrid planted for oil palm
 !            fertmaize(npoi,100),   ! historical annual average N-fertilizer applied to maize   crops across US Mississippi basin (1950-00)
 !            fertsgc(npoi,100),     ! historical annual average N-fertilizer applied to sugarcane crops across US Mississippi basin (1950-00)
 !            fertsoy(npoi,100),     ! historical annual average N-fertilizer applied to soybean crops across US Mississippi Basin (1950-00)
@@ -160,6 +164,7 @@ module inland_comcrop
 !            ndepfact(npoi,100),    ! historical annual average N-deposition factor applied to equations in biogeochem.f          (1950-00)
 !            daygddc(npoi, 366),    ! gdd accumulation for each particular day of the year (corn)
 !            daygddsgc(npoi, 366),  ! gdd accumulation for each particular day of the year (sugarcane)
+!            daygddplm(npoi, 366),  ! gdd accumulation for each particular day of the year (oil palm)
 !            xinpdate(npoi, 100),   ! planting date input for corn
 !            daygdds(npoi, 366),    ! gdd accumulation for each particular day of the year (soy)
 !            daygddw(npoi, 366),    ! gdd accumulation for each particular day of the year (wheat)
