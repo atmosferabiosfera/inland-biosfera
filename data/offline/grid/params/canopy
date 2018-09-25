@@ -1,6 +1,6 @@
 # IBIS parameter set: ibis2.5      Set up by D.T. Price. 2001/03/20
 #
-# Modified to include several parameters used by Optis, the parameter 
+# Modified to include several parameters used by Optis, the parameter
 # optimizer for Inland
 # Optis will be distributed only in the second version of Inland
 #
@@ -8,20 +8,20 @@
 # canopy parameters....
 #========================================================================
 #
-# #, *, c, C, ! or / denote comments in this file. Input routine 
-# will ignore any text to the right of these symbols, anywhere they 
-# occur....  So feel free to comment freely! There are only two 
+# #, *, c, C, ! or / denote comments in this file. Input routine
+# will ignore any text to the right of these symbols, anywhere they
+# occur....  So feel free to comment freely! There are only two
 # rules to observe when placing data and comments in this file.
 # Rule 1: data must be in the correct order, as indicated below, but
 #         lines can be separated by blanks or comments and individual
-#         fields can be separated by blanks or line-ends any way you 
+#         fields can be separated by blanks or line-ends any way you
 #         like.
 # Rule 2: you MAY NOT join any consecutive lines of data. In general
 #         this is not a problem so long as the existing sequence of
-#         line-ends and commented separators is retained. In principle, 
+#         line-ends and commented separators is retained. In principle,
 #         you are free to remove comment lines, but if at a later date
 #         you attempt to join two consecutive lines of data, where the
-#         input routine is not expecting this, it *will* break the 
+#         input routine is not expecting this, it *will* break the
 #         program (though not irreparably).
 # Rule 3: THERE IS NO RULE 3!!!
 
@@ -29,7 +29,7 @@
 #------------------------------------------------------------------------
 # Fundamental plant physiological parameters, name definitions
 #------------------------------------------------------------------------
-c tau15 : co2/o2 specificity ratio at 15 degrees C (dimensionless)    
+c tau15 : co2/o2 specificity ratio at 15 degrees C (dimensionless)
 c kc15  : co2 kinetic parameter at 15 C (mol/mol)
 c ko15  : o2 kinetic parameter at 15 C (mol/mol)
 c cimax : maximum value for ci (for model stability)
@@ -42,11 +42,11 @@ c cimax : maximum value for ci (for model stability)
 #========================================================================
 
 #------------------------------------------------------------------------
-16    ! Number of PFTs in this parameter set   
+17    ! Number of PFTs in this parameter set
  8    ! Number of upper canopy (tree) PFTs in this set
 
 #------------------------------------------------------------------------
-# PFTs (Plant functional types) 
+# PFTs (Plant functional types)
 #------------------------------------------------------------------------
 c  1: tropical broadleaf evergreen trees
 c  2: tropical broadleaf drought-deciduous trees
@@ -64,6 +64,7 @@ c 13: soybean
 c 14: maize
 c 15: wheat
 c 16: sugarcane
+c 17: oil palm
 #========================================================================
 
 #--------------------------------------------------------------------
@@ -75,7 +76,7 @@ c 16: sugarcane
   0.990    ! betac3 - C3 photosynthesis coupling coefficient for C3 crops
   0.067    ! alpha4 - C4 intrinsic quantum efficiency (dimensionless)
   0.970    ! theta4 - C4 photosynthesis coupling coefficient
-  0.800    ! beta4  - C4 photosynthesis coupling coefficient 
+  0.800    ! beta4  - C4 photosynthesis coupling coefficient
   0.970    ! thetac4- C4 photosynthesis coupling coefficient for C4 crops
   0.800    ! betac4 - C4 photosynthesis coupling coef for C4 crops
   0.950    ! thetac3- C3 photosynthesis coupling coef for C3 crops
@@ -84,7 +85,7 @@ c 16: sugarcane
 #--------------------------------------------------------------------
 # Plant physiological properties - 5 classes
 #--------------------------------------------------------------------
-# gamma    : leaf respiration coefficients 
+# gamma    : leaf respiration coefficients
 # coefm    : 'm' coefficients for stomatal conductance relationship
 # coefb    : 'b' coefficients for stomatal conductance relationship
 # gsmin    : absolute minimum stomatal conductances
@@ -92,7 +93,7 @@ c 16: sugarcane
 # gamma  coefm  coefb    gsmin   Physiol. Class
 #-------------------------------------------------
   0.015   10.0   0.01  0.00001  ! Broadleaf trees
-  0.015    6.0   0.01  0.00001  ! Conifer trees 
+  0.015    6.0   0.01  0.00001  ! Conifer trees
   0.015    9.0   0.01  0.00001  ! Shrubs
   0.030    4.0   0.04  0.00001  ! C4 grasses
   0.015    9.0   0.01  0.00001  ! C3 grasses
@@ -104,7 +105,7 @@ c 16: sugarcane
 #--------------------------------------------------
 # Other properties of vegetation -- for 12 PFTs
 #--------------------------------------------------
-# vmax_pft : max Rubisco activity at 15 C, at top of canopy (mol[CO2] m-2 s-1) 
+# vmax_pft : max Rubisco activity at 15 C, at top of canopy (mol[CO2] m-2 s-1)
 # specla   : specific leaf area (m2 kg-1)
 # tauleaf  : foliar biomass turnover time constant (years)
 # tauroot  : root biomass turnover time constant (years for natural and DAYS for crops)
@@ -119,29 +120,30 @@ c 16: sugarcane
 #------------------------------------------------------------------------
 # vmax_pft  specla  tauleaf  tauroot tauwood0 aleaf  aroot  awood    PFT
 #------------------------------------------------------------------------
-  65.0e-06   25.0    1.01      1.0     25.0    0.30   0.20   0.50  !   1 
-  65.0e-06   25.0    1.00      1.0     25.0    0.30   0.20   0.50  !   2 
-  40.0e-06   25.0    1.00      1.0     25.0    0.30   0.20   0.50  !   3 
-  30.0e-06   12.5    2.00      1.0     50.0    0.30   0.40   0.30  !   4 
-  30.0e-06   25.0    1.00      1.0     50.0    0.30   0.20   0.50  !   5 
-  25.0e-06   12.5    2.50      1.0    100.0    0.30   0.40   0.30  !   6 
-  30.0e-06   25.0    1.00      1.0    100.0    0.30   0.20   0.50  !   7 
-  30.0e-06   25.0    1.00      1.0    100.0    0.30   0.20   0.50  !   8 
-  27.5e-06   12.5    1.50      1.0      5.0    0.45   0.40   0.15  !   9 
-  27.5e-06   25.0    1.00      1.0      5.0    0.45   0.35   0.20  !  10 
-  15.0e-06   20.0    1.25      1.0    999.0    0.45   0.55   0.00  !  11 
-  25.0e-06   25.0    1.50      1.0    999.0    0.45   0.55   0.00  !  12 
+  65.0e-06   25.0    1.01      1.0     25.0    0.30   0.20   0.50  !   1
+  65.0e-06   25.0    1.00      1.0     25.0    0.30   0.20   0.50  !   2
+  40.0e-06   25.0    1.00      1.0     25.0    0.30   0.20   0.50  !   3
+  30.0e-06   12.5    2.00      1.0     50.0    0.30   0.40   0.30  !   4
+  30.0e-06   25.0    1.00      1.0     50.0    0.30   0.20   0.50  !   5
+  25.0e-06   12.5    2.50      1.0    100.0    0.30   0.40   0.30  !   6
+  30.0e-06   25.0    1.00      1.0    100.0    0.30   0.20   0.50  !   7
+  30.0e-06   25.0    1.00      1.0    100.0    0.30   0.20   0.50  !   8
+  27.5e-06   12.5    1.50      1.0      5.0    0.45   0.40   0.15  !   9
+  27.5e-06   25.0    1.00      1.0      5.0    0.45   0.35   0.20  !  10
+  15.0e-06   20.0    1.25      1.0    999.0    0.45   0.55   0.00  !  11
+  25.0e-06   25.0    1.50      1.0    999.0    0.45   0.55   0.00  !  12
   45.0e-06   27.4    1.0     200.0    999.0  999.0  999.0  999.0   !  13  soybean (50 geovane)  52.5
   25.0e-06   32.5    1.0     200.0    999.0  999.0  999.0  999.0   !  14  maize
   50.0e-06   50.0    1.0     200.0    999.0  999.0  999.0  999.0   !  15  wheat
   45.0e-06   20.0  135.0     400.0    999.0  999.0  999.0  999.0   !  16  sugarcane
+  45.0e-06   20.0  135.0     400.0    999.0  999.0  999.0  999.0   !  16  oil palm
 #========================================================================
 
 #---------------------------------------------------------------------------------
 #  minimum density of woody biomass required for upper canopy closure (kg C m-2)
 #---------------------------------------------------------------------------------
-    7.5 !  woodnorm 
-#================================================================================= 
+    7.5 !  woodnorm
+#=================================================================================
 # Assign leaf optical properties (taken from Sellers et al., 1996
 # and Bonan, 1995)
 # These are reflectance and transmission parameters depending on what part
@@ -160,25 +162,25 @@ c 16: sugarcane
  0.05    !  tauvegvu   # vis leaf transmittance, upper story, green leaves
  0.25    !  tauvegirlg # nir leaf transmittance, lower story, green leaves
  0.38    !  tauvegirlb # nir leaf transmittance, lower story, brown leaves
- 0.20    !  tauvegiru  # nir leaf transmittance, upper story, green leaves
+ 0.20    !  tauvegiru  # nir leaf transmittance, upper story, green leavessugarcane
 #
 # leaf optical properties from Sellers et al., 1996 and Bonan, 1995
 
 #-----------------------------------------------------------------------------------------
 # leaf reflectance (rhoveg) and transmittance (tauveg), visible and NIR, for each canopy
 #-----------------------------------------------------------------------------------------
-#   lower        upper  
+#   lower        upper
 #---------------------------------------------------------
-     0.10        0.10    ! rhoveg(1,1); rhoveg(1,2) vis   
+     0.10        0.10    ! rhoveg(1,1); rhoveg(1,2) vis
      0.60        0.40    ! rhoveg(2,1); rhoveg(2,2) NIR
      0.07        0.05    ! tauveg(1,1); tauveg(1,2) vis
-     0.25        0.20    ! tauveg(2,1); tauveg(2,2) NIR  
+     0.25        0.20    ! tauveg(2,1); tauveg(2,2) NIR
 #---------------------------------------------------------
-#     0.10        0.60    ! rhoveg(1,1); rhoveg(1,2) vis   
+#     0.10        0.60    ! rhoveg(1,1); rhoveg(1,2) vis
 #     0.10        0.40    ! rhoveg(2,1); rhoveg(2,2) NIR
 #     0.07        0.25    ! tauveg(1,1); tauveg(1,2) vis
-#     0.05        0.20    ! tauveg(2,1); tauveg(2,2) NIR  
-#========================================================= 
+#     0.05        0.20    ! tauveg(2,1); tauveg(2,2) NIR
+#=========================================================
 #
 #-----------------------------------------------------------------
 # leaf orientation factors (-1 vertical, 0 random, 1 horizontal)
@@ -187,8 +189,8 @@ c 16: sugarcane
 # chiflz : lower canopy leaf orientation
 # Parameters not used in agro version (isimagro > 0 at inland-grid.infile)
 #-----------------------------------------
-       0.0           ! chifuz 
-      -0.5           ! chiflz           
+       0.0           ! chifuz
+      -0.5           ! chiflz
 #=========================================
 
 #-----------------------------------------------------------------------
@@ -208,11 +210,11 @@ c 16: sugarcane
 #======================================================================
 
 #----------------------------------------------------------------------------
-# empirical coefficients for aerodynamic transfer parameterization (m s-0.5) 
+# empirical coefficients for aerodynamic transfer parameterization (m s-0.5)
 # From Pollard & Thompson (1995, eq. A39a)
 #----------------------------------------------------------------------------
-      0.01  ! cleaf  : upper canopy leaf-air 
-      0.01  ! cstem  : upper canopy stem-air 
+      0.01  ! cleaf  : upper canopy leaf-air
+      0.01  ! cstem  : upper canopy stem-air
       0.01  ! cgrass : lower canopy-air
 #===========================================================================
 
@@ -229,7 +231,7 @@ c 16: sugarcane
 # intercepted water capacity (mm h2o per unit leaf area == kg m-2)
 #-----------------------------------------------------------------------
 #           ! wliqmin  : minimum per unit vegetated area
-      0.20  ! wliqumax : maximum per unit upper canopy leaf area 
+      0.20  ! wliqumax : maximum per unit upper canopy leaf area
       0.40  ! wliqsmax : maximum per unit upper canopy stem area
       0.20  ! wliqlmax : maximum per unit lower canopy stem & leaf area
 #=======================================================================
@@ -237,8 +239,8 @@ c 16: sugarcane
 #-----------------------------------------------------------------------
 # intercepted snow capacity (mm h2o per unit leaf area == kg m-2)
 #-----------------------------------------------------------------------
-#           ! wsnomin  : minimum per unit vegetated area 
-      2.00  ! wsnoumax : maximum per unit upper canopy leaf area 
+#           ! wsnomin  : minimum per unit vegetated area
+      2.00  ! wsnoumax : maximum per unit upper canopy leaf area
       4.00  ! wsnosmax : maximum per unit upper canopy stem area
       2.00  ! wsnolmax : maximum per unit lower canopy stem & leaf area
 #=======================================================================
@@ -263,7 +265,7 @@ c 16: sugarcane
 #   The two variables below are used on funca and funcb at sumnow, resp. - fzm
 # stemae: stem activation energy
 # rootae: root activation energy
-# 
+#
 #   Note: in parenthesis the original name used on Optis' IBIS
 #
 3500 # stemae (funca_coef)

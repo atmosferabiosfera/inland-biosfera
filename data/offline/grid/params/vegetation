@@ -1,6 +1,6 @@
 # IBIS parameter set: ibis2.6      C. Kucharik 10.04.02
 #
-# Modified to include several parameters used by Optis, the parameter 
+# Modified to include several parameters used by Optis, the parameter
 # optimizer for Inland
 # Optis will be distributed only in the second version of Inland
 #
@@ -8,20 +8,20 @@
 # vegetation parameters....
 #========================================================================
 #
-# #, *, c, C, ! or / denote comments in this file. Input routine 
-# will ignore any text to the right of these symbols, anywhere they 
-# occur....  So feel free to comment freely! There are only two 
+# #, *, c, C, ! or / denote comments in this file. Input routine
+# will ignore any text to the right of these symbols, anywhere they
+# occur....  So feel free to comment freely! There are only two
 # rules to observe when placing data and comments in this file.
 # Rule 1: data must be in the correct order, as indicated below, but
 #         lines can be separated by blanks or comments and individual
-#         fields can be separated by blanks or line-ends any way you 
+#         fields can be separated by blanks or line-ends any way you
 #         like.
 # Rule 2: you MAY NOT join any consecutive lines of data. In general
 #         this is not a problem so long as the existing sequence of
-#         line-ends and commented separators is retained. In principle, 
+#         line-ends and commented separators is retained. In principle,
 #         you are free to remove comment lines, but if at a later date
 #         you attempt to join two consecutive lines of data, where the
-#         input routine is not expecting this, it *will* break the 
+#         input routine is not expecting this, it *will* break the
 #         program (though not irreparably).
 # Rule 3: THERE IS NO RULE 3!!!
 
@@ -44,19 +44,20 @@ c 13: soybeans
 c 14: maize
 c 15: wheat
 c 16: sugarcane
+c 17: oil palm
 c
 #--------------------------------------------------------------------------
 # PFT climatic constraint definitions (left to right)
 #--------------------------------------------------------------------------
-# TminL  : absolute minimum temperature (lower limit, C) 
-# TminU  : absolute minimum temperature (upper limit, C) 
+# TminL  : absolute minimum temperature (lower limit, C)
+# TminU  : absolute minimum temperature (upper limit, C)
 # Twarm  : temperature of the warmest month (mean??, C) [C4 only]
 # GDD    : min growing degree days above 5 C threshold [upper canopy], or
 #          min growing degree days above 0 C threshold [lower canopy]
 
-# DTP 2001/06/07: Changed this after studying code in climate.f. 
-#      Values of 9999 indicate this constraint is not used to 
-#      determine existence of the PFT.  
+# DTP 2001/06/07: Changed this after studying code in climate.f.
+#      Values of 9999 indicate this constraint is not used to
+#      determine existence of the PFT.
 #------------------------------------------------------------------------
 # TminL    TminU    Twarm    GDD    PFT
 #------------------------------------------------------------------------
@@ -76,9 +77,10 @@ c
  9999.0   9999.0   9999.0   9999  !  14
  9999.0   9999.0   9999.0   9999  !  15
  9999.0   9999.0   9999.0   9999  !  16
+ 9999.0   9999.0   9999.0   9999  !  17
 #========================================================================
 
-  19  ! Number of allowed Vegetation Types in this parameter set   
+  19  ! Number of allowed Vegetation Types in this parameter set
 
 #------------------------------------------------------------------------
 # Vegetation type classifications (used in subroutine iniveg)
@@ -110,8 +112,8 @@ c 19: urban
 # plaideci   : initial total LAI of deciduous tree (upper canopy) PFTs
 # plaishrub  : initial total LAI of shrub (lower canopy) PFTs
 # plaigrass  : initial total LAI of grass (lower canopy) PFTs
-# NOTE: These data are read in to array plai_init. 
-#       The original variable names could be dropped. 
+# NOTE: These data are read in to array plai_init.
+#       The original variable names could be dropped.
 #------------------------------------------------------------------------
 # plaievgr  plaideci plaishrub plaigrass      Veg Type
 #------------------------------------------------------------------------
@@ -139,14 +141,14 @@ c 19: urban
 #------------------------------------------------------------------------
 # Other miscellaneous variables needed for initializing plant LAI.
 #------------------------------------------------------------------------
-# plaiupper    : Potential LAI of upper canopy (uniform initial vegetation) 
-# plailower    : Potential LAI of lower canopy (uniform initial vegetation) 
+# plaiupper    : Potential LAI of upper canopy (uniform initial vegetation)
+# plailower    : Potential LAI of lower canopy (uniform initial vegetation)
 # xminlai      : Minimum LAI for each existing PFT
 # sapfrac_init : Initial value of sapwood fraction used for all woody PFTs
 #------------------------------------------------------------------------
    0.5  ! plaiupper
    0.5  ! plailower
-   0.01 ! xminlai 
+   0.01 ! xminlai
    0.1  ! sapfrac_init
 #========================================================================
 
@@ -161,7 +163,7 @@ c for terrestrial biomes, Oecologia, 108, 389-411.
 c
 c and
 c
-c Jackson et al., 1997:  A global budget for fine root biomass, 
+c Jackson et al., 1997:  A global budget for fine root biomass,
 c surface area, and nutrient contents, Proceedings of the National
 c Academy of Sciences, 94, 7362-7366.
 c
@@ -184,7 +186,7 @@ c tropical evergreen forest:        0.962          0.972
 c tropical deciduous forest:        0.961          0.982
 c temperate conifer forest:         0.976          0.980
 c temperate broadleaf forest:       0.966          0.967
-c all tropical/temperate forest:    0.970  
+c all tropical/temperate forest:    0.970
 c boreal forest:                    0.943          0.943
 c all trees:                                       0.976
 c
@@ -213,13 +215,13 @@ c beta2 = 0.970, which is typical for tropical/temperate forests
 c
 c however, these values could be (and should be) further refined
 c when using the model for specific regions
-c 
+c
       0.975  ! beta1: for lower layer herbaceous plants 0.975
       0.997  ! beta2: for upper layer trees   0.997
 
 # Additional parameters identified by optis calibration tool
 #   This first block is for initial values of these variables.
-#   They were all renamed from <name>_coef to <name> as they are the 
+#   They were all renamed from <name>_coef to <name> as they are the
 # initial value for the variable itself. - fzm
 #   Note: in parenthesis the original name used on Optis' IBIS
 #
@@ -252,7 +254,7 @@ c
 0.     # csoipas (csoipas_coef)
 
 
-  4  ! nlandusetype - Number of allowed Land Use Types in this parameter set   
+  4  ! nlandusetype - Number of allowed Land Use Types in this parameter set
 
 #------------------------------------------------------------------------
 # Land Use type classifications
@@ -273,37 +275,38 @@ c  4: urban
 1 !  7
 1 !  8
 1 !  9
-1 ! 10 
-1 ! 11 
-1 ! 12 
-1 ! 13 
-1 ! 14 
-1 ! 15 
-1 ! 16 
-2 ! 17 
-3 ! 18 
-4 ! 19 
+1 ! 10
+1 ! 11
+1 ! 12
+1 ! 13
+1 ! 14
+1 ! 15
+1 ! 16
+2 ! 17
+3 ! 18
+4 ! 19
 
 # rule of existence of each PFT in function of Land Use type
 # if 0 then PFT is not allowed to grow
 # lu1 lu2 lu3 lu4
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   1   1   1 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  1   0   0   0 
-  
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   1   1   1
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+  1   0   0   0
+
 #------------------------------------------------------------------------
 # Rule of existence of each plant functional type for each Vegetation type (used in subroutine existence)
 # Used only when the vegetation is static (isimveg = 0) and override (overveg = 1)

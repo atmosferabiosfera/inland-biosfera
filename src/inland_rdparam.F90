@@ -7,7 +7,7 @@ subroutine rd_param(irestart)
 !
 !---------------------------Code history--------------------------------
 ! Author: David Price
-! 
+!
 !----------------------------------------------------------
 
 #ifdef SINGLE_POINT_MODEL
@@ -49,12 +49,12 @@ subroutine rd_param(irestart)
       use inland_comhour, only:imetyear
 
       implicit none
-  
+
 ! Local variables
 #ifdef SINGLE_POINT_MODEL
       ! Thiago Veloso (Sep-2012)
       ! Variable below is related to the single-point version
-      ! It represents the dimension (number of lines) of the 
+      ! It represents the dimension (number of lines) of the
       ! input data. It is used later, in subroutine readforc.
 
 !     integer dimforc    ! dimension (number of lines) of input data
@@ -70,14 +70,14 @@ subroutine rd_param(irestart)
                 irestart
 
       real*8    dummyvar ! use this to read in integers that might be pretending
-                         ! to be reals. Also use it as a filler when reading 
+                         ! to be reals. Also use it as a filler when reading
                          ! non-existent variables in subroutine ReadItems
       real*8    dummyvars(12)
 
       real*8, dimension(:), allocatable :: dummypft1,dummypft2 !gabriel abrahao: For reading npft-sized arrays, allocated below
 
       character*1024 parm_file
-      
+
       parameter (parm_unit = 9)
 
       !gabriel abrahao: Allocating dummypft
@@ -85,9 +85,9 @@ subroutine rd_param(irestart)
 
 #ifdef SINGLE_POINT_MODEL
 ! Thiago on Set/12: Code below loops over all lines of the input file to
-!                   retrieve its dimension, which is saved to variable 
-!                   'dimforc'. This procedure avoids both the existence 
-!                   of variable 'nbforc' and the declaration of variable 
+!                   retrieve its dimension, which is saved to variable
+!                   'dimforc'. This procedure avoids both the existence
+!                   of variable 'nbforc' and the declaration of variable
 !                   'dimforc' as a parameter.
 
        dimforc = 0
@@ -137,20 +137,20 @@ subroutine rd_param(irestart)
       npft2 = nint(dummyvar)
       if (npft2 .ne. npft) then
          write (*, 9003) trim(parm_file), npft2, npft
-         goto 9006 ! In the circumstances this seems the best thing to do! 
+         goto 9006 ! In the circumstances this seems the best thing to do!
       end if
 9003  format ('rd_param Warning: Number of PFTs in ', A, ' is: ',  &
-              I2, ' number in compar.h is: ', I2)  
+              I2, ' number in compar.h is: ', I2)
 
       call readitem(parm_unit, parm_file, dummyvar)
 
       npftu2 = nint(dummyvar)
       if (npftu2 .ne. npftu) then
          write (*,9004) trim(parm_file), npftu2, npftu
-         goto 9006 ! In the circumstances this seems the best thing to do! 
+         goto 9006 ! In the circumstances this seems the best thing to do!
       end if
 9004  format ('rd_param Warning: Number of upper canopy (tree) PFTs ',  &
-              'in ', A, ' is: ', I2, ' number in comage.h is: ', I2)  
+              'in ', A, ' is: ', I2, ' number in comage.h is: ', I2)
 
 ! Standard photosynthesis parameters for C3 and C4 physiological pathways
       call readitem(parm_unit, parm_file, alpha3)
@@ -202,30 +202,30 @@ subroutine rd_param(irestart)
 !!! DTP 2001/06/05: Note that I have included a new variable here: vmax_pft
 !                   This reads in values of vmax assigned initially to each
 !                   PFT. These values are then transferred to vmaxub, vmaxuc,
-!                   vmaxls, vmaxl4, vmaxl3, in the modified PHYSIOLOGY.F 
+!                   vmaxls, vmaxl4, vmaxl3, in the modified PHYSIOLOGY.F
 !                   module (subroutine STOMATA).
 
 ! Castanho HP, 2013 included maps vegetation properties (vmax,specla,awood,aroot,aleaf,tauwood) in input file read in io.f,
-! we are keeping the constant homogeneous parameters in params.can and changing the names adding 'p' 
+! we are keeping the constant homogeneous parameters in params.can and changing the names adding 'p'
    if(isimagro.gt.0) then
     if (irestart .eq. 0)then
-      do j = 1, npft 
+      do j = 1, npft
          call readitems(parm_unit, parm_file, 8, vmax_pftp(j), speclap(j), &
-                        tauleaf(j), tauroot(j), tauwood0p(j),aleafp(j),    &    	!Castanho HP, 2013 commented aleafp(j) 
-                        arootp(j), awoodp(j), dummyvar, dummyvar, dummyvar) 
+                        tauleaf(j), tauroot(j), tauwood0p(j),aleafp(j),    &    	!Castanho HP, 2013 commented aleafp(j)
+                        arootp(j), awoodp(j), dummyvar, dummyvar, dummyvar)
       end do
     else
-      do j = 1, npft 
+      do j = 1, npft
          call readitems(parm_unit, parm_file, 4, vmax_pftp(j), speclap(j), &
                         tauleaf(j), tauroot(j), tauwood0p(j), dummyvar,    &
-                        dummyvar, dummyvar) 
+                        dummyvar, dummyvar)
       end do
      endif
     else
-      do j = 1, npft 
+      do j = 1, npft
             call readitems(parm_unit, parm_file, 8, vmax_pftp(j), speclap(j), &
-                        tauleaf(j), tauroot(j), tauwood0p(j),aleafp(j),    &   
-                        arootp(j), awoodp(j), dummyvar, dummyvar, dummyvar) 
+                        tauleaf(j), tauroot(j), tauwood0p(j),aleafp(j),    &
+                        arootp(j), awoodp(j), dummyvar, dummyvar, dummyvar)
       end do
     endif
 
@@ -244,20 +244,20 @@ subroutine rd_param(irestart)
       call readitem(parm_unit, parm_file, tauvegirlg)
       call readitem(parm_unit, parm_file, tauvegirlb)
       call readitem(parm_unit, parm_file, tauvegiru)
-      
+
 
       do j = 1, nband
          call readitems(parm_unit, parm_file, 2, rhoveg(j,1), rhoveg(j,2), &
                         dummyvar, dummyvar, dummyvar, dummyvar, dummyvar,  &
-                        dummyvar, dummyvar, dummyvar) 
+                        dummyvar, dummyvar, dummyvar)
       end do
 
       do j = 1, nband
          call readitems(parm_unit, parm_file, 2, tauveg(j,1), tauveg(j,2), &
                         dummyvar, dummyvar, dummyvar, dummyvar, dummyvar,  &
-                        dummyvar, dummyvar, dummyvar)   
+                        dummyvar, dummyvar, dummyvar)
       end do
-      
+
       call readitem(parm_unit, parm_file, chifuz)
       call readitem(parm_unit, parm_file, chiflz)
 
@@ -324,7 +324,7 @@ subroutine rd_param(irestart)
          call readitems(parm_unit, parm_file, 4, TminL(j), TminU(j), Twarm(j), &
                         GDD(j),dummyvar, dummyvar, dummyvar, dummyvar,         &
                         dummyvar, dummyvar)
-      end do 
+      end do
 
       call readitem(parm_unit, parm_file, dummyvar)
       nvegtype = nint(dummyvar)
@@ -334,7 +334,7 @@ subroutine rd_param(irestart)
       allocate(plai_init(4,nvegtype))
       plai_init(:,:) = 0. ! do we really need to zero it here?
 
-      do j = 1, nvegtype      
+      do j = 1, nvegtype
          call readitems(parm_unit, parm_file, 4, plai_init(1,j),          &
                         plai_init(2,j), plai_init(3,j), plai_init(4,j),   &
                         dummyvar, dummyvar, dummyvar, dummyvar, dummyvar, &
@@ -349,7 +349,7 @@ subroutine rd_param(irestart)
       call readitem(parm_unit, parm_file, beta2)
 
 ! Parameters identified in Optis' efforts - fzm and et
-! Read the values into optis_params, and propagate them in inland_alloc, 
+! Read the values into optis_params, and propagate them in inland_alloc,
 ! because for now we don't know npoi
       do optis_i = 1, 12
          call readitem(parm_unit, parm_file, optis_params(optis_i))
@@ -378,7 +378,7 @@ subroutine rd_param(irestart)
             landusepftmap(i,j) = nint(dummyvars(i))
          end do
       end do
-      
+
       allocate(existvegtypemap(nvegtype,12))
       existvegtypemap(:,:) = 0
       do i = 1, nvegtype
@@ -390,10 +390,10 @@ subroutine rd_param(irestart)
             existvegtypemap(i,j) = nint(dummyvars(j))
          end do
       end do
-      
+
 #endif  /* SINGLE_POINT_MODEL */
       close (parm_unit)
-      
+
 
 ! ******************************************************************************
 ! open the parameter file 'params.soi' for input; read in soil parameters...
@@ -423,11 +423,11 @@ subroutine rd_param(irestart)
       if (nsoil2 .ne. ndat) then ! FIXME: Is this needed????
          write (*, 9031) trim(parm_file), nsoil2
          write (*, 9032) ndat
-         goto 9006 ! In the circumstances this seems the best thing to do! 
+         goto 9006 ! In the circumstances this seems the best thing to do!
       end if
 
 9031  format (' rd_param Warning: Number of soil types in ', A10, ' is: ', I2)
-9032  format (' Number of soil types in comtex.h is: ', I2)  
+9032  format (' Number of soil types in comtex.h is: ', I2)
 
       do j = 1, ndat
          call readitems(parm_unit, parm_file, 10, texdat(1,j), texdat(2,j),   &
@@ -480,7 +480,7 @@ subroutine rd_param(irestart)
 ! ******************************************************************************
 ! open the parameter file 'params.fir' for input; read in fire parameters...
       parm_file = trim(indir)//'/'//'params/fire'
-      open(UNIT=parm_unit, FILE=parm_file, STATUS='OLD', ERR=9001) 
+      open(UNIT=parm_unit, FILE=parm_file, STATUS='OLD', ERR=9001)
 
       call readitem(parm_unit, parm_file, blow)
       call readitem(parm_unit, parm_file, bup)
@@ -503,29 +503,29 @@ subroutine rd_param(irestart)
       do j = scpft, ecpft
          call readitems(parm_unit, parm_file, 8, lotemp(j), hitemp(j), &
                         drought(j), f1(j), f2(j), baset(j), mxtmp(j),  &
-                        tkill(j), dummyvar, dummyvar) 
+                        tkill(j), dummyvar, dummyvar)
       end do
 
-      do j = scpft, ecpft 
+      do j = scpft, ecpft
          call readitems(parm_unit, parm_file, 10, laicons(j), allconsl(j),     &
                         allconss(j), laimx(j), arooti(j), arootf(j), aleaff(j), &
-                        astemf(j), declfact(j), fleafi(j)) 
+                        astemf(j), declfact(j), fleafi(j))
       end do
 
-      do j = scpft, ecpft 
+      do j = scpft, ecpft
          ! call readitems(parm_unit, parm_file, 6, ptemp(j), pmintemp(j), &
          !                pmmin(j), pdmin(j), pcm(j), pcd(j), dummyvar,   &
          !                dummyvar, dummyvar, dummyvar)
          !gabriel abrahao: To be able to also have pdmin as a map, we have to first read it in temporary files, and distribute those in readit later
          call readitems(parm_unit, parm_file, 6, ptemp(j), pmintemp(j), &
                         pmmin_temp(j), pdmin_temp(j), pcm(j), pcd(j), dummyvar,   &
-                        dummyvar, dummyvar, dummyvar)         
+                        dummyvar, dummyvar, dummyvar)
       end do
 
-      do j = scpft, ecpft 
+      do j = scpft, ecpft
          call readitems(parm_unit, parm_file, 8, hybgdd(j), gddmin(j), &
                         mxgddgf(j), mxdgfi(j), mxmat(j), lfemerg(j),   &
-                        grnfill(j), bfact(j), dummyvar, dummyvar) 
+                        grnfill(j), bfact(j), dummyvar, dummyvar)
       end do
 
         !gabriel abrahao
@@ -539,19 +539,19 @@ subroutine rd_param(irestart)
         write(*,*) "WARNING: sugarcane (PFT 16) does not work with explicit planting date maps yet. Ignore if using other crops. FIXME in inland_rdparam.F90"
       end if
 
-      
-      do j = 1, 2 ! number of wheat crop types 
+
+      do j = 1, 2 ! number of wheat crop types
          call readitems(parm_unit, parm_file, 7, grnwht(j), fleafiwht(j), &
                         mgddgf(j), mxmatwht(j), fnlfmxw(j), fngrmxw(j),   &
-                        fnoptw(j), dummyvar, dummyvar, dummyvar) 
+                        fnoptw(j), dummyvar, dummyvar, dummyvar)
       end do
 
       call readitem(parm_unit, parm_file, ztopmxsoy)
       call readitem(parm_unit, parm_file, ztopmxwht)
       call readitem(parm_unit, parm_file, ztopmxmze)
       call readitem(parm_unit, parm_file, ztopmxsgc)
-      call readitem(parm_unit, parm_file, dummyvar)
-      nratoon=int(dummyvar)
+      call readitem(parm_unit, parm_file, ztopmxplm)
+      call readitem(parm_unit, parm_file, nratoon)
       call readitem(parm_unit, parm_file, alphac)
       call readitem(parm_unit, parm_file, gnmin)
       call readitem(parm_unit, parm_file, smax)
@@ -578,16 +578,28 @@ subroutine rd_param(irestart)
       call readitem(parm_unit, parm_file, tmld)
       call readitem(parm_unit, parm_file, ecf7)
       call readitem(parm_unit, parm_file, firecane)
-     
-      do j = scpft, ecpft 
+
+      do j = scpft, ecpft
          call readitems(parm_unit, parm_file, 10, cgrain(j), convfact(j),    &
                         maxhi(j), fyield(j), cfrac(j), fnlfmx(j), fngrmx(j), &
-                        sratio(j), rratio(j), fnopt(j)) 
+                        sratio(j), rratio(j), fnopt(j))
       end do
 
-      do j = scpft, ecpft 
-         call readitems(parm_unit, parm_file, 1, grainmoisture(j)) 
+      do j = scpft, ecpft
+         call readitems(parm_unit, parm_file, 1, grainmoisture(j))
       end do
+
+      call readitem(parm_unit, parm_file,mxplmage)
+      call readitem(parm_unit, parm_file,plmarooti)
+      call readitem(parm_unit, parm_file,plmarootf)
+      call readitem(parm_unit, parm_file,plmaleafi)
+      call readitem(parm_unit, parm_file,plmaleaff)
+      call readitem(parm_unit, parm_file,plmfracstem)
+      call readitem(parm_unit, parm_file,laitransp)
+      call readitem(parm_unit, parm_file,dmat)
+      call readitem(parm_unit, parm_file,dleafalloc)
+      call readitem(parm_unit, parm_file,acoef)
+      call readitem(parm_unit, parm_file,bcoef)
 
       close (parm_unit)
 #endif  /* SINGLE_POINT_MODEL */
@@ -595,20 +607,20 @@ subroutine rd_param(irestart)
 ! open the parameter file 'params.hyd' for input; read in vegetation PFT parameters...
 !      parm_file = 'params.hyd' ! What is this file supposed to contain???
 !      open(UNIT=parm_unit, FILE=parm_file, STATUS='OLD', ERR=9001)
-!      close (parm_unit) 
+!      close (parm_unit)
 ! ******************************************************************************
 
       write (*,*)'rd_param: All data read in from parameter files successfully.'
       return ! subroutine rd_param
 
 ! Error handling targets
-9001  write (*,2001) TRIM(parm_file), parm_unit 
-2001  format ('rd_param: Error opening parameter file "', A,'" on unit ', I2)      
+9001  write (*,2001) TRIM(parm_file), parm_unit
+2001  format ('rd_param: Error opening parameter file "', A,'" on unit ', I2)
       stop
 
 9006  write (*,2006) TRIM(parm_file), parm_unit
 2006  format ('rd_param: Data inconsistency in parameter file "',A, &
-              '" on unit ', I2) 
+              '" on unit ', I2)
       close (parm_unit)
       stop
 end subroutine rd_param
