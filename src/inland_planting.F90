@@ -331,7 +331,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                           cropy(i)       =1
                           plmdop(1,iyear-iyear0+5) = jday
                           gddmaturity(i,j) = max(gdd11(i)*0.8, min (gdd11(i) , hybgdd(j)))
-                          gddmaturity(i,j) = gddmaturity(i,j)*(gddplmp(i,1)/gddplmp(i,2))
+                          gddmaturity(i,j) = gddmaturity(i,j)*(gddplm(i,1)/gddplm(i,2))
                      endif
                    elseif (iyear .ge. iyear0+2 .and. iyear .le. iyear0+5) then
                      if (a10td(i)   .gt. ptemp(j)    .and. &        ! 10-day average soil temperature
@@ -343,7 +343,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
 		                    cropy(i)        = 1
                         plmdop(1,iyear-iyear0+5)  = jday
                         gddmaturity(i,j) = max(gdd11(i)*0.8, min (gddplm(i,iyear-iyear0+5-1), hybgdd(j))) ! assign hybrid based on last year
-                        gddmaturity(i,j) = gddmaturity(i,j)*(gddplmp(i,1)/gddplmp(i,2))
+                        gddmaturity(i,j) = gddmaturity(i,j)*(gddplm(i,1)/gddplm(i,2))
                      endif
                    else
                      sumdp(i,j) = 0
@@ -368,7 +368,7 @@ subroutine planting(irestart,iyrrestart,jday,ffact)
                         cropy(i)       = 1
                         idop(i,j)      = jday
                         gddmaturity(i,j) = max(gdd11(i)*0.8,min(avehybrid(i,j), hybgdd(j)))
-                        gddmaturity(i,j) = gddmaturity(i,j)*(gddplmp(i,1)/gddplmp(i,2))
+                        gddmaturity(i,j) = gddmaturity(i,j)*(gddplm(i,1)/gddplm(i,2))
                      endif
                    endif
                  endif  ! end oil palm planting
