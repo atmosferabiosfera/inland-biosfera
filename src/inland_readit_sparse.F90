@@ -52,7 +52,7 @@ subroutine readit_sparse(isimveg,snorth,ssouth,swest,seast,iwest,jnorth)
       real*8 xmask(nlon,nlat)
 
       character*1024 filen, filen2
-      integer istart(4), icount(4) ! for reading vars
+      integer istart(4), icount(4), dimsize ! for reading vars
       logical :: file_e
 
 
@@ -817,24 +817,16 @@ write(*,*) "icount",icount
       call readvar(filen,aname,deltat,istart,icount,0,istat)
       if (istat.lt.0) goto 9999
 
-
 ! 3-d soil texture array
 !
-! icount(3) is the 6 layers used in soita.sand.nc soita.clay.nc
 
-      !gabriel abrahao this used to be 6
-      if ( nsoilay .ne. 12 ) then
-         write (*,*) ''
-         write (*,*) 'WARNING: nsoilay = ',nsoilay,' but should be 12!'
-         write (*,*) 'fix me in inland_readit'
-         !stop 1
-      end if
-
-      !icount(3) = 6 !nsoilay 
-      !gabriel abrahao this used to be 6
-      icount(3) = 12 !nsoilay in input file
-      icount(4) = 1
+      ! icount(3) is the layers used in soita.sand.nc soita.clay.nc
       filen = trim(datadir)//'/soita.sand.nc'
+      aname = 'layer'
+      call netcdf_getdimsize(filen,aname,dimsize,istat)
+      if (istat.lt.0) goto 9999
+      icount(3) = dimsize
+      icount(4) = 1
       aname = 'sandpct'
       call readvar(filen,aname,cdummy,istart,icount,-1,istat)
       if (istat.lt.0) goto 9999
@@ -842,8 +834,14 @@ write(*,*) "icount",icount
          call arr2vec(cdummy((j-1)*nlonsub*nlatsub + 1), sand(1,j))
       end do
 
+      infilensoilayer = dimsize
 
       filen = trim(datadir)//'/soita.clay.nc'
+      aname = 'layer'
+      call netcdf_getdimsize(filen,aname,dimsize,istat)
+      if (istat.lt.0) goto 9999
+      icount(3) = dimsize
+      icount(4) = 1
       aname = 'claypct'
       call readvar(filen,aname,cdummy,istart,icount,-1,istat)
       if (istat.lt.0) goto 9999
@@ -851,19 +849,21 @@ write(*,*) "icount",icount
          call arr2vec(cdummy((j-1)*nlonsub*nlatsub + 1), clay(1,j))
       end do
 
+      if ( infilensoilayer .ne. dimsize ) then
+         write (*,*) ''
+         write (*,*) 'WARNING: the number of layers in soita.sand is different from soita.clay !'
+         stop 1
+         if (infilensoilayer .gt. dimsize) then
+            infilensoilayer = dimsize
+         end if
+      end if
 
-!gabriel apagar
-write(*,*) "shape(sand):   :",shape(sand) 
-write(*,*) "sand(1,:):   :",sand(1,:)
-write(*,*) "sand(2,:):   :",sand(2,:)
-write(*,*) "sand(3,:):   :",sand(3,:)
-!stop
-
-!gabriel apagar
-write(*,*) 
-write(*,*) "========================================================================= CLIMATE clim ===================================================="
-write(*,*) 
-
+      if ( nsoilay .ne. infilensoilayer ) then
+         write (*,*) ''
+         write (*,*) 'WARNING: nsoilay = ',nsoilay,' but  soita.sand.nc soita.clay.nc has ',infilensoilayer,' layers!'
+         write (*,*) 'fix me in soil parameters'
+         ! stop 1
+      end if
 
 ! 3-d climate arrays
       icount(3) = 1
@@ -885,13 +885,6 @@ write(*,*)
       do ntime = 1,12
          call arr2vec(cdummy((ntime-1)*nlonsub*nlatsub + 1),clmt(1,ntime))
       end do
-
-!gabriel apagar
-write(*,*) "shape(clmt):   :",shape(clmt) 
-write(*,*) "clmt(1,:):   :",clmt(1,:)
-write(*,*) "clmt(2,:):   :",clmt(2,:)
-write(*,*) "clmt(3,:):   :",clmt(3,:)
-
 
       filen = trim(datadir)//'/trange.mon.nc'
       aname = 'trange'
