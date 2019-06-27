@@ -686,14 +686,14 @@ seast      =  -43.75   ! seast - eastern longitude for subsetting in/output (no 
 ! get new o2 and co2 concentrations for this year
          if (isimco2.eq.1) call co2(co2init)
 
-
+#ifndef SINGLE_POINT_MODEL
           if (isimagro.gt.0) then         
            !gabriel abrahao: Read yearly crop parameter maps here. TODO: Put a setting in namelist and call this in an if
            if (irdcropparmaps.eq.1) then
               call rdcropparmaps(iwest,jnorth)
            end if
           end if
-
+#endif /* SINGLE_POINT_MODEL */
 
 !---------------------- MONTH MONTH MONTH ----------------------------------
 ! start of monthly loop

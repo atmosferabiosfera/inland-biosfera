@@ -4,7 +4,7 @@
 #error "This subroutine should ONLY be compiled for 0D INLAND model option."
 #endif
 
-subroutine single(linenum, test, soilmoistl)
+subroutine single(linenum, test)
 
       use inland_comatm, only: fira, solai, asuri, solad, asurd
       use inland_com1d, only: firb, fsena, fvapa, abupi, abupd
@@ -16,7 +16,7 @@ subroutine single(linenum, test, soilmoistl)
 			       tneetot, clitls, clitwl
       use inland_control, only: nan
       use inland_comsoi, only: tg, hsoi, poros, swilt, soihfl, wsoi, upsoil, tsoi, &
-                               rhosoi, csoi
+                               rhosoi, csoi, soilmoistl, surfheatl, wtotl
       use inland_parameters, only: hvap, nsoilay, rhow
       use inland_comhyd, only: gsuvap, grunof, gdrain, ginvap, gtrans
       use inland_comsum, only: wtot, ayanpptot
@@ -48,10 +48,7 @@ subroutine single(linenum, test, soilmoistl)
               delwtot,     & ! change in total water stored (kg.h2o.m^-2.s^-1)
 	      delsoilmoist,& ! change in soil moisture (kg.h2o.m^-2)
               delsurfheat, & ! change in surface heat storage (J.m^-2)
-              surfheatl,   & ! last surface heat storage (J.m^-2)
               soilmoist(nsoilay), & ! soil moisture in which layer (kg.h2o.m^-2)
-              soilmoistl,  & ! last soil moisture (kg.h2o.m^-2)
-              wtotl,       & ! total wather stored in soil, vegetation and snow
               fpar,        & ! absorbed fraction of PAR
               agb,         & ! above ground biomass
 	      totlai,      & ! total ecosystem lai

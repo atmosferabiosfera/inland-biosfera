@@ -171,7 +171,8 @@ subroutine inisoil (irestart)
          do 300 k = 1, nsoilay
 
 ! Convert input sand and clay percents to fractions
-            if (k.le.infilensoilayer) then
+            !Fontes: infilensoilayer is equal 0 on single_point
+            if (k.le.infilensoilayer.or.infilensoilayer.eq.0) then
                msand = nint(sand(i,k))
                mclay = nint(clay(i,k)) 
             else

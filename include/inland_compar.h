@@ -29,11 +29,7 @@
 #define NUMBANDS 2 /* nband */
 /* #define NUMSOILLAYERS 12  nsoilay */
 #define NUMSNOWLAYERS 3 /* nsnolay */
-#ifndef SINGLE_POINT_MODEL
 #define NUMPFT 16 /* npft */
-#else
-#define NUMPFT 12 /* npft */
-#endif /* SINGLE_POINT_MODEL */
 #define SCPFT 13 /* scpft */
 #define ECPFT 16 /* ecpft */
 

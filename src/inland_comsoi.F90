@@ -129,6 +129,10 @@ module inland_comsoi
 
       integer infilensoilayer    ! number of soil layers in the input files soita.sand.nc and soita.clay.nc
 
+      ! Parameters inland_single
+      real *8 soilmoistl,   &  ! last soil moisture (kg.h2o.m^-2)
+              surfheatl,    &  ! last surface heat storage (J.m^-2)
+              wtotl            ! total wather stored in soil, vegetation and snow
 
 
 !

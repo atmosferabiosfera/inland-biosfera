@@ -307,10 +307,6 @@ subroutine rd_param(irestart)
       call readitem(parm_unit, parm_file, ialoglhf)
       call readitem(parm_unit, parm_file, ialoguhf)
       call readitem(parm_unit, parm_file, avmuir)
-#ifdef SINGLE_POINT_MODEL
-      call readitem(parm_unit, parm_file, fu)
-      call readitem(parm_unit, parm_file, fl)
-#endif /* SINGLE_POINT_MODEL */
       close (parm_unit)
 
 ! ******************************************************************************
