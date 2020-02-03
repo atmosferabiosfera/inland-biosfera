@@ -20,7 +20,7 @@ subroutine sumday (mcsec, loopi, kpti, kptj)
 ! input-output variables
       integer mcsec           ! current second in the day (passed in, it's time)
       integer loopi           ! index of little vector in big vector
-      integer kpti            ! index of 1st point of little vector 
+      integer kpti            ! index of 1st point of little vector
                               ! in big lpt vector
       integer kptj            ! index of last point of little vector
 
@@ -49,7 +49,7 @@ subroutine sumday (mcsec, loopi, kpti, kptj)
 ! * * * update counters and working variables * * *
 ! ---------------------------------------------------------------------
 !
-! reset sumday if the first timestep of the day 
+! reset sumday if the first timestep of the day
 ! FIXME: dangerous test. It should be mcsec .ge. dtime!
       if (mcsec .eq. 0) then
          ndtime(loopi) = 0
@@ -75,15 +75,15 @@ subroutine sumday (mcsec, loopi, kpti, kptj)
       rwork4 = 86400. * 14.e-3
 
 ! constants used in temperature function for c decomposition
-! (arrhenius function constant) 
+! (arrhenius function constant)
       tconst  = 344.00  ! constant for Lloyd and Taylor (1994) function
       btemp   = 288.16  ! base temperature used for carbon decomposition
       bconst  = 10.0    ! maximum value of decomposition factor
 
-! soil weighting factors 
+! soil weighting factors
       rdepth  = 1. / (hsoi(1) + hsoi(2) + hsoi(3) + hsoi(4))
       if(isimagro .eq. 0)then
-         rdepth2 = 1. / (hsoi(1) + hsoi(2)) 
+         rdepth2 = 1. / (hsoi(1) + hsoi(2))
       else
          rdepth2 = 1. / (hsoi(1) + hsoi(2)+ hsoi(3))
       endif
@@ -112,13 +112,13 @@ subroutine sumday (mcsec, loopi, kpti, kptj)
                          rwork
          addrainage(i) = ((ndtimes-1) * addrainage(i) + gdrain(i) * 86400.) *  &
                          rwork
-      
+
       if(isimagro .gt. 0) then
         adtrans(i)   = ((ndtimes-1) * adtrans(i) + (gtransl(i) + gtransu(i)) * 86400.) * rwork
-        adevap(i)    = adaet(i) - adtrans(i) 
+        adevap(i)    = adaet(i) - adtrans(i)
         adtratio(i)  = max(0.0, min(1.0, adtrans(i) / adaet(i)))
-	
-        if(istep.eq.24)write(226,*),iyear,jday, adrain(i)  
+
+        if(istep.eq.24)write(226,*),iyear,jday, adrain(i)
 
       endif
 
@@ -187,21 +187,21 @@ end if
          soilmois = soilmois * rdepth2
          soilice  = soilice  * rdepth2
          soiltemp = soiltemp * rdepth2
-      
-      if(isimagro .gt. 0) then
-        do  k = 4, 6
-          soilmois2 =  soilmois2 + wsoi(i,k)  * hsoi(k)
-	enddo
 
-          soilmois2 = soilmois2 / (hsoi(4)+hsoi(5)+hsoi(6))
-      endif !isimagro
+    !   if(isimagro .gt. 0) then
+    !     do  k = 4, 6
+    !       soilmois2 =  soilmois2 + wsoi(i,k)  * hsoi(k)
+	! enddo
+    !
+    !       soilmois2 = soilmois2 / (hsoi(4)+hsoi(5)+hsoi(6))
+    !   endif !isimagro
 
 !
-! calculate average root temperature, soil temperature and moisture and 
+! calculate average root temperature, soil temperature and moisture and
 ! ice content based on rooting profiles (weighted) from jackson et al
 ! 1996
 !
-! these soil moisture and temperatures are used in biogeochem.f 
+! these soil moisture and temperatures are used in biogeochem.f
 ! we assume that the rooting profiles approximate
 ! where carbon resides in the soil
          do 120 k = 1, nsoilay
@@ -224,12 +224,12 @@ end if
 ! calculate daily average nitrate concentration in solution (mg/liter)
 !
         do 130 k = 1, nsoilay
- 
+
           adwsoilay(i,k)  = ((ndtimes-1)  * adwsoilay(i,k) + wsoi(i,k))  * rwork
           adwisoilay(i,k) = ((ndtimes-1)  * adwisoilay(i,k) + wisoi(i,k)) * rwork
 !          adtsoilay(i,k)  = ((ndtimes-1)  * adtsoilay(i,k) + tsoi(i,k))  * rwork
 !
-!          adupsoil(i,k)   = ((ndtimes-1)  * adupsoil(i,k) + upsoil(i,k) * 86400.) * rwork 
+!          adupsoil(i,k)   = ((ndtimes-1)  * adupsoil(i,k) + upsoil(i,k) * 86400.) * rwork
 !
           adcsoln(i,k)    = ((ndtimes-1)  * adcsoln(i,k) + csoln(i,k)) * rwork
 !
@@ -249,14 +249,14 @@ end if
                          ,adwsoi(i)*poros(1,1)*20.*10., adwsoi2(i)*poros(1,1)*30.*10.    &
                          ,(adwsoi(i)*0.4 + adwsoi2(i)*0.6)*poros(1,1)*50.*10.            &
                          ,adtrunoff(i),adsrunoff(i),addrainage(i)
-	
+
 !          endif
 
 	endif
 
- 337    format (2(i4,1x),11(1x,f6.2))	
+ 337    format (2(i4,1x),11(1x,f6.2))
 
-! calculate separate variables to keep track of weighting using 
+! calculate separate variables to keep track of weighting using
 ! rooting profile information
 !
 ! note that these variables are only used for diagnostic purposes
@@ -281,9 +281,9 @@ end if
 
 ! calculate daily total co2 respiration from soil
 !
-         
+
          adco2soi(i)  = adco2root(i) + adco2mic(i)
-         
+
 ! calculate daily ratio of total root to total co2 respiration
          if (adco2soi(i).gt.0.0) then
             adco2ratio(i) = adco2root(i) / adco2soi(i)
@@ -298,16 +298,16 @@ end if
 ! calculate litter carbon decomposition factors
 ! using soil temp, moisture and ice for top soil layer
 !
-! calculation of soil biogeochemistry decomposition factors 
+! calculation of soil biogeochemistry decomposition factors
 ! based on moisture and temperature affects on microbial
 ! biomass dynamics
 !
-! moisture function based on water-filled pore space (wfps)  
+! moisture function based on water-filled pore space (wfps)
 ! williams et al., 1992 and friend et al., 1997 used in the
 ! hybrid 4.0 model; this is based on linn and doran, 1984
 !
 ! temperature functions are derived from arrhenius function
-! found in lloyd and taylor, 1994 with a 15 c base 
+! found in lloyd and taylor, 1994 with a 15 c base
 !
 ! calculate temperature decomposition factor
          if (tsoi(i,1) .gt. 237.13) then
@@ -322,7 +322,7 @@ end if
 !
 ! wsoi is relative to pore space not occupied by ice and water
 ! thus must include the ice fraction in the calculation
-         wfps = (1.0 - wisoi(i,1)) * wsoi(i,1) * 100.0  
+         wfps = (1.0 - wisoi(i,1)) * wsoi(i,1) * 100.0
 
 ! calculate moisture decomposition factor
          if (wfps .ge. 60.0) then
@@ -342,18 +342,18 @@ end if
 ! ---------------------------------------------------------------------
 !
 ! calculate soil carbon decomposition factors
-! using soil temp, moisture and ice weighted by rooting profile scheme 
+! using soil temp, moisture and ice weighted by rooting profile scheme
 !
-! calculation of soil biogeochemistry decomposition factors 
+! calculation of soil biogeochemistry decomposition factors
 ! based on moisture and temperature affects on microbial
 ! biomass dynamics
 !
-! moisture function based on water-filled pore space (wfps)  
+! moisture function based on water-filled pore space (wfps)
 ! williams et al., 1992 and friend et al., 1997 used in the
 ! hybrid 4.0 model; this is based on linn and doran, 1984
 !
 ! temperature functions are derived from arrhenius function
-! found in lloyd and taylor, 1994 with a 15 c base 
+! found in lloyd and taylor, 1994 with a 15 c base
 !
 ! calculate temperature decomposition factor
          if (soiltemp .gt. 237.13) then
@@ -368,15 +368,15 @@ end if
 !
 ! wsoi is relative to pore space not occupied by ice and water
 ! thus must include the ice fraction in the calculation
-         wfps = (1. - soilice) * soilmois * 100.0       
+         wfps = (1. - soilice) * soilmois * 100.0
 
 ! calculate moisture decomposition factor
          if (wfps .ge. 60.0) then
             moist = 0.000371 * (wfps**2) - (0.0748 * wfps) + 4.13
          else
-            moist = exp((wfps - 60.0)**2 / (-800.0))    
+            moist = exp((wfps - 60.0)**2 / (-800.0))
          endif
-         
+
 ! calculate combined temperature / moisture decomposition factor
          factor = max (dble(0.001), min (bconst, factor * moist))
 
